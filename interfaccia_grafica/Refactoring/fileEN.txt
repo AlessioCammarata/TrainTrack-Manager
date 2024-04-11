@@ -1,0 +1,97 @@
+-Window Titles | 1-18
+Management of Locomotives
+LOCOMOTIVE DATABASE
+Local ID
+Locomotive ID
+Color
+Name
+ADD LOCOMOTIVE
+REMOVE LOCOMOTIVE
+EDIT LOCOMOTIVE
+GENERAL STOP
+Settings
+Locomotive Creation
+Locomotive Removal
+Locomotive Deletion
+Control Circuit/Auto Management
+Information
+RFID Settings
+GENERAL START
+-Error Messages | 20-41
+You cannot open another page
+the COM serial port
+is not available
+You cannot add more locomotives
+Incorrect input entered
+You have exceeded the length/size limit
+You cannot enter more than one locomotive with the same name or ID (max 
+locomotives for this circuit)
+ID and name do not match any registered locomotive
+Invalid ID
+Name or LocoID already entered
+The system cannot manage more than
+The path to the control unit port does not exist
+The path to the RFID sensor port does not exist
+Tag already inserted into the locomotive
+Table empty, insert locomotives
+Connect a camera
+Before starting automatic mode, connect and enable the port related to the sensors
+Decoding error. Make sure the device is sending data correctly.
+Error opening serial port:
+RESTART the algorithm
+is disconnected
+-Buttons | 43 - 56
+Close
+Save
+Next
+Go Back
+Stop
+Remove
+Edit
+Activate
+Confirm
+Add
+VIDEO OFF
+VIDEO ON
+AUTOMATIC
+MANUAL
+
+
+-Warning or Information Messages | 60 - 65
+Locomotive Management
+From here you can add locomotives to your system,
+with the various buttons you can also edit, delete, and
+control the locomotives you have inserted
+By entering this ID, being the last, you will start the circuit
+Before proceeding, make sure you have only the locomotive you want to change the address on the tracks
+Locomotive Tag Calibration.
+Approach the locomotive already entered in the table,
+press the refresh button, then select
+the Local ID of that locomotive and confirm.
+To proceed, calibrate the RFID tags.
+Pass the locomotive corresponding to the entered ID under the sensor corresponding to its ID
+Press CONFIRM and repeat the procedure.
+
+
+
+
+
+
+-Labels| 80 - 96
+Name
+LocoID:
+Color*:
+ID:
+Locomotive ID to edit:
+New
+Adjust speed:
+Direction:
+DCC Control Unit Serial Port Number:
+RFID Sensor Serial Port Number:
+Max number of locomotives:
+Current Operating System:
+Sensor ID to associate:
+CIRCUIT AUTOMATIC CONTROL
+CIRCUIT MANUAL CONTROL
+RFID tag
+Local ID

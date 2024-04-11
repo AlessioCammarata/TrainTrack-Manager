@@ -1,0 +1,97 @@
+-Titoli finestre | 1-18
+Gestione Locomotive
+DATABASE LOCOMOTIVE
+ID Locale
+ID Locomotive
+Colore
+Nome
+AGGIUNGI LOCOMOTIVA
+RIMUOVI LOCOMOTIVA
+MODIFICA LOCOMOTIVA
+STOP GENERALE
+Impostazioni
+Creazione Locomotiva
+Rimozione Locomotiva
+Rimozione Locomotiva
+Gestione controlcircuituale/auto
+Informazioni
+Impostazioni RFID
+AVVIO GENERALE
+-Messaggi d'Errore | 20-41
+Non puoi aprire un'altra pagina
+la porta seriale COM
+non è disponibile
+Non si possono piu aggiungere locomotive
+Input inseriti incorrettamente
+Hai superato il limite di lunghezza/grandezza
+Non puoi inserire piu di una locomotiva con lo stesso nome o ID (max 
+locomotive per questo circuito)
+Id e nome non coincidono con nessuna locomotiva registrata
+ID non valido
+Nome o Locoid gia inserito
+Il sistema non puo gestire piu di 
+Il percorso per la porta riguardante la centralina non esiste
+Il percorso per la porta riguardante i sensori RFID non esiste
+Tag gia inserito alla locomotiva
+Tabella vuota, inserire locomotive
+Collega una videocamera
+Prima di avviare la modalita automatica collegare e abilitare la porta relativa ai sensori
+Errore di decodifica. Assicurati che il dispositivo stia inviando dati correttamente.
+Errore nell'apertura della porta seriale:
+RIAVVIARE l'algoritmo
+è scollegata
+-Bottoni | 43 - 56
+Chiudi
+Salva
+Avanti
+Indietro
+Arresta
+Rimuovi
+Modifica
+Attiva
+Conferma
+Aggiungi
+VIDEO OFF
+VIDEO ON
+AUTOMATICO
+MANUALE
+
+
+-Messaggi d'avviso o Informazioni | 60 - 65
+Gestione delle locomotive
+Da qui puoi aggiungere locomotive al tuo sistema,
+con i vari tasti puoi anche modificare, eliminare, e
+controllare le locomotive da te inserite
+Inserendo questo ID, essendo l'ultimo, avvierai il circuito
+Prima di continuare assicurati di avere solo la locomotiva alla quale si vuole cambiare l'indirizzo sui binari
+Calibrazione tag delle locomotive.
+Avvicinare la locomotiva gia inserita nella tabella,
+premere il tasto refresh, dopodiche selezionare 
+l'ID Locale di quella locomotiva e confermare.
+Per andare avanti calibrare i tag RFID.
+Passa la locomotiva corrispondente all'ID inserito, sotto al sensore corrispondente al suo ID
+Premi CONFERMA e rifai il procedimento
+
+
+
+
+
+
+-Etichette
+Nome
+LocoID:
+Colore*:
+ID:
+ID della locomotiva da modificare:
+Nuovo
+Regola la velocità:
+Direzione:
+Numero porta seriale Centralina DCC:
+Numero porta seriale Sensori RFID:
+Numero max di locomotive:
+Sistema Operativo attuale:
+ID del sensore da associare:
+CONTROLLO AUTOMATICO CIRCUITO
+CONTROLLO MANUALE CIRCUITO
+tag RFID
+ID Locale
