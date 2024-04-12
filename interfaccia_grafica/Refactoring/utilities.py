@@ -172,6 +172,9 @@ def update_circuit_table(columns,tree):
         tree.column(col, anchor='center', width=100)  # Imposta l'allineamento al centro per tutte le colonne
 
 def translate(language : str):
+    print(language)
+
+
 
     # Apro il file in modalità lettura
     with open("interfaccia_grafica\\refactoring\\file{}.txt".format(language), 'r',encoding='utf-8') as file:

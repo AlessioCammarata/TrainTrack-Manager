@@ -96,6 +96,29 @@ class GUI(tk.Frame):
         self.locomotive_label.pack(side="left",pady=(5,0), padx=(300,300))
         # self.locomotive_label.place(relx=0.5, rely=0.05, anchor="center")
 
+        #Selezione lingua
+        self.image_flag_Path = utilities.asset_path(f'{data.Textlines[100]}','png')
+        self.image_flag = utilities.process_image(self.image_flag_Path, 'resize', 25, 20)
+        self.var_language = tk.StringVar()
+        self.flag_button = ttk.Menubutton(self.container, image=self.image_flag)
+        self.flag = tk.Menu(self.flag_button, tearoff=0)
+        self.flag_button.pack(side = "left")
+
+    #stile del bottone controlla locomotiva e del suo menu
+        self.style1 = ttk.Style()
+        self.flag_button.config(style='Custom.TMenubutton')
+        self.style1.configure('Custom.TMenubutton', background="#c0c0c0")
+        self.style1.layout('Custom.TMenubutton', utilities.indicatoron)
+
+        self.flag_button["menu"] = self.flag
+        self.flag.delete(0, "end")
+        for language in data.languages:
+            self.flag.add_radiobutton(
+                label=language,
+                value=language,
+                variable=self.var_language,
+                command= self.change_language)
+
         #informazioni
         self.image_info_path = utilities.asset_path('info','png')
         self.image_info = utilities.process_image(self.image_info_path, 'resize', 45, 35)
@@ -428,3 +451,12 @@ class GUI(tk.Frame):
         id_controllo = utilities.CalcolaIDtreno('ID',id)
         data.var_supporto = id_controllo
         print(id)
+
+    def change_language(self):
+        language      = self.var_language.get()
+        if utilities.are_you_sure("CANCELLO TUTTO??"):
+            utilities.translate(language)
+            self.locomotive_window.after(20,GUI(self.container))
+            self.container.on_close_root()
+            
+        
