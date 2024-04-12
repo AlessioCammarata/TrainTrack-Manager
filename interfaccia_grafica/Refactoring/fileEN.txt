@@ -19,7 +19,7 @@ RFID Settings
 GENERAL START
 -Error Messages | 20-41
 You cannot open another page
-the COM serial port
+the serial port COM 
 is not available
 You cannot add more locomotives
 Incorrect input entered
@@ -55,9 +55,9 @@ VIDEO OFF
 VIDEO ON
 AUTOMATIC
 MANUAL
+Enable
 
-
--Warning or Information Messages | 60 - 65
+-Warning or Information Messages | 60 - 72
 Locomotive Management
 From here you can add locomotives to your system,
 with the various buttons you can also edit, delete, and
@@ -77,7 +77,7 @@ Press CONFIRM and repeat the procedure.
 
 
 
--Labels| 80 - 96
+-Labels | 80 - 97
 Name
 LocoID:
 Color*:
@@ -95,7 +95,7 @@ CIRCUIT AUTOMATIC CONTROL
 CIRCUIT MANUAL CONTROL
 RFID tag
 Local ID
-
+Turnout
 
 
 EN

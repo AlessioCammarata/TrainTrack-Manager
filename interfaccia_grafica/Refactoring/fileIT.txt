@@ -40,7 +40,7 @@ Errore di decodifica. Assicurati che il dispositivo stia inviando dati correttam
 Errore nell'apertura della porta seriale:
 RIAVVIARE l'algoritmo
 è scollegata
--Bottoni | 43 - 56
+-Bottoni | 43 - 57
 Chiudi
 Salva
 Avanti
@@ -55,9 +55,9 @@ VIDEO OFF
 VIDEO ON
 AUTOMATICO
 MANUALE
+Abilita
 
-
--Messaggi d'avviso o Informazioni | 60 - 65
+-Messaggi d'avviso o Informazioni | 60 - 72
 Gestione delle locomotive
 Da qui puoi aggiungere locomotive al tuo sistema,
 con i vari tasti puoi anche modificare, eliminare, e
@@ -77,7 +77,7 @@ Premi CONFERMA e rifai il procedimento
 
 
 
--Etichette
+-Etichette | 80 - 97
 Nome
 LocoID:
 Colore*:
@@ -95,7 +95,7 @@ CONTROLLO AUTOMATICO CIRCUITO
 CONTROLLO MANUALE CIRCUITO
 tag RFID
 ID Locale
-
+Cambio
 
 
 IT

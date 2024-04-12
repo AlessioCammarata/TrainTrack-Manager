@@ -636,7 +636,7 @@ class Windows:
         port0_checkbox_var = tk.BooleanVar()
         port0_checkbox_var.set(data.serial_port_info[data.serial_ports[0]][1])
         # Creazione della casella di controllo
-        checkbox0 = tk.Checkbutton(self.locomotive_window,text="Abilita", variable=port0_checkbox_var, command = lambda: appoint_selection(0))
+        checkbox0 = tk.Checkbutton(self.locomotive_window,text=data.Textlines[57], variable=port0_checkbox_var, command = lambda: appoint_selection(0))
         checkbox0.grid(row=0, column=2, padx=5, sticky=tk.W)
         # checkbox0.select()
 
@@ -666,7 +666,7 @@ class Windows:
         port1_checkbox_var.set(data.serial_port_info[data.serial_ports[1]][1])
         print(data.serial_port_info[data.serial_ports[1]][1])
         # Creazione della casella di controllo
-        checkbox1 = tk.Checkbutton(self.locomotive_window,text="Abilita", variable=port1_checkbox_var, command = lambda: appoint_selection(1))
+        checkbox1 = tk.Checkbutton(self.locomotive_window,text=data.Textlines[57], variable=port1_checkbox_var, command = lambda: appoint_selection(1))
         checkbox1.grid(row=1, column=2, padx=5, sticky=tk.W)
         
 
@@ -1023,7 +1023,7 @@ class circuit_window(Windows):
 
     # Funzione per creare un label con un checkbutton
         def create_label_with_button(canvas, x, y, text):
-            label = canvas.create_text(x, y, text=text, anchor=tk.W)  # Crea il testo sul canvas
+            label = canvas.create_text(x, y, text=data.Textlines[97] +" "+ text[-1], anchor=tk.W)  # Crea il testo sul canvas
             if automatico:
                 pass
                 #button = tk.Button(canvas, text="OFF", width=3, height=1,bg="blue" ,command=lambda: change_color_webcam(text,button))

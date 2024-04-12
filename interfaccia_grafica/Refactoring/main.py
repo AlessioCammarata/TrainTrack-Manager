@@ -4,7 +4,7 @@ import utilities
 import data
 from algorithm import Algorithm
 
-utilities.translate("IT")
+
 # @singleton
 class App(tk.Tk):
     def __init__(self):
@@ -24,10 +24,15 @@ class App(tk.Tk):
     def on_close_root(self):
         self.destroy()
         self.algo.stop_algo()
-        
 
-if __name__ == "__main__":
+    def reopen_window(self):
+        App_start()
 
+def App_start():
+    utilities.translate()
     app = App()
     gui = GUI_refactored.GUI(app)
     app.mainloop()
+
+if __name__ == "__main__":
+    App_start()

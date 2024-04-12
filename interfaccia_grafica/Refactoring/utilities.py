@@ -171,13 +171,11 @@ def update_circuit_table(columns,tree):
     for col in columns:
         tree.column(col, anchor='center', width=100)  # Imposta l'allineamento al centro per tutte le colonne
 
-def translate(language : str):
-    print(language)
-
-
-
+def translate():
+    print(data.languages[0])
+    data.Textlines = []
     # Apro il file in modalità lettura
-    with open("interfaccia_grafica\\refactoring\\file{}.txt".format(language), 'r',encoding='utf-8') as file:
+    with open("interfaccia_grafica\\refactoring\\file{}.txt".format(data.languages[0]), 'r',encoding='utf-8') as file:
         # Leggo ogni riga del file
         for line in file:
             # Aggiungo la riga alla lista

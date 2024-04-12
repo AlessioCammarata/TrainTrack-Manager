@@ -97,7 +97,7 @@ class GUI(tk.Frame):
         # self.locomotive_label.place(relx=0.5, rely=0.05, anchor="center")
 
         #Selezione lingua
-        self.image_flag_Path = utilities.asset_path(f'{data.Textlines[100]}','png')
+        self.image_flag_Path = utilities.asset_path(f'{data.languages[0]}','png')
         self.image_flag = utilities.process_image(self.image_flag_Path, 'resize', 25, 20)
         self.var_language = tk.StringVar()
         self.flag_button = ttk.Menubutton(self.container, image=self.image_flag)
@@ -455,8 +455,13 @@ class GUI(tk.Frame):
     def change_language(self):
         language      = self.var_language.get()
         if utilities.are_you_sure("CANCELLO TUTTO??"):
-            utilities.translate(language)
-            self.locomotive_window.after(20,GUI(self.container))
+            #utilities.translate(language)
             self.container.on_close_root()
-            
-        
+            # Identifica l'indice della stringa nel vettore
+            index = data.languages.index(language)
+            # Rimuovi la stringa dal suo attuale indice
+            data.languages.pop(index)
+            # Inserisci la stringa nella prima posizione del vettore
+            data.languages.insert(0, language)
+            print(data.languages)
+            self.after(20,self.container.reopen_window())
