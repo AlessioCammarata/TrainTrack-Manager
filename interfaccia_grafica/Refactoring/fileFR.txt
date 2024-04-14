@@ -86,8 +86,8 @@ ID de la locomotive à modifier:
 Nouveau
 Régler la vitesse:
 Direction:
-Numéro de port série de l'unité de commande DCC:
-Numéro de port série des capteurs RFID:
+Numéro de port série DCC:
+Numéro de port série RFID:
 Nombre maximal de locomotives:
 Système d'exploitation actuel:
 ID du capteur à associer:
@@ -95,7 +95,7 @@ CIRCUIT DE CONTRÔLE AUTOMATIQUE
 CIRCUIT DE CONTRÔLE MANUEL
 tag RFID
 ID Local
-Changement
+Change
 
 
 FR
