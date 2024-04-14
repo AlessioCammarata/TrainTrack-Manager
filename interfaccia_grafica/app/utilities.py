@@ -173,7 +173,7 @@ def translate():
     print(data.languages[0])
     data.Textlines = []
     # Apro il file in modalità lettura
-    with open("interfaccia_grafica\\refactoring\\file{}.txt".format(data.languages[0]), 'r',encoding='utf-8') as file:
+    with open("interfaccia_grafica\\languages\\file{}.txt".format(data.languages[0]), 'r',encoding='utf-8') as file:
         # Leggo ogni riga del file
         for line in file:
             # Aggiungo la riga alla lista
