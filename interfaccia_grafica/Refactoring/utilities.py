@@ -71,24 +71,22 @@ def set_variabilechiusura(window_type):
     data.variabili_apertura[f'locomotive_{window_type}_var'] = False
 
 #funzione per gli errori
-def show_error_box(descrizione,modalita,finestra):
+def show_error_box(descrizione,finestra,finestra_padre,importance):
 
+    #Ci sono degli errori che non devono attivare la var
+    if importance != "main":
+        data.control_var_errore = True
     #divisione del messaggio dalla modalita
-    modalita = modalita.split("/")
+    finestra_padre.grab_set()
     #matcha il tipo di modalita
     messagebox.showerror("ERRORE", descrizione)
-    match modalita[0]:
-        case "close_window":
-            #prende l'informazione nascosta
-            set_variabilechiusura(modalita[1])
-        case "focus_page":
-            finestra.focus_set()
-        case _:
-            print(";)")
+    finestra_padre.grab_release()
+
+    finestra.focus_set()
 
 #Funzione per WARNING
 def are_you_sure(descrizione):
-    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\nSei sicuro di voler continuare?",icon='warning')
+    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[73], icon='warning')
     return risposta
 
 #Funzione per INFO

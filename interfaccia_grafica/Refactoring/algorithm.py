@@ -135,7 +135,7 @@ class Algorithm:
             comandi.throttle(memoria,ID,round(velocita_effettiva),direzione)
 
         else: 
-            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],"_/_","")
+            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window,circuit_window,"main")
 
 
     #Ritorna un vettore che contiene i percorsi liberi in quel momento
@@ -182,7 +182,7 @@ class Algorithm:
             #     semaphore = traffic_light.Semaphore(circuit_window,item)
             #     self.semaphore.append(semaphore.thread)
         else: 
-            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],"_/_","")
+            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window,circuit_window,"main")
 
 #   Questa funzione controlla che i percorsi adiacenti a quelli toccati dal treno, nella direzione in cui sta andando siano liberi
     def control(self,Turnout,direzione,natural_link):

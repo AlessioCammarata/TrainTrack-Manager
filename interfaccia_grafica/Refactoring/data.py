@@ -41,6 +41,8 @@ serial_port_info = {
     serial_ports[0]: [False,True], 
     serial_ports[1]: [False,False]
 }
+# Variabile che serve a controllare se c'è stato un errore
+control_var_errore = False
 
 # Dizionario per tenere in memoria l'apertura delle pagine
 variabili_apertura = {   

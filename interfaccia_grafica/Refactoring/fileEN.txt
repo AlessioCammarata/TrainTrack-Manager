@@ -57,12 +57,12 @@ AUTOMATIC
 MANUAL
 Enable
 
--Warning or Information Messages | 60 - 72
+-Warning or Information Messages | 60 - 73
 Locomotive Management
 From here you can add locomotives to your system,
 with the various buttons you can also edit, delete, and
 control the locomotives you have inserted
-By entering this ID, being the last, you will start the circuit
+Since the last ID has been entered, moving forward, you will start the circuit
 Before proceeding, make sure you have only the locomotive you want to change the address on the tracks
 Locomotive Tag Calibration.
 Approach the locomotive already entered in the table,
@@ -71,8 +71,8 @@ the Local ID of that locomotive and confirm.
 To proceed, calibrate the RFID tags.
 Pass the locomotive corresponding to the entered ID under the sensor corresponding to its ID
 Press CONFIRM and repeat the procedure.
-
-
+Are you sure you want to continue?
+Proceeding the program restarts. All data entered in the table will be lost.
 
 
 

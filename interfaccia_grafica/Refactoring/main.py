@@ -4,7 +4,6 @@ import utilities
 import data
 from algorithm import Algorithm
 
-
 # @singleton
 class App(tk.Tk):
     def __init__(self):

@@ -57,12 +57,12 @@ AUTOMATICO
 MANUALE
 Abilita
 
--Messaggi d'avviso o Informazioni | 60 - 72
+-Messaggi d'avviso o Informazioni | 60 - 73
 Gestione delle locomotive
 Da qui puoi aggiungere locomotive al tuo sistema,
 con i vari tasti puoi anche modificare, eliminare, e
 controllare le locomotive da te inserite
-Inserendo questo ID, essendo l'ultimo, avvierai il circuito
+Siccome l'ultimo ID è stato inserito, andando avanti, avvierai il circuito
 Prima di continuare assicurati di avere solo la locomotiva alla quale si vuole cambiare l'indirizzo sui binari
 Calibrazione tag delle locomotive.
 Avvicinare la locomotiva gia inserita nella tabella,
@@ -71,8 +71,8 @@ l'ID Locale di quella locomotiva e confermare.
 Per andare avanti calibrare i tag RFID.
 Passa la locomotiva corrispondente all'ID inserito, sotto al sensore corrispondente al suo ID
 Premi CONFERMA e rifai il procedimento
-
-
+Sei sicuro di voler continuare?
+Procedendo il programma si riavviera.Tutti i dati inseriti in tabella andranno persi.
 
 
 

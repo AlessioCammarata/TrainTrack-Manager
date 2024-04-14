@@ -53,18 +53,16 @@ class Windows:
                 name            = name_entry.get()
                 loco_id         = loco_id_entry.get()
                 color           = var_color.get()
-                control_var = False # Variabile che serve a controllare se c'è stato un errore
 
                 controllo_loco  = len(data.locomotives_data)<data.max_loco #Controllo per vedere che il numero delle locomotive non sia al limite
 
                 #controllo sugli input
                 if name == "" or not loco_id.isdigit() or int(loco_id)==0:
-                    utilities.show_error_box(data.Textlines[24],"close_window/locomotive_creation_var","")
-                    
-                    control_var = True#open_locomotive_creation_window()
+                    utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
+                    #open_locomotive_creation_window()
                 elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
-                    utilities.show_error_box(data.Textlines[25],"close_window/locomotive_creation_var","")
-                    control_var = True
+                    utilities.show_error_box(data.Textlines[25],self.locomotive_window,GUI,"")
+    
                 else:
                     
                     #controllo se esistono dei buchi tra gli ID
@@ -129,18 +127,18 @@ class Windows:
                         #setto la variabile relativa alla calibrazione dell RFID a False
                         data.calibred = False
                     else: 
-                        utilities.show_error_box(data.Textlines[26]+ f" {data.max_loco} " + data.Textlines[27],"close_window/locomotive_creation_var","")
-                        control_var = True
+                        utilities.show_error_box(data.Textlines[26]+ f" {data.max_loco} " + data.Textlines[27],self.locomotive_window,GUI,"")
 
-                #chiude la finestra 
-                utilities.on_close(self.locomotive_window,"creation")
-                #controlla che nel vettore ci sia ancora spazio e che la var di chiusura sia True,
-                #inoltre, nel caso in cui la finestra venga aperta da RFID, non verra riaperta in caso di errore
-                if  control_var and controllo_loco and not data.variabili_apertura["locomotive_RFID_var"]:
-                    self.locomotive_window.after(0,GUI.open_locomotive_creation_window())
-                #locomotive_creation_window.destroy()
+                if data.control_var_errore:
+                    reset_inputs()
+                    data.control_var_errore = False
+                else:
+                    utilities.on_close(self.locomotive_window,"creation")
 
-
+            def reset_inputs():
+                name_entry.delete(0, tk.END)
+                loco_id_entry.delete(0, tk.END)
+                color_button.configure(text = "Default")
 
             # Creazione del form per la nuova locomotiva
             name_label = tk.Label(self.locomotive_window, text=data.Textlines[80]+":")
@@ -193,8 +191,8 @@ class Windows:
             # 
             #controllo sugli input
             if name == "" or not id.isdigit() or int(id) < 1:
-                utilities.show_error_box(data.Textlines[24],"close_window/locomotive_remove_var","")
-                control_var = True#open_locomotive_remove_window()
+                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
+                #open_locomotive_remove_window()
             else:
                 id = int(id)
                 #controllo per vedere qual è l'ultimo ID
@@ -226,17 +224,23 @@ class Windows:
 
                         GUI.update_table()
                     else: 
-                        utilities.show_error_box(data.Textlines[28],"close_window/locomotive_remove_var","")
-                        control_var = True
-                else:
-                    utilities.show_error_box(data.Textlines[29],"close_window/locomotive_remove_var","")
-                    control_var = True
-            #chiude la finestra 
-            utilities.on_close(self.locomotive_window,"remove")
-            if control_var:
-                self.locomotive_window.after(20,GUI.open_locomotive_remove_window())
-            #locomotive_remove_window.destroy()
+                        utilities.show_error_box(data.Textlines[28],self.locomotive_window,GUI,"")
 
+                else:
+                    utilities.show_error_box(data.Textlines[29],self.locomotive_window,GUI,"")
+
+
+            #chiude la finestra 
+            if data.control_var_errore:
+                reset_inputs()
+                data.control_var_errore = False
+            else:
+                utilities.on_close(self.locomotive_window,"remove")
+
+
+        def reset_inputs():
+            name_entry.delete(0, tk.END)
+            ID_entry.delete(0, tk.END)
             
         # Creazione del form per la nuova locomotiva
         name_label = tk.Label(self.locomotive_window, text=data.Textlines[80]+":")
@@ -262,7 +266,6 @@ class Windows:
             id          = ID_entry.get()
             loco_id     = loco_id_entry.get()
             color       = var_color.get()
-            control_var = False
 
             #Assegnazione di default
             if loco_id == "":
@@ -270,11 +273,11 @@ class Windows:
 
             #controlli sugli input
             if not loco_id.isdigit() or not id.isdigit() or int(loco_id)==0 or int(id)==0:
-                utilities.show_error_box(data.Textlines[24],"close_window/locomotive_modify_var","")
-                control_var = True
+                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
+
             elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
-                utilities.show_error_box(data.Textlines[25],"close_window/locomotive_modify_var","")
-                control_var = True
+                utilities.show_error_box(data.Textlines[25],self.locomotive_window,GUI,"")
+
             else:
                 id          = int(id)
                 nome_unico  = True
@@ -344,12 +347,10 @@ class Windows:
                                             }
                                 if utilities.is_serial_port_available(data.serial_ports[0]):
                                     comandi.change_id(data.locomotives_data[index_to_replace]['LocoID'],loco_id)
-                                else: 
-                                    utilities.show_error_box(data.Textlines[21] +f"{data.serial_ports[0]} "+data.Textlines[22],"close_window/locomotive_modify_var","")
-                                    control_var = True
+                                # else: 
+                                #     utilities.show_error_box(data.Textlines[21] +f"{data.serial_ports[0]} "+data.Textlines[22],self.locomotive_window,GUI,"")
+
                                 data.locomotives_data[index_to_replace] = new_dict
-                            else:
-                                control_var = True #Non so se necessario
                         else:
                             if color != "Default":
                                 #prima di sostituire la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
@@ -371,16 +372,23 @@ class Windows:
                         GUI.update_table()
                     
                     else:
-                        utilities.show_error_box(data.Textlines[30],"close_window/locomotive_modify_var","")
-                        control_var = True#open_locomotive_modify_window()
+                        utilities.show_error_box(data.Textlines[30],self.locomotive_window,GUI,"")
+                        #open_locomotive_modify_window()
                 else:
-                    utilities.show_error_box(data.Textlines[29],"close_window/locomotive_modify_var","")
-                    control_var = True
+                    utilities.show_error_box(data.Textlines[29],self.locomotive_window,GUI,"")
+
             #chiude la finestra  
-            utilities.on_close(self.locomotive_window,"modify")
-            if control_var:
-                self.locomotive_window.after(20,GUI.open_locomotive_modify_window())
-            #locomotive_modify_window.destroy()
+            if data.control_var_errore:
+                reset_inputs()
+                data.control_var_errore = False
+            else:
+                utilities.on_close(self.locomotive_window,"modify")
+
+        def reset_inputs():
+            name_entry.delete(0, tk.END)
+            ID_entry.delete(0, tk.END)
+            loco_id_entry.delete(0, tk.END)
+            color_button.configure(text = "Default")
         
         # Creazione del form per la nuova locomotiva
         ID_label = tk.Label(self.locomotive_window, text=data.Textlines[84])
@@ -462,7 +470,7 @@ class Windows:
             if utilities.is_serial_port_available(data.serial_ports[0]):
                 #mando il comando di throttle
                 comandi.throttle(memoria,ID,round(velocita_effettiva),direzione)
-            else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],"focus_page/_",self.locomotive_window)
+            else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],self.locomotive_window,GUI,"main")
 
         #funzione per arrestare la locomotiva - setta lo slider a 0
         def stop_command():
@@ -476,7 +484,7 @@ class Windows:
             if utilities.is_serial_port_available(data.serial_ports[0]):
                 comandi.STOP(memoria,ID)
                 speed_slider.set(0)
-            else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],"focus_page/_",self.locomotive_window)
+            else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],self.locomotive_window,GUI,"main")
         
         #permette di selezionare il numero
         def add_speed(numero):
@@ -536,13 +544,13 @@ class Windows:
 
             #controlli sugli input, non so bene che sistemare
             if  not max_loco.isdigit() or rfid == centralina:
-                utilities.show_error_box(data.Textlines[24],"close_window/locomotive_settings_var","")
+                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
             elif int(max_loco) > data.max_loco_standard:
-                utilities.show_error_box(data.Textlines[31] + "{} locomotive".format(data.max_loco_standard),"close_window/locomotive_settings_var","")
+                utilities.show_error_box(data.Textlines[31] + "{} locomotive".format(data.max_loco_standard),self.locomotive_window,GUI,"")
             elif not utilities.port_exist(centralina) and port0_enabled:
-                utilities.show_error_box(data.Textlines[32],"focus_page/_",self.locomotive_window)
+                utilities.show_error_box(data.Textlines[32],self.locomotive_window,GUI,"")
             elif not utilities.port_exist(rfid) and port1_enabled:
-                utilities.show_error_box(data.Textlines[33],"focus_page/_",self.locomotive_window)
+                utilities.show_error_box(data.Textlines[33],self.locomotive_window,GUI,"")
             else:
                 centralina = int(centralina)
                 rfid = int(rfid)
@@ -581,6 +589,11 @@ class Windows:
                 #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
                 data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
                 data.serial_port_info[data.serial_ports[1]][1]      = port1_enabled
+                
+            if data.control_var_errore:
+                max_loco_entry.delete(0, tk.END)
+                data.control_var_errore = False
+            else:
                 utilities.on_close(self.locomotive_window,"settings")
 
         #Serve a non permettere di selezionare il secondo checkbox se il primo non è selezionato
@@ -712,25 +725,26 @@ class Windows:
     def RFID_window(self,algo,circuit_window,GUI):
         
         def show_page_info():
+            if self.info_window is None or not self.info_window.winfo_exists():
+                info_text = data.Textlines[66]+"\n"+ data.Textlines[67]+"\n"+data.Textlines[68] + "\n" +data.Textlines[69]
+                self.info_window = tk.Toplevel(self.locomotive_window)
+                self.info_window.title(data.Textlines[16])
+                self.info_window.geometry("270x150")
+                self.info_window.transient(self.locomotive_window)
+                #Seleziona la pagina appena creata
+                self.info_window.focus_set()
 
-            info_text = data.Textlines[66]+"\n"+ data.Textlines[67]+"\n"+data.Textlines[68] + "\n" +data.Textlines[69]
-            info_window = tk.Toplevel(self.locomotive_window)
-            info_window.title(data.Textlines[16])
-            info_window.geometry("270x150")
-            info_window.transient(self.locomotive_window)
-            #Seleziona la pagina appena creata
-            info_window.focus_set()
+                self.info_window.protocol("WM_DELETE_WINDOW", lambda: self.info_window.destroy())
+                self.info_window.bind('<Return>', lambda event: self.info_window.destroy())
+                self.info_window.bind("<Escape>", lambda event: self.info_window.destroy())
 
-            info_window.protocol("WM_DELETE_WINDOW", lambda: info_window.destroy())
-            info_window.bind('<Return>', lambda event: info_window.destroy())
-            info_window.bind("<Escape>", lambda event: info_window.destroy())
+                label = tk.Label(self.info_window, text=info_text)
+                label.pack(padx=5, pady=10)
 
-            label = tk.Label(info_window, text=info_text)
-            label.pack(padx=5, pady=10)
-
-            close_button = tk.Button(info_window, text=data.Textlines[43], command=info_window.destroy)
-            close_button.pack(pady=10)
-
+                close_button = tk.Button(self.info_window, text=data.Textlines[43], command=self.info_window.destroy)
+                close_button.pack(pady=10)
+            else:
+                utilities.show_error_box(data.Textlines[20],self.locomotive_window,GUI,"main")
     #Funzione che fa il refresh della tabella
         def refresh():
             utilities.update_circuit_table(columns,tree)
@@ -750,7 +764,7 @@ class Windows:
 
             #controllo sugli input
             if not id.isdigit() or int(id) < 1 :
-                utilities.show_error_box(data.Textlines[24],"focus_set/_",self.locomotive_window)
+                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
             else:
                 # if not database.calibred:
                     #Controllo che locmotives data non sia vuoto
@@ -772,15 +786,22 @@ class Windows:
                                     data.sensor_response[0] = "_/_"
                                     refresh()
                                 else:
-                                    utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}","focus_set/_",self.locomotive_window)
+                                    utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",self.locomotive_window,GUI,"")
                             else:
                                 utilities.show_info(data.Textlines[70]+"\n"+ data.Textlines[71]+"\n"+data.Textlines[72])
                         else:
-                            utilities.show_error_box(data.Textlines[29],"focus_set/_",self.locomotive_window)
+                            utilities.show_error_box(data.Textlines[29],self.locomotive_window,GUI,"")
                     else:
                         #Potrei mettere l'altra finestra
-                        utilities.show_error_box(data.Textlines[35],"focus_set/_",self.locomotive_window)
+                        utilities.show_error_box(data.Textlines[35],self.locomotive_window,GUI,"")
+            
+            if data.control_var_errore:
+                RFID_entry.delete(0, tk.END)
+                data.control_var_errore = False
+            # else:
+            #     utilities.on_close(self.locomotive_window,"RFID")
 
+        self.info_window = None
 
         self.image_info = utilities.process_image(GUI.image_info_path, 'resize', 35, 25)
         info_button = tk.Button(self.locomotive_window, image= self.image_info, borderwidth=0, 
@@ -995,7 +1016,7 @@ class circuit_window(Windows):
                     webcam.config(background=new_color,text=new_text)
                     self.camera.cattura_webcam("")
                 else:
-                    utilities.show_error_box(data.Textlines[36],"focus_page/_",self.locomotive_window)
+                    utilities.show_error_box(data.Textlines[36],self.locomotive_window,self.GUI,"main")
             else:
                 webcam.config(background=new_color,text=new_text)
                 self.camera.cattura_webcam("chiudi")
@@ -1019,7 +1040,7 @@ class circuit_window(Windows):
                 else: 
                     self.open_circuit_window(True)
 
-            else: utilities.show_error_box(data.Textlines[37],"focus_page/_",self.locomotive_window)
+            else: utilities.show_error_box(data.Textlines[37],self.locomotive_window,self.GUI,"main")
 
     # Funzione per creare un label con un checkbutton
         def create_label_with_button(canvas, x, y, text):
@@ -1064,7 +1085,7 @@ class circuit_window(Windows):
                 start_button.config(background=new_color)
 
             else:
-                utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],"focus_page",root)
+                utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,self.GUI,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False
 
         

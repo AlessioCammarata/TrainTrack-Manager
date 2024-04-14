@@ -126,6 +126,7 @@ class GUI(tk.Frame):
                                        command=self.open_info_window)
         self.info_button.pack(side="left", padx=(0,0),pady=(5,0))
         self.container.bind("<i>", lambda event: self.open_info_window())
+        self.locomotive_info_window = None
 
         #Tabella
         self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
@@ -238,7 +239,7 @@ class GUI(tk.Frame):
 
             return windows.Windows(window_var, window_title, window_size)
 
-        utilities.show_error_box(data.Textlines[20], "focus_page/_", window_var)
+        utilities.show_error_box(data.Textlines[20],window_var,self,"main")
 
     def open_settings_window(self):
         locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x200",self.container)
@@ -293,7 +294,7 @@ class GUI(tk.Frame):
                 locomotive_circuit_window1.open_circuit_window(False)
 
         else: 
-            utilities.show_error_box(data.Textlines[20],"focus_page/_",self.locomotive_circuit_window)
+            utilities.show_error_box(data.Textlines[20],self.locomotive_circuit_window,self,"main")
     
     def open_locomotive_control(self):
         #global locomotive_control_window
@@ -325,27 +326,29 @@ class GUI(tk.Frame):
                 locomotive_control_window1.control_window(self,locomotiva,id_controllo)
 
         else:
-            utilities.show_error_box(data.Textlines[20],"focus_page/_",self.locomotive_control_window[id_controllo])
+            utilities.show_error_box(data.Textlines[20],self.locomotive_control_window[id_controllo],self,"main")
 
     def open_info_window(self):
-        info_text = data.Textlines[60] + "\n" + data.Textlines[61] + "\n"+ data.Textlines[62] +"\n"+ data.Textlines[63]
-        info_window = tk.Toplevel(self)
-        #Seleziona la pagina appena creata
-        info_window.focus_set()
-        info_window.title(data.Textlines[16])
-        info_window.geometry("275x150")
-        info_window.transient(self)
+        if self.locomotive_info_window is None or not self.locomotive_info_window .winfo_exists():
+            info_text = data.Textlines[60] + "\n" + data.Textlines[61] + "\n"+ data.Textlines[62] +"\n"+ data.Textlines[63]
+            self.locomotive_info_window = tk.Toplevel(self)
+            #Seleziona la pagina appena creata
+            self.locomotive_info_window.focus_set()
+            self.locomotive_info_window.title(data.Textlines[16])
+            self.locomotive_info_window.geometry("275x150")
+            self.locomotive_info_window.transient(self)
 
-        info_window.protocol("WM_DELETE_WINDOW", lambda: info_window.destroy())
-        info_window.bind('<Return>', lambda event: info_window.destroy())
-        info_window.bind("<Escape>", lambda event: info_window.destroy())
+            self.locomotive_info_window.protocol("WM_DELETE_WINDOW", lambda: self.locomotive_info_window.destroy())
+            self.locomotive_info_window.bind('<Return>', lambda event: self.locomotive_info_window.destroy())
+            self.locomotive_info_window.bind("<Escape>", lambda event: self.locomotive_info_window.destroy())
 
-        label = tk.Label(info_window, text=info_text)
-        label.pack(padx=5, pady=10)
+            label = tk.Label(self.locomotive_info_window, text=info_text)
+            label.pack(padx=5, pady=10)
 
-        close_button = tk.Button(info_window, text=data.Textlines[43], command=info_window.destroy)
-        close_button.pack(pady=10)
-
+            close_button = tk.Button(self.locomotive_info_window, text=data.Textlines[43], command=self.locomotive_info_window.destroy)
+            close_button.pack(pady=10)
+        else:
+            utilities.show_error_box(data.Textlines[20],self.locomotive_info_window,self,"main")
     #funzione che serve per la gestione del bottone ON/OFF della corrente
     def on_off(self):
         current_color = self.on_button.cget("background")
@@ -356,7 +359,7 @@ class GUI(tk.Frame):
             on_offButton.on_off(self)
 
         else:
-            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],"focus_page/_",self.container)
+            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,self.container,"main")
 
 
     #funzione che serve per la gesetione dell'avvio e dell'arresto del sistema senza togliere la corrente
@@ -369,7 +372,7 @@ class GUI(tk.Frame):
             STOP_button.GENERAL_STOP_START_button(self)
            
         else:
-            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],"focus_page/_",self.container)
+            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,self.container,"main")
         
 
     def check_control_button_state(self):
@@ -438,7 +441,7 @@ class GUI(tk.Frame):
                     if not self.container.bind("<Control-KeyPress-{}>".format(id-10)):
                         self.container.bind("<Control-KeyPress-{}>".format(id-10), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))
                 else:
-                    utilities.show_error_box(data.Textlines[23],"close_window/locomotive_creation_var","")
+                    utilities.show_error_box(data.Textlines[23],self,self.container,"main")
             i+=1
             self.control.add_radiobutton(
                 label=loco,
@@ -454,7 +457,7 @@ class GUI(tk.Frame):
 
     def change_language(self):
         language      = self.var_language.get()
-        if utilities.are_you_sure("CANCELLO TUTTO??"):
+        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[74]):
             #utilities.translate(language)
             self.container.on_close_root()
             # Identifica l'indice della stringa nel vettore
