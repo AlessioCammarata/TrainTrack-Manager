@@ -27,6 +27,10 @@ class App(tk.Tk):
     def reopen_window(self):
         App_start()
 
+    def refresh(self):
+        self.title(data.Textlines[1])
+
+
 def App_start():
     utilities.translate()
     app = App()

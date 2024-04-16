@@ -459,12 +459,34 @@ class GUI(tk.Frame):
         language      = self.var_language.get()
         if language != data.languages[0] and utilities.are_you_sure(data.Textlines[74]):
             #utilities.translate(language)
-            self.container.on_close_root()
+            #self.container.on_close_root()
             # Identifica l'indice della stringa nel vettore
             index = data.languages.index(language)
             # Rimuovi la stringa dal suo attuale indice
             data.languages.pop(index)
             # Inserisci la stringa nella prima posizione del vettore
             data.languages.insert(0, language)
+            utilities.translate()
             print(data.languages)
-            self.after(20,self.container.reopen_window())
+            #self.after(20,self.container.reopen_window())
+            self.container.refresh()
+            self.refresh()
+
+    def refresh(self):
+        children = self.container.winfo_children()
+
+        for child in children:
+             # Chiudi solo le finestre Toplevel
+            if isinstance(child, tk.Toplevel):
+                child.destroy()
+
+        self.locomotive_label.configure(text=data.Textlines[2])
+        self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
+        self.add_button.configure(text=data.Textlines[7])
+        self.remove_button.configure(text=data.Textlines[8])
+        self.modify_button.configure(text=data.Textlines[9])
+        self.STOP_button.configure(text=data.Textlines[10])
+        self.image_flag_Path = utilities.asset_path(f'{data.languages[0]}','png')
+        self.image_flag = utilities.process_image(self.image_flag_Path, 'resize', 25, 20)
+        self.flag_button.configure(image=self.image_flag)
+
