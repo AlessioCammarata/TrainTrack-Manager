@@ -10,7 +10,7 @@ class App(tk.Tk):
         super().__init__()
 
         #Specifiche del root - style e icon
-        self.title(data.Textlines[1])
+        self.title("Gestione Locomotive")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.on_close_root)
 
@@ -28,8 +28,8 @@ class App(tk.Tk):
         self.title(data.Textlines[1])
 
 
-
 if __name__ == "__main__":
+    utilities.translate()
     app = App()
     gui = GUI_refactored.GUI(app)
     app.mainloop()
