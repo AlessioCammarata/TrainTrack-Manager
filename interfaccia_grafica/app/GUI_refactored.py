@@ -474,7 +474,7 @@ class GUI(tk.Frame):
 
     def refresh(self):
         children = self.container.winfo_children()
-
+        
         for child in children:
              # Chiudi solo le finestre Toplevel
             if isinstance(child, tk.Toplevel):

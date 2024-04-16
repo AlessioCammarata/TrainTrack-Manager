@@ -24,18 +24,12 @@ class App(tk.Tk):
         self.destroy()
         self.algo.stop_algo()
 
-    def reopen_window(self):
-        App_start()
-
     def refresh(self):
         self.title(data.Textlines[1])
 
 
-def App_start():
-    utilities.translate()
+
+if __name__ == "__main__":
     app = App()
     gui = GUI_refactored.GUI(app)
     app.mainloop()
-
-if __name__ == "__main__":
-    App_start()
