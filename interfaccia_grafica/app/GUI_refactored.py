@@ -474,6 +474,7 @@ class GUI(tk.Frame):
             self.refresh()
 
     def refresh(self):
+        #Prendo tutti i widget della pagina
         children = self.container.winfo_children()
 
         for child in children:
@@ -481,6 +482,7 @@ class GUI(tk.Frame):
             if isinstance(child, tk.Toplevel):
                 child.destroy()
 
+        #Cambio il nome dei label nella lingua giusta, anche il link dell'immagine
         self.locomotive_label.configure(text=data.Textlines[2])
         self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
         self.add_button.configure(text=data.Textlines[7])
