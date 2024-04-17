@@ -15,7 +15,7 @@ SO = {
 
 #Tiene a mente tutte le stringhe del programma
 Textlines = []
-languages = ['IT','EN','FR']
+languages = ['IT','EN','FR','SP']
 
 locomotives_data =      []           # Lista per salvare i dati delle locomo
 #locomotive_names =      []           # Lista per i nomi delle locomotive
