@@ -237,65 +237,68 @@ class GUI(tk.Frame):
 
             #Seleziona la pagina appena creata
             window_var.focus_set()
+            window_var.title(window_title)
+            window_var.geometry(window_size)
+            window_var.resizable(False, False)
+            # window_var.transient(root)
 
-            return windows.Windows(window_var, window_title, window_size)
+            return window_var
 
         utilities.show_error_box(data.Textlines[20],window_var,self,"main")
 
     def open_settings_window(self):
         locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x200",self.container)
         if locomotive_window:
-            locomotive_window.settings_window(self)
+            windows.settings_window(locomotive_window,self)
 
     def open_locomotive_creation_window(self):
         locomotive_window = self.open_locomotive_window("creation", data.Textlines[12], "250x170",self.container)
         if locomotive_window:
-            locomotive_window.creation_window(self)
+            windows.creation_window(locomotive_window,self)
             
     def open_locomotive_remove_window(self):
         locomotive_window = self.open_locomotive_window("remove", data.Textlines[13], "250x150",self.container)
         if locomotive_window:
-            locomotive_window.remove_window(self)
+            windows.remove_window(locomotive_window,self)
 
     def open_locomotive_modify_window(self):
         locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x200",self.container)
         if locomotive_window:
-            locomotive_window.modify_window(self)
+            windows.modify_window(locomotive_window,self)
 
     def open_control(self):
-        #global locomotive_circuit_window
+
+        open=True
+
+        # #Setto la variabile a False poiche serve per creare i deviatoi una volta sola, all'interno del codice la setto a True dopo la prima esecuzione
+        # data.variabili_apertura["locomotive_circuit_var"] = False
         
-        if self.locomotive_circuit_window is None or not self.locomotive_circuit_window.winfo_exists():
-            open=True
-            #Setto la variabile a False poiche serve per creare i deviatoi una volta sola, all'interno del codice la setto a True dopo la prima esecuzione
-            data.variabili_apertura["locomotive_circuit_var"] = False
-            
-            #Nel caso in cui la seriale non sia collegata, si chiede all'utente se vuole continuare
-            if not utilities.is_serial_port_available(self.serial_port):
-                open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41])
-            
-            if open:
+        #Nel caso in cui la seriale non sia collegata, si chiede all'utente se vuole continuare
+        if not utilities.is_serial_port_available(self.serial_port):
+            open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41])
+        
+        if open :
+            locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "",self.container)
+
+            if locomotive_window:
+                
                 #creazione di circuit per decidere il tipo di controllo del sistema
-                self.locomotive_circuit_window = tk.Toplevel(self.container)
-                self.locomotive_circuit_window.bind("<Escape>", lambda event: (utilities.on_close(self.locomotive_circuit_window,"circuit"),
+                #self.locomotive_circuit_window = tk.Toplevel(self.container)
+                locomotive_window.bind("<Escape>", lambda event: (utilities.on_close(locomotive_window,"circuit"),
                                                                                 self.container.algo.stop_algo(),
                                                                                 self.container.attributes("-alpha", 1),
-                                                                                self.locomotive_circuit_window.grab_release(),
+                                                                                locomotive_window.grab_release(),
                                                                                 ))
                 #locomotive_circuit_window.transient(self.root)
-                self.locomotive_circuit_window.protocol("WM_DELETE_WINDOW", lambda:(utilities.on_close(self.locomotive_circuit_window,"circuit"),
+                locomotive_window.protocol("WM_DELETE_WINDOW", lambda:(utilities.on_close(locomotive_window,"circuit"),
                                                                                     self.container.algo.stop_algo(),
                                                                                     self.container.attributes("-alpha", 1),
-                                                                                    self.locomotive_circuit_window.grab_release(),
+                                                                                    locomotive_window.grab_release(),
                                                                                     ))
-                #Seleziona la pagina appena creata
-                self.locomotive_circuit_window.focus_set()
-
-                locomotive_circuit_window1 = windows.circuit_window(self.locomotive_circuit_window,data.Textlines[15],len(data.Turnouts),self.container,self)
+    
+                locomotive_circuit_window1 = windows.circuit_window(locomotive_window,len(data.Turnouts),self.container,self)
                 locomotive_circuit_window1.open_circuit_window(False)
 
-        else: 
-            utilities.show_error_box(data.Textlines[20],self.locomotive_circuit_window,self,"main")
     
     def open_locomotive_control(self):
         #global locomotive_control_window
@@ -307,8 +310,6 @@ class GUI(tk.Frame):
             id_controllo = data.var_supporto
             locomotiva   = data.locomotives_data[id_controllo]['Nome'] 
 
-
-        
 
         if self.locomotive_control_window[id_controllo] is None or not self.locomotive_control_window[id_controllo].winfo_exists():
             #Apri solo se il button è sullo stato normal, non si puo togliere il print
@@ -322,34 +323,34 @@ class GUI(tk.Frame):
 
                 #Seleziona la pagina appena creata
                 self.locomotive_control_window[id_controllo].focus_set()
+                self.locomotive_control_window[id_controllo].title(locomotiva)
+                self.locomotive_control_window[id_controllo].geometry("300x250")
+                self.locomotive_control_window[id_controllo].resizable(False, False)
 
-                locomotive_control_window1 = windows.Windows(self.locomotive_control_window[id_controllo],locomotiva,"300x250")
-                locomotive_control_window1.control_window(self,locomotiva,id_controllo)
+
+                windows.control_window(self.locomotive_control_window[id_controllo],self,locomotiva,id_controllo)
 
         else:
             utilities.show_error_box(data.Textlines[20],self.locomotive_control_window[id_controllo],self,"main")
 
     def open_info_window(self):
-        if self.locomotive_info_window is None or not self.locomotive_info_window .winfo_exists():
+
+        locomotive_window = self.open_locomotive_window("modify", data.Textlines[16], "275x150",self.container)
+        if locomotive_window:
             info_text = data.Textlines[60] + "\n" + data.Textlines[61] + "\n"+ data.Textlines[62] +"\n"+ data.Textlines[63]
-            self.locomotive_info_window = tk.Toplevel(self.container)
-            #Seleziona la pagina appena creata
-            self.locomotive_info_window.focus_set()
-            self.locomotive_info_window.title(data.Textlines[16])
-            self.locomotive_info_window.geometry("275x150")
-            self.locomotive_info_window.transient(self)
 
-            self.locomotive_info_window.protocol("WM_DELETE_WINDOW", lambda: self.locomotive_info_window.destroy())
-            self.locomotive_info_window.bind('<Return>', lambda event: self.locomotive_info_window.destroy())
-            self.locomotive_info_window.bind("<Escape>", lambda event: self.locomotive_info_window.destroy())
+            locomotive_window.transient(self.container)
 
-            label = tk.Label(self.locomotive_info_window, text=info_text)
+            locomotive_window.protocol("WM_DELETE_WINDOW", lambda: locomotive_window.destroy())
+            locomotive_window.bind('<Return>', lambda event: locomotive_window.destroy())
+            locomotive_window.bind("<Escape>", lambda event: locomotive_window.destroy())
+
+            label = tk.Label(locomotive_window, text=info_text)
             label.pack(padx=5, pady=10)
 
-            close_button = tk.Button(self.locomotive_info_window, text=data.Textlines[43], command=self.locomotive_info_window.destroy)
+            close_button = tk.Button(locomotive_window, text=data.Textlines[43], command=locomotive_window.destroy)
             close_button.pack(pady=10)
-        else:
-            utilities.show_error_box(data.Textlines[20],self.locomotive_info_window,self,"main")
+        
     #funzione che serve per la gestione del bottone ON/OFF della corrente
     def on_off(self):
         current_color = self.on_button.cget("background")

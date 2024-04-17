@@ -31,327 +31,287 @@ import utilities
         self.locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
         
 '''
-#Finestre varie
-class Windows:
+def creation_window(locomotive_window,GUI):
 
-    def __init__(self,locomotive_window,title,dimensions):
-        self.locomotive_window = locomotive_window
-        self.locomotive_window.title(title)
-        self.locomotive_window.geometry(dimensions)
-        #per disabilitare il ridimensionamento
-        self.locomotive_window.resizable(False, False)
+    def save_locomotive():
+        global locomotive_names
+        global id
+        name            = name_entry.get()
+        loco_id         = loco_id_entry.get()
+        color           = var_color.get()
 
-        #Non permettono dinamicita
-        # self.serial_port = data.serial_ports[0]
-        # self.serial_port1 = data.serial_ports[1]
+        controllo_loco  = len(data.locomotives_data)<data.max_loco #Controllo per vedere che il numero delle locomotive non sia al limite
 
-    def creation_window(self,GUI):
+        #controllo sugli input
+        if name == "" or not loco_id.isdigit() or int(loco_id)==0:
+            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+            #open_locomotive_creation_window()
+        elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
+            utilities.show_error_box(data.Textlines[25],locomotive_window,GUI,"")
 
-            def save_locomotive():
-                global locomotive_names
-                global id
-                name            = name_entry.get()
-                loco_id         = loco_id_entry.get()
-                color           = var_color.get()
-
-                controllo_loco  = len(data.locomotives_data)<data.max_loco #Controllo per vedere che il numero delle locomotive non sia al limite
-
-                #controllo sugli input
-                if name == "" or not loco_id.isdigit() or int(loco_id)==0:
-                    utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
-                    #open_locomotive_creation_window()
-                elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
-                    utilities.show_error_box(data.Textlines[25],self.locomotive_window,GUI,"")
-    
-                else:
-                    
-                    #controllo se esistono dei buchi tra gli ID
-                    if len(data.locomotives_data) == 0:
-                        id = 1
-                    else: 
-                        id = data.locomotives_data[-1]['ID'] +1
-                    
-                    #controlli per vedere se il nome e il locoid sono gia stati usati all'interno del vettore
-                    nome_unico = True
-                    Locoid_unico = True
-                
-                    j=0
-                    if data.locomotives_data:
-                        while nome_unico:
-                            nome_unico = name != data.locomotives_data[j]['Nome']
-                            unicita_nome = nome_unico
-
-                            j = j+1
-                            if j == len(data.locomotives_data):  
-                                nome_unico = False
-                        j=0
-                        #controllo per vedere se il nome è gia stato usato all'interno del vettore
-                        while Locoid_unico:
-                            Locoid_unico = loco_id != data.locomotives_data[j]['LocoID']
-                            unicita_id = Locoid_unico
-                            j = j+1
-                            if j == len(data.locomotives_data):  
-                                Locoid_unico = False
-
-                    else: 
-                        unicita_nome    = True
-                        unicita_id      = True
-
-                    unicita = unicita_nome and unicita_id
-                    #Controllo sulla dimensione del circuito
-                    if unicita and controllo_loco:
-
-                                            #se il colore non è selezionato, ne verra selezionato uno casualmente tra quelli nel vettore che verra rimosso dal vettore in quanto selezionato
-                        if color == "Default" :
-                            color = random.choice([colore for colore in data.color_available if colore != "Default" ])
-                        data.color_available.remove(color)
-
-                        #definizione delle locomotive
-                        locomotive = {
-                            'ID': id,
-                            'Nome': name,
-                            'LocoID': loco_id,
-                            'Colore': color,
-                            'Velocita':0,
-                            'VelocitaM':0,
-                            'Direzione':1,
-                            'RFIDtag':"",
-                            'Percorso':"",
-			                'Ultimo_sensore':""
-                        }
-
-                        data.locomotives_data.append(locomotive)
-                        GUI.update_table()
-                        #Aggiornamento dei bottoni a seconda degli input
-                        locomotive_names = [locomotive['Nome'] for locomotive in data.locomotives_data]
-                        #setto la variabile relativa alla calibrazione dell RFID a False
-                        data.calibred = False
-                    else: 
-                        utilities.show_error_box(data.Textlines[26]+ f" {data.max_loco} " + data.Textlines[27],self.locomotive_window,GUI,"")
-
-                if data.control_var_errore:
-                    reset_inputs()
-                    data.control_var_errore = False
-                else:
-                    utilities.on_close(self.locomotive_window,"creation")
-
-            def reset_inputs():
-                name_entry.delete(0, tk.END)
-                loco_id_entry.delete(0, tk.END)
-                color_button.configure(text = "Default")
-
-            # Creazione del form per la nuova locomotiva
-            name_label = tk.Label(self.locomotive_window, text=data.Textlines[80]+":")
-            name_label.pack()
-            name_entry = tk.Entry(self.locomotive_window)
-            name_entry.pack()
-
-            loco_id_label = tk.Label(self.locomotive_window, text=data.Textlines[81])
-            loco_id_label.pack()
-            loco_id_entry = tk.Entry(self.locomotive_window)
-            loco_id_entry.pack()
-
-            color_label = tk.Label(self.locomotive_window, text=data.Textlines[82])
-            color_label.pack()
-
-    #Il numero dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-            var_color = tk.StringVar(value=data.color_available[-1])
-            color_button = ttk.Menubutton(self.locomotive_window,text="Default",width=19)
-            color = tk.Menu(color_button, tearoff=0)
-            color_button.pack()
-
-            color_button["menu"] = color
-            color.delete(0, "end")
-            for item in data.color_available:
-                color.add_radiobutton(
-                    label=item,
-                    value=item,
-                    variable=var_color,
-                    command=lambda:color_button.configure(text=var_color.get())
-                    )
+        else:
             
-            style1 = ttk.Style()
-            style1.configure('UniqueCustom.TMenubutton',padding=(),background="white")  #background ="#add8e6" 
-            color_button.config(style='UniqueCustom.TMenubutton')
-
-            save_button = tk.Button(self.locomotive_window, text=data.Textlines[44], command=save_locomotive)
-            save_button.pack(pady=(10,0))
+            #controllo se esistono dei buchi tra gli ID
+            if len(data.locomotives_data) == 0:
+                id = 1
+            else: 
+                id = data.locomotives_data[-1]['ID'] +1
             
-            #permette di avviare la funzione con il tasto invio
-            self.locomotive_window.bind('<Return>', lambda event: save_locomotive())
-            self.locomotive_window.bind("<Escape>", lambda event: utilities.on_close(self.locomotive_window,"creation"))
+            #controlli per vedere se il nome e il locoid sono gia stati usati all'interno del vettore
+            nome_unico = True
+            Locoid_unico = True
         
-    def remove_window(self,GUI):
+            j=0
+            if data.locomotives_data:
+                while nome_unico:
+                    nome_unico = name != data.locomotives_data[j]['Nome']
+                    unicita_nome = nome_unico
 
-        def remove_locomotive():
-            name    = name_entry.get()
-            id      = ID_entry.get()
-            control_var = False
-            # print(CalcolaIDtreno("Nome",name))
-            # 
-            #controllo sugli input
-            if name == "" or not id.isdigit() or int(id) < 1:
-                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
-                #open_locomotive_remove_window()
-            else:
-                id = int(id)
-                #controllo per vedere qual è l'ultimo ID
-                if id <= data.locomotives_data[-1]['ID']:
-                    #prende l'indice dell'elememento in cui trova l'ID
-                    index = utilities.CalcolaIDtreno('ID',id)
-
-                    #controllo su se trova l'indice e il nome equaivale a quello inserito 
-                    if index is not None and name == data.locomotives_data[index]['Nome']:
-                        #prima di rimuovere la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
-                        data.color_available.insert(0,data.locomotives_data[index]['Colore'])
-                        data.locomotives_data.remove(data.locomotives_data[index])
-                        
-                        if data.locomotives_data:
-                            #fa l'unbind del tasto - senza sort, funziona utilizzando index + 1 nel primo if e semplicemente index - 10 nel secondo 
-                            if data.locomotives_data[-1]['ID'] < 10:
-                                GUI.container.unbind("<KeyPress-{}>".format(data.locomotives_data[-1]['ID']))
-                            else:
-                                GUI.container.unbind("<Control-KeyPress-{}>".format(data.locomotives_data[-1]['ID'] - 10))
-                        else:
-                            GUI.container.unbind("<KeyPress-1>")
-
-                        #Riordina il vettore dopo che si elimina un tizio - Non so se va benissimo, comunque oltre al pezzo sopra funziona tutto lo stesso
-                        sequenza = list(range(1, len(data.locomotives_data )+1))
-                        j=0
-                        for item in data.locomotives_data:
-                            item['ID'] = sequenza[j]
-                            j += 1
-
-                        GUI.update_table()
-                    else: 
-                        utilities.show_error_box(data.Textlines[28],self.locomotive_window,GUI,"")
-
-                else:
-                    utilities.show_error_box(data.Textlines[29],self.locomotive_window,GUI,"")
-
-
-            #chiude la finestra 
-            if data.control_var_errore:
-                reset_inputs()
-                data.control_var_errore = False
-            else:
-                utilities.on_close(self.locomotive_window,"remove")
-
-
-        def reset_inputs():
-            name_entry.delete(0, tk.END)
-            ID_entry.delete(0, tk.END)
-            
-        # Creazione del form per la nuova locomotiva
-        name_label = tk.Label(self.locomotive_window, text=data.Textlines[80]+":")
-        name_label.pack()
-        name_entry = tk.Entry(self.locomotive_window)
-        name_entry.pack()
-
-        ID_label = tk.Label(self.locomotive_window, text=data.Textlines[83])
-        ID_label.pack()
-        ID_entry = tk.Entry(self.locomotive_window)
-        ID_entry.pack()
-
-        remove_button = tk.Button(self.locomotive_window, text=data.Textlines[48], command=remove_locomotive)
-        remove_button.pack()
-
-        #permette di avviare la funzione con il tasto invio
-        self.locomotive_window.bind('<Return>', lambda event: remove_locomotive())
-        self.locomotive_window.bind("<Escape>", lambda event: utilities.on_close(self.locomotive_window,"remove"))
-
-    def modify_window(self,GUI):
-        def modify_locomotive(): # Qui puoi gestire i dati inseriti nel form (es. salvataggio, stampa, etc.)
-            name        = name_entry.get()
-            id          = ID_entry.get()
-            loco_id     = loco_id_entry.get()
-            color       = var_color.get()
-
-            #Assegnazione di default
-            if loco_id == "":
-                loco_id = "404"
-
-            #controlli sugli input
-            if not loco_id.isdigit() or not id.isdigit() or int(loco_id)==0 or int(id)==0:
-                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
-
-            elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
-                utilities.show_error_box(data.Textlines[25],self.locomotive_window,GUI,"")
-
-            else:
-                id          = int(id)
-                nome_unico  = True
-                Locoid_unico = True
-
+                    j = j+1
+                    if j == len(data.locomotives_data):  
+                        nome_unico = False
                 j=0
+                #controllo per vedere se il nome è gia stato usato all'interno del vettore
+                while Locoid_unico:
+                    Locoid_unico = loco_id != data.locomotives_data[j]['LocoID']
+                    unicita_id = Locoid_unico
+                    j = j+1
+                    if j == len(data.locomotives_data):  
+                        Locoid_unico = False
+
+            else: 
+                unicita_nome    = True
+                unicita_id      = True
+
+            unicita = unicita_nome and unicita_id
+            #Controllo sulla dimensione del circuito
+            if unicita and controllo_loco:
+
+                                    #se il colore non è selezionato, ne verra selezionato uno casualmente tra quelli nel vettore che verra rimosso dal vettore in quanto selezionato
+                if color == "Default" :
+                    color = random.choice([colore for colore in data.color_available if colore != "Default" ])
+                data.color_available.remove(color)
+
+                #definizione delle locomotive
+                locomotive = {
+                    'ID': id,
+                    'Nome': name,
+                    'LocoID': loco_id,
+                    'Colore': color,
+                    'Velocita':0,
+                    'VelocitaM':0,
+                    'Direzione':1,
+                    'RFIDtag':"",
+                    'Percorso':"",
+                    'Ultimo_sensore':""
+                }
+
+                data.locomotives_data.append(locomotive)
+                GUI.update_table()
+                #Aggiornamento dei bottoni a seconda degli input
+                locomotive_names = [locomotive['Nome'] for locomotive in data.locomotives_data]
+                #setto la variabile relativa alla calibrazione dell RFID a False
+                data.calibred = False
+            else: 
+                utilities.show_error_box(data.Textlines[26]+ f" {data.max_loco} " + data.Textlines[27],locomotive_window,GUI,"")
+
+        if data.control_var_errore:
+            reset_inputs()
+            data.control_var_errore = False
+        else:
+            utilities.on_close(locomotive_window,"creation")
+
+    def reset_inputs():
+        name_entry.delete(0, tk.END)
+        loco_id_entry.delete(0, tk.END)
+        color_button.configure(text = "Default")
+
+    # Creazione del form per la nuova locomotiva
+    name_label = tk.Label(locomotive_window, text=data.Textlines[80]+":")
+    name_label.pack()
+    name_entry = tk.Entry(locomotive_window)
+    name_entry.pack()
+
+    loco_id_label = tk.Label(locomotive_window, text=data.Textlines[81])
+    loco_id_label.pack()
+    loco_id_entry = tk.Entry(locomotive_window)
+    loco_id_entry.pack()
+
+    color_label = tk.Label(locomotive_window, text=data.Textlines[82])
+    color_label.pack()
+
+#Il numero dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
+    var_color = tk.StringVar(value=data.color_available[-1])
+    color_button = ttk.Menubutton(locomotive_window,text="Default",width=19)
+    color = tk.Menu(color_button, tearoff=0)
+    color_button.pack()
+
+    color_button["menu"] = color
+    color.delete(0, "end")
+    for item in data.color_available:
+        color.add_radiobutton(
+            label=item,
+            value=item,
+            variable=var_color,
+            command=lambda:color_button.configure(text=var_color.get())
+            )
+    
+    style1 = ttk.Style()
+    style1.configure('UniqueCustom.TMenubutton',padding=(),background="white")  #background ="#add8e6" 
+    color_button.config(style='UniqueCustom.TMenubutton')
+
+    save_button = tk.Button(locomotive_window, text=data.Textlines[44], command=save_locomotive)
+    save_button.pack(pady=(10,0))
+    
+    #permette di avviare la funzione con il tasto invio
+    locomotive_window.bind('<Return>', lambda event: save_locomotive())
+    locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"creation"))
+    
+def remove_window(locomotive_window,GUI):
+
+    def remove_locomotive():
+        name    = name_entry.get()
+        id      = ID_entry.get()
+
+        #controllo sugli input
+        if name == "" or not id.isdigit() or int(id) < 1:
+            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+
+        else:
+            id = int(id)
+            #controllo per vedere qual è l'ultimo ID
+            if id <= data.locomotives_data[-1]['ID']:
                 #prende l'indice dell'elememento in cui trova l'ID
-                index_to_replace = utilities.CalcolaIDtreno('ID',id)
-                if index_to_replace is not None:
-                    #se gli do una stringa vuota mi mette in automatico il noemche corrisponde all'ID
-                    if name != '':
-                        #controllo per vedere se il nome è gia stato usato all'interno del vettore
-                        while nome_unico:
-                            nome_unico = name != data.locomotives_data[j]['Nome']
-                            unicita_nome = nome_unico
-                            j = j+1
-                            if j == len(data.locomotives_data):  
-                                nome_unico = False
+                index = utilities.CalcolaIDtreno('ID',id)
 
-                        if data.locomotives_data[index_to_replace]['Nome'] == name:
-                            unicita_nome = True
-                    else:
-                        name = data.locomotives_data[index_to_replace]['Nome']
-                        unicita_nome = True
-                    j=0
-                    if loco_id != "404":
-                        #controllo per vedere se il nome è gia stato usato all'interno del vettore
-                        while Locoid_unico:
-                            Locoid_unico = loco_id != data.locomotives_data[j]['LocoID']
-                            unicita_id = Locoid_unico
-                            j = j+1
-                            if j == len(data.locomotives_data):  
-                                Locoid_unico = False
-
-                        if data.locomotives_data[index_to_replace]['LocoID'] == loco_id:
-                            unicita_id = True
-                    else:
-                        loco_id = data.locomotives_data[index_to_replace]['LocoID']
-                        unicita_id = True
-
+                #controllo su se trova l'indice e il nome equaivale a quello inserito 
+                if index is not None and name == data.locomotives_data[index]['Nome']:
+                    #prima di rimuovere la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
+                    data.color_available.insert(0,data.locomotives_data[index]['Colore'])
+                    data.locomotives_data.remove(data.locomotives_data[index])
                     
-                    unicita = unicita_nome and unicita_id
-                    #controlla che ci sia stata corrispondenza per l'indice e che il nome non sia gia stato utilizzato
-                    if unicita:
-                        #Mantengo il tag assegnato prima, nel cso in cui sia stato assegnato
-                        RFIDtag = data.locomotives_data[index_to_replace]['RFIDtag']
-
-                        #Sostituisci il dizionario all'indice trovato con il nuovo dizionario
-                        if data.locomotives_data[index_to_replace]['LocoID'] != loco_id:
-                            if utilities.are_you_sure(data.Textlines[65]):
-                                if color != "Default":
-                                    #prima di sostituire la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
-                                    data.color_available.insert(0,data.locomotives_data[index_to_replace]['Colore'])
-                                    data.color_available.remove(color)
-                                else:
-                                    #assegno il colore che gia ha
-                                    color = data.locomotives_data[index_to_replace]['Colore']
-
-                                new_dict = {'ID':id,
-                                            'Nome':         name,
-                                            'LocoID':       loco_id, 
-                                            'Colore':       color, 
-                                            'Velocita':     0, 
-                                            'VelocitaM':    0, 
-                                            'Direzione':    1,
-                                            'RFIDtag':      RFIDtag
-                                            }
-                                if utilities.is_serial_port_available(data.serial_ports[0]):
-                                    comandi.change_id(data.locomotives_data[index_to_replace]['LocoID'],loco_id)
-                                # else: 
-                                #     utilities.show_error_box(data.Textlines[21] +f"{data.serial_ports[0]} "+data.Textlines[22],self.locomotive_window,GUI,"")
-
-                                data.locomotives_data[index_to_replace] = new_dict
+                    if data.locomotives_data:
+                        #fa l'unbind del tasto - senza sort, funziona utilizzando index + 1 nel primo if e semplicemente index - 10 nel secondo 
+                        if data.locomotives_data[-1]['ID'] < 10:
+                            GUI.container.unbind("<KeyPress-{}>".format(data.locomotives_data[-1]['ID']))
                         else:
+                            GUI.container.unbind("<Control-KeyPress-{}>".format(data.locomotives_data[-1]['ID'] - 10))
+                    else:
+                        GUI.container.unbind("<KeyPress-1>")
+
+                    #Riordina il vettore dopo che si elimina un tizio - Non so se va benissimo, comunque oltre al pezzo sopra funziona tutto lo stesso
+                    sequenza = list(range(1, len(data.locomotives_data )+1))
+                    j=0
+                    for item in data.locomotives_data:
+                        item['ID'] = sequenza[j]
+                        j += 1
+
+                    GUI.update_table()
+                else: 
+                    utilities.show_error_box(data.Textlines[28],locomotive_window,GUI,"")
+
+            else:
+                utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
+
+
+        #chiude la finestra 
+        if data.control_var_errore:
+            reset_inputs()
+            data.control_var_errore = False
+        else:
+            utilities.on_close(locomotive_window,"remove")
+
+
+    def reset_inputs():
+        name_entry.delete(0, tk.END)
+        ID_entry.delete(0, tk.END)
+        
+    # Creazione del form per la nuova locomotiva
+    name_label = tk.Label(locomotive_window, text=data.Textlines[80]+":")
+    name_label.pack()
+    name_entry = tk.Entry(locomotive_window)
+    name_entry.pack()
+
+    ID_label = tk.Label(locomotive_window, text=data.Textlines[83])
+    ID_label.pack()
+    ID_entry = tk.Entry(locomotive_window)
+    ID_entry.pack()
+
+    remove_button = tk.Button(locomotive_window, text=data.Textlines[48], command=remove_locomotive)
+    remove_button.pack()
+
+    #permette di avviare la funzione con il tasto invio
+    locomotive_window.bind('<Return>', lambda event: remove_locomotive())
+    locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"remove"))
+
+def modify_window(locomotive_window,GUI):
+    def modify_locomotive(): # Qui puoi gestire i dati inseriti nel form (es. salvataggio, stampa, etc.)
+        name        = name_entry.get()
+        id          = ID_entry.get()
+        loco_id     = loco_id_entry.get()
+        color       = var_color.get()
+
+        #Assegnazione di default
+        if loco_id == "":
+            loco_id = "404"
+
+        #controlli sugli input
+        if not loco_id.isdigit() or not id.isdigit() or int(loco_id)==0 or int(id)==0:
+            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+
+        elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
+            utilities.show_error_box(data.Textlines[25],locomotive_window,GUI,"")
+
+        else:
+            id          = int(id)
+            nome_unico  = True
+            Locoid_unico = True
+
+            j=0
+            #prende l'indice dell'elememento in cui trova l'ID
+            index_to_replace = utilities.CalcolaIDtreno('ID',id)
+            if index_to_replace is not None:
+                #se gli do una stringa vuota mi mette in automatico il noemche corrisponde all'ID
+                if name != '':
+                    #controllo per vedere se il nome è gia stato usato all'interno del vettore
+                    while nome_unico:
+                        nome_unico = name != data.locomotives_data[j]['Nome']
+                        unicita_nome = nome_unico
+                        j = j+1
+                        if j == len(data.locomotives_data):  
+                            nome_unico = False
+
+                    if data.locomotives_data[index_to_replace]['Nome'] == name:
+                        unicita_nome = True
+                else:
+                    name = data.locomotives_data[index_to_replace]['Nome']
+                    unicita_nome = True
+                j=0
+                if loco_id != "404":
+                    #controllo per vedere se il nome è gia stato usato all'interno del vettore
+                    while Locoid_unico:
+                        Locoid_unico = loco_id != data.locomotives_data[j]['LocoID']
+                        unicita_id = Locoid_unico
+                        j = j+1
+                        if j == len(data.locomotives_data):  
+                            Locoid_unico = False
+
+                    if data.locomotives_data[index_to_replace]['LocoID'] == loco_id:
+                        unicita_id = True
+                else:
+                    loco_id = data.locomotives_data[index_to_replace]['LocoID']
+                    unicita_id = True
+
+                
+                unicita = unicita_nome and unicita_id
+                #controlla che ci sia stata corrispondenza per l'indice e che il nome non sia gia stato utilizzato
+                if unicita:
+                    #Mantengo il tag assegnato prima, nel cso in cui sia stato assegnato
+                    RFIDtag = data.locomotives_data[index_to_replace]['RFIDtag']
+
+                    #Sostituisci il dizionario all'indice trovato con il nuovo dizionario
+                    if data.locomotives_data[index_to_replace]['LocoID'] != loco_id:
+                        if utilities.are_you_sure(data.Textlines[65]):
                             if color != "Default":
                                 #prima di sostituire la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
                                 data.color_available.insert(0,data.locomotives_data[index_to_replace]['Colore'])
@@ -359,491 +319,513 @@ class Windows:
                             else:
                                 #assegno il colore che gia ha
                                 color = data.locomotives_data[index_to_replace]['Colore']
-                            new_dict = {'ID':           id,
+
+                            new_dict = {'ID':id,
                                         'Nome':         name,
-                                        'LocoID':       loco_id,
+                                        'LocoID':       loco_id, 
                                         'Colore':       color, 
                                         'Velocita':     0, 
                                         'VelocitaM':    0, 
                                         'Direzione':    1,
                                         'RFIDtag':      RFIDtag
                                         }
+                            if utilities.is_serial_port_available(data.serial_ports[0]):
+                                comandi.change_id(data.locomotives_data[index_to_replace]['LocoID'],loco_id)
+                            # else: 
+                            #     utilities.show_error_box(data.Textlines[21] +f"{data.serial_ports[0]} "+data.Textlines[22],self.locomotive_window,GUI,"")
+
                             data.locomotives_data[index_to_replace] = new_dict
-                        GUI.update_table()
-                    
                     else:
-                        utilities.show_error_box(data.Textlines[30],self.locomotive_window,GUI,"")
-                        #open_locomotive_modify_window()
+                        if color != "Default":
+                            #prima di sostituire la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
+                            data.color_available.insert(0,data.locomotives_data[index_to_replace]['Colore'])
+                            data.color_available.remove(color)
+                        else:
+                            #assegno il colore che gia ha
+                            color = data.locomotives_data[index_to_replace]['Colore']
+                        new_dict = {'ID':           id,
+                                    'Nome':         name,
+                                    'LocoID':       loco_id,
+                                    'Colore':       color, 
+                                    'Velocita':     0, 
+                                    'VelocitaM':    0, 
+                                    'Direzione':    1,
+                                    'RFIDtag':      RFIDtag
+                                    }
+                        data.locomotives_data[index_to_replace] = new_dict
+                    GUI.update_table()
+                
                 else:
-                    utilities.show_error_box(data.Textlines[29],self.locomotive_window,GUI,"")
-
-            #chiude la finestra  
-            if data.control_var_errore:
-                reset_inputs()
-                data.control_var_errore = False
+                    utilities.show_error_box(data.Textlines[30],locomotive_window,GUI,"")
+                    #open_locomotive_modify_window()
             else:
-                utilities.on_close(self.locomotive_window,"modify")
+                utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
 
-        def reset_inputs():
-            name_entry.delete(0, tk.END)
-            ID_entry.delete(0, tk.END)
-            loco_id_entry.delete(0, tk.END)
-            color_button.configure(text = "Default")
-        
-        # Creazione del form per la nuova locomotiva
-        ID_label = tk.Label(self.locomotive_window, text=data.Textlines[84])
-        ID_label.pack()
-        ID_entry = tk.Entry(self.locomotive_window)
-        ID_entry.pack()
+        #chiude la finestra  
+        if data.control_var_errore:
+            reset_inputs()
+            data.control_var_errore = False
+        else:
+            utilities.on_close(locomotive_window,"modify")
 
-        name_label = tk.Label(self.locomotive_window, text=data.Textlines[85]+" "+ data.Textlines[80]+":")
-        name_label.pack()
-        name_entry = tk.Entry(self.locomotive_window)
-        name_entry.pack()
+    def reset_inputs():
+        name_entry.delete(0, tk.END)
+        ID_entry.delete(0, tk.END)
+        loco_id_entry.delete(0, tk.END)
+        color_button.configure(text = "Default")
+    
+    # Creazione del form per la nuova locomotiva
+    ID_label = tk.Label(locomotive_window, text=data.Textlines[84])
+    ID_label.pack()
+    ID_entry = tk.Entry(locomotive_window)
+    ID_entry.pack()
 
-        loco_id_label = tk.Label(self.locomotive_window, text=data.Textlines[85]+" "+data.Textlines[81])
-        loco_id_label.pack()
-        loco_id_entry = tk.Entry(self.locomotive_window)
-        loco_id_entry.pack()
+    name_label = tk.Label(locomotive_window, text=data.Textlines[85]+" "+ data.Textlines[80]+":")
+    name_label.pack()
+    name_entry = tk.Entry(locomotive_window)
+    name_entry.pack()
 
-        color_label = tk.Label(self.locomotive_window, text=data.Textlines[82])
-        color_label.pack()
+    loco_id_label = tk.Label(locomotive_window, text=data.Textlines[85]+" "+data.Textlines[81])
+    loco_id_label.pack()
+    loco_id_entry = tk.Entry(locomotive_window)
+    loco_id_entry.pack()
+
+    color_label = tk.Label(locomotive_window, text=data.Textlines[82])
+    color_label.pack()
 
 #Il numero dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-        var_color = tk.StringVar(value=data.color_available[-1])
-        color_button = ttk.Menubutton(self.locomotive_window,text="Default",width=19)
-        color = tk.Menu(color_button, tearoff=0)
-        color_button.pack()
+    var_color = tk.StringVar(value=data.color_available[-1])
+    color_button = ttk.Menubutton(locomotive_window,text="Default",width=19)
+    color = tk.Menu(color_button, tearoff=0)
+    color_button.pack()
 
-        color_button["menu"] = color
-        color.delete(0, "end")
-        for item in data.color_available:
-            color.add_radiobutton(
-                label=item,
-                value=item,
-                variable=var_color,
-                command=lambda:color_button.configure(text=var_color.get())
-                )
-        
-        # style1 = ttk.Style()
-        # style1.configure('UniqueCustom.TMenubutton', borderwidth=1, relief="solid", padding=()) 
-        color_button.config(style='UniqueCustom.TMenubutton')
-
-        modify_button = tk.Button(self.locomotive_window, text=data.Textlines[49], command=modify_locomotive)
-        modify_button.pack(pady=(10,0))
-
-        #permette di avviare la funzione con il tasto invio
-        self.locomotive_window.bind('<Return>', lambda event: modify_locomotive())
-        self.locomotive_window.bind("<Escape>", lambda event: utilities.on_close(self.locomotive_window,"modify"))
-
-    def control_window(self,GUI,locomotiva,id_controllo):
-
-        speed_label = tk.Label(self.locomotive_window, text=data.Textlines[86])
-        speed_label.pack(pady=10)
-
-        #creazione dello slider
-        speed_slider = tk.Scale(self.locomotive_window, from_=0, to=100, orient=tk.HORIZONTAL)
-        speed_slider.pack(pady=5)
-
-        #funzione per settare lo slider alla velocita salvata
-        speed_slider.set(data.locomotives_data[id_controllo]['Velocita'])
-        GUI.check_control_button_state()
+    color_button["menu"] = color
+    color.delete(0, "end")
+    for item in data.color_available:
+        color.add_radiobutton(
+            label=item,
+            value=item,
+            variable=var_color,
+            command=lambda:color_button.configure(text=var_color.get())
+            )
     
-        root_control = tk.Frame(self.locomotive_window)
-        root_control.pack(pady=5)
-        #root_control.configure(bg="#c0c0c0")
+    # style1 = ttk.Style()
+    # style1.configure('UniqueCustom.TMenubutton', borderwidth=1, relief="solid", padding=()) 
+    color_button.config(style='UniqueCustom.TMenubutton')
 
-        #funzione per il throttle delle locomotive
-        def throttle_command(direzione):
-            print("QUI")
-            data.var_velocita_tastiera = 0
-            #prendere gli input da mandare al comando
-            velocita        = speed_slider.get()
-            id_loco         = utilities.CalcolaIDtreno('Nome',locomotiva)
-            memoria         = data.locomotives_data[id_loco]['ID']
-            ID              = data.locomotives_data[id_loco]['LocoID']
-            #Impostare la velocita in memoria e la direzione
-            data.locomotives_data[id_loco]['Velocita']  = velocita
-            data.locomotives_data[id_loco]['Direzione'] = direzione
-            #moltiplicazione per la costante e approssimazione
-            velocita_effettiva = velocita*data.K_velocita
-            if utilities.is_serial_port_available(data.serial_ports[0]):
-                #mando il comando di throttle
-                comandi.throttle(memoria,ID,round(velocita_effettiva),direzione)
-            else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],self.locomotive_window,GUI,"main")
+    modify_button = tk.Button(locomotive_window, text=data.Textlines[49], command=modify_locomotive)
+    modify_button.pack(pady=(10,0))
 
-        #funzione per arrestare la locomotiva - setta lo slider a 0
-        def stop_command():
-            #prendere gli input da mandare al comando
-            id_loco     = utilities.CalcolaIDtreno('Nome',locomotiva)
-            memoria     = data.locomotives_data[id_loco]['ID']
-            ID          = data.locomotives_data[id_loco]['LocoID']
-            #Impostare la velocita in memoria e la direzione
-            data.locomotives_data[id_loco]['VelocitaM']  = data.locomotives_data[id_loco]['Velocita']
-            data.locomotives_data[id_loco]['Velocita']   = 0
-            if utilities.is_serial_port_available(data.serial_ports[0]):
-                comandi.STOP(memoria,ID)
-                speed_slider.set(0)
-            else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],self.locomotive_window,GUI,"main")
+    #permette di avviare la funzione con il tasto invio
+    locomotive_window.bind('<Return>', lambda event: modify_locomotive())
+    locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"modify"))
+
+def control_window(locomotive_window,GUI,locomotiva,id_controllo):
+
+    speed_label = tk.Label(locomotive_window, text=data.Textlines[86])
+    speed_label.pack(pady=10)
+
+    #creazione dello slider
+    speed_slider = tk.Scale(locomotive_window, from_=0, to=100, orient=tk.HORIZONTAL)
+    speed_slider.pack(pady=5)
+
+    #funzione per settare lo slider alla velocita salvata
+    speed_slider.set(data.locomotives_data[id_controllo]['Velocita'])
+    GUI.check_control_button_state()
+
+    root_control = tk.Frame(locomotive_window)
+    root_control.pack(pady=5)
+    #root_control.configure(bg="#c0c0c0")
+
+    #funzione per il throttle delle locomotive
+    def throttle_command(direzione):
+        print("QUI")
+        data.var_velocita_tastiera = 0
+        #prendere gli input da mandare al comando
+        velocita        = speed_slider.get()
+        id_loco         = utilities.CalcolaIDtreno('Nome',locomotiva)
+        memoria         = data.locomotives_data[id_loco]['ID']
+        ID              = data.locomotives_data[id_loco]['LocoID']
+        #Impostare la velocita in memoria e la direzione
+        data.locomotives_data[id_loco]['Velocita']  = velocita
+        data.locomotives_data[id_loco]['Direzione'] = direzione
+        #moltiplicazione per la costante e approssimazione
+        velocita_effettiva = velocita*data.K_velocita
+        if utilities.is_serial_port_available(data.serial_ports[0]):
+            #mando il comando di throttle
+            comandi.throttle(memoria,ID,round(velocita_effettiva),direzione)
+        else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],locomotive_window,GUI,"main")
+
+    #funzione per arrestare la locomotiva - setta lo slider a 0
+    def stop_command():
+        #prendere gli input da mandare al comando
+        id_loco     = utilities.CalcolaIDtreno('Nome',locomotiva)
+        memoria     = data.locomotives_data[id_loco]['ID']
+        ID          = data.locomotives_data[id_loco]['LocoID']
+        #Impostare la velocita in memoria e la direzione
+        data.locomotives_data[id_loco]['VelocitaM']  = data.locomotives_data[id_loco]['Velocita']
+        data.locomotives_data[id_loco]['Velocita']   = 0
+        if utilities.is_serial_port_available(data.serial_ports[0]):
+            comandi.STOP(memoria,ID)
+            speed_slider.set(0)
+        else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],locomotive_window,GUI,"main")
+    
+    #permette di selezionare il numero
+    def add_speed(numero):
+        if data.var_velocita_tastiera == 0:
+            #Intervallo di massimo 1 secondo
+            locomotive_window.after(1000, set_slider)
         
-        #permette di selezionare il numero
-        def add_speed(numero):
-            if data.var_velocita_tastiera == 0:
-                #Intervallo di massimo 1 secondo
-                self.locomotive_window.after(1000, set_slider)
-            
-            var = str(data.var_velocita_tastiera) + str(numero)
-            if int(var) > 100: var = 100
-            data.var_velocita_tastiera = int(var)
-        
-        #Imposta lo slider alla velocita inserita da tastiera e azzera la var di tastiera
-        def set_slider():
-            speed_slider.set(data.var_velocita_tastiera)
-            data.var_velocita_tastiera = 0
+        var = str(data.var_velocita_tastiera) + str(numero)
+        if int(var) > 100: var = 100
+        data.var_velocita_tastiera = int(var)
+    
+    #Imposta lo slider alla velocita inserita da tastiera e azzera la var di tastiera
+    def set_slider():
+        speed_slider.set(data.var_velocita_tastiera)
+        data.var_velocita_tastiera = 0
 
-        #creazione del form
-        direction_label = tk.Label(root_control, text=data.Textlines[87])
-        direction_label.pack(side=tk.TOP, pady=5)
+    #creazione del form
+    direction_label = tk.Label(root_control, text=data.Textlines[87])
+    direction_label.pack(side=tk.TOP, pady=5)
 
-        forward_button = tk.Button(root_control, text=data.Textlines[45],command=lambda:throttle_command(1))
-        forward_button.pack(side=tk.LEFT, padx=5,pady=5)
+    forward_button = tk.Button(root_control, text=data.Textlines[45],command=lambda:throttle_command(1))
+    forward_button.pack(side=tk.LEFT, padx=5,pady=5)
 
-        backward_button = tk.Button(root_control, text=data.Textlines[46],command=lambda:throttle_command(0))
-        backward_button.pack(side=tk.LEFT, padx=5,pady=5)
+    backward_button = tk.Button(root_control, text=data.Textlines[46],command=lambda:throttle_command(0))
+    backward_button.pack(side=tk.LEFT, padx=5,pady=5)
 
-        stop_button = tk.Button(self.locomotive_window, bg="#f08080", text=data.Textlines[47],command=stop_command)
-        stop_button.pack(pady=5)
+    stop_button = tk.Button(locomotive_window, bg="#f08080", text=data.Textlines[47],command=stop_command)
+    stop_button.pack(pady=5)
 
-        self.locomotive_window.bind('<Up>',     lambda event: throttle_command(1))
-        self.locomotive_window.bind('<Down>',   lambda event: throttle_command(0))
-        self.locomotive_window.bind('<Return>', lambda event: stop_command())
-        self.locomotive_window.bind("<Escape>", lambda event: utilities.on_close(self.locomotive_window,f"{id_controllo}"))
-        #Creazione dei tasti da 0 a 9 per i numeri
-        for i in range(10):
-            self.locomotive_window.bind('<KeyPress-{}>'.format(i), lambda event, i=i: add_speed(i))
-        
+    locomotive_window.bind('<Up>',     lambda event: throttle_command(1))
+    locomotive_window.bind('<Down>',   lambda event: throttle_command(0))
+    locomotive_window.bind('<Return>', lambda event: stop_command())
+    locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,f"{id_controllo}"))
+    #Creazione dei tasti da 0 a 9 per i numeri
+    for i in range(10):
+        locomotive_window.bind('<KeyPress-{}>'.format(i), lambda event, i=i: add_speed(i))
+    
 
-    def settings_window(self,GUI):
+def settings_window(locomotive_window,GUI):
 
-        def active_settings():
-            centralina    = var_port0.get()
-            rfid          = var_port1.get()
-            max_loco      = max_loco_entry.get()
-            SO            = var_SO.get()
-            port0_enabled = port0_checkbox_var.get()
-            port1_enabled = port1_checkbox_var.get()
+    def active_settings():
+        centralina    = var_port0.get()
+        rfid          = var_port1.get()
+        max_loco      = max_loco_entry.get()
+        SO            = var_SO.get()
+        port0_enabled = port0_checkbox_var.get()
+        port1_enabled = port1_checkbox_var.get()
 
-            print(port1_enabled)
-            #Assegnazione di default
-            if max_loco == '' : max_loco = str(data.max_loco)
+        print(port1_enabled)
+        #Assegnazione di default
+        if max_loco == '' : max_loco = str(data.max_loco)
 
-            #Distruttivo ma non so come scriverlo in meno righe
-            for item in data.SO:
-                data.SO[item] = False
-            data.SO[SO] = True
+        #Distruttivo ma non so come scriverlo in meno righe
+        for item in data.SO:
+            data.SO[item] = False
+        data.SO[SO] = True
 
-            #controlli sugli input, non so bene che sistemare
-            if  not max_loco.isdigit() or rfid == centralina:
-                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
-            elif int(max_loco) > data.max_loco_standard:
-                utilities.show_error_box(data.Textlines[31] + "{} locomotive".format(data.max_loco_standard),self.locomotive_window,GUI,"")
-            elif not utilities.port_exist(centralina) and port0_enabled:
-                utilities.show_error_box(data.Textlines[32],self.locomotive_window,GUI,"")
-            elif not utilities.port_exist(rfid) and port1_enabled:
-                utilities.show_error_box(data.Textlines[33],self.locomotive_window,GUI,"")
-            else:
-                centralina = int(centralina)
-                rfid = int(rfid)
-                max_loco = int(max_loco)
+        #controlli sugli input, non so bene che sistemare
+        if  not max_loco.isdigit() or rfid == centralina:
+            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+        elif int(max_loco) > data.max_loco_standard:
+            utilities.show_error_box(data.Textlines[31] + "{} locomotive".format(data.max_loco_standard),locomotive_window,GUI,"")
+        elif not utilities.port_exist(centralina) and port0_enabled:
+            utilities.show_error_box(data.Textlines[32],locomotive_window,GUI,"")
+        elif not utilities.port_exist(rfid) and port1_enabled:
+            utilities.show_error_box(data.Textlines[33],locomotive_window,GUI,"")
+        else:
+            centralina = int(centralina)
+            rfid = int(rfid)
+            max_loco = int(max_loco)
 
-                print("DENTRO")
-                if max_loco != data.max_loco:
-                    if not data.locomotives_data:
+            print("DENTRO")
+            if max_loco != data.max_loco:
+                if not data.locomotives_data:
+                    data.max_loco = max_loco
+                else:
+                    if utilities.are_you_sure("Per cambiare le impostazioni relative alle locomotive massime, il database DEVE essere VUOTO. \nSe si continua verrà svuotata la tabella.\n"):
+                        data.locomotives_data = []
                         data.max_loco = max_loco
-                    else:
-                        if utilities.are_you_sure("Per cambiare le impostazioni relative alle locomotive massime, il database DEVE essere VUOTO. \nSe si continua verrà svuotata la tabella.\n"):
-                            data.locomotives_data = []
-                            data.max_loco = max_loco
-                            GUI.update_table()
+                        GUI.update_table()
 
 
-                # print(database.serial_port_info)
-                # print(data.serial_port_info[data.serial_ports[0]])
-                if centralina != data.serial_ports[0] or rfid != data.serial_ports[1]:
-                    # Creare un dizionario temporaneo con le chiavi modificate
-                    temp_dict = {
-                        centralina: data.serial_port_info.pop(data.serial_ports[0]),
-                        rfid: data.serial_port_info.pop(data.serial_ports[1])
-                    }
+            # print(database.serial_port_info)
+            # print(data.serial_port_info[data.serial_ports[0]])
+            if centralina != data.serial_ports[0] or rfid != data.serial_ports[1]:
+                # Creare un dizionario temporaneo con le chiavi modificate
+                temp_dict = {
+                    centralina: data.serial_port_info.pop(data.serial_ports[0]),
+                    rfid: data.serial_port_info.pop(data.serial_ports[1])
+                }
 
-                    # Aggiornare il dizionario originale con le nuove chiavi
-                    data.serial_port_info.update(temp_dict)
-                    
-                    # print(database.serial_port_info)
-                    data.serial_ports[0] = centralina
-                    data.serial_ports[1] = rfid
-
-                    print(data.serial_ports)
-                    print(data.SO)
-                    GUI.serial_port = data.serial_ports[0]
-                #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
-                data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
-                data.serial_port_info[data.serial_ports[1]][1]      = port1_enabled
+                # Aggiornare il dizionario originale con le nuove chiavi
+                data.serial_port_info.update(temp_dict)
                 
-            if data.control_var_errore:
-                max_loco_entry.delete(0, tk.END)
-                data.control_var_errore = False
-            else:
-                utilities.on_close(self.locomotive_window,"settings")
+                # print(database.serial_port_info)
+                data.serial_ports[0] = centralina
+                data.serial_ports[1] = rfid
 
-        #Serve a non permettere di selezionare il secondo checkbox se il primo non è selezionato
-        def appoint_selection(checkbox):
-            if checkbox == 0:
-                if port0_checkbox_var.get():
-                    checkbox1.config(state='normal')
-                else:
-                    checkbox1.config(state='disabled')
-            else:
-                if port1_checkbox_var.get():
-                    checkbox0.config(state='disabled')
-                else:
-                    checkbox0.config(state='normal')
-
-        # def open_dropdown_menu(menu_button):
-        #     menu = port0_button["menu"]
-        #     if isinstance(menu, tk.Menu):
-        #         menu.post(menu_button.winfo_rootx(), menu_button.winfo_rooty() + menu_button.winfo_height())
-        #     else:
-        #         print("Menu non disponibile per il Menubutton:", menu_button)
-        
-        ports_available = []
-        for i in range(10):
-            if utilities.port_exist(i):
-                ports_available.append(i)
-            i+=1
-
-        style = ttk.Style()
-        style.configure('UniqueCustom.TMenubutton',padding=(),background="white") 
-
-        centralina_label = tk.Label(self.locomotive_window, text=data.Textlines[88])
-        centralina_label.grid(row=0, column=0, sticky=tk.W, padx=5)
-
-    #Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-        centralina_port = data.serial_ports[0]
-        var_port0 = tk.StringVar(value=centralina_port)
-        port0_button = ttk.Menubutton(self.locomotive_window, text=centralina_port, width=8)
-        port0 = tk.Menu(port0_button, tearoff=0)
-        port0_button.grid(row=0, column=1, padx=5, pady=5, sticky=tk.E)
-        port0_button["menu"] = port0
-        port0.delete(0, "end")
-        for item in ports_available:
-            port0.add_radiobutton(
-                label=item,
-                value=item,
-                variable=var_port0,
-                command=lambda:port0_button.configure(text=var_port0.get())
-                )
-        
-        port0_button.config(style='UniqueCustom.TMenubutton')
-
-        port0_checkbox_var = tk.BooleanVar()
-        port0_checkbox_var.set(data.serial_port_info[data.serial_ports[0]][1])
-        # Creazione della casella di controllo
-        checkbox0 = tk.Checkbutton(self.locomotive_window,text=data.Textlines[57], variable=port0_checkbox_var, command = lambda: appoint_selection(0))
-        checkbox0.grid(row=0, column=2, padx=5, sticky=tk.W)
-        # checkbox0.select()
-
-        RFID_label = tk.Label(self.locomotive_window, text=data.Textlines[89])
-        RFID_label.grid(row=1, column=0, sticky=tk.W, padx=5)
-    
-
-    #Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-        RFID_port = data.serial_ports[1]
-        var_port1 = tk.StringVar(value=RFID_port)
-        port1_button = ttk.Menubutton(self.locomotive_window, text=RFID_port, width=8)
-        port1 = tk.Menu(port0_button, tearoff=0)
-        port1_button.grid(row=1, column=1, padx=5, pady=5, sticky=tk.E)
-        port1_button["menu"] = port1
-        port1.delete(0, "end")
-        for item in ports_available:
-            port1.add_radiobutton(
-                label=item,
-                value=item,
-                variable=var_port1,
-                command=lambda:port1_button.configure(text=var_port1.get())
-                )
-        
-        port1_button.config(style='UniqueCustom.TMenubutton')
-
-        port1_checkbox_var = tk.BooleanVar()
-        port1_checkbox_var.set(data.serial_port_info[data.serial_ports[1]][1])
-        print(data.serial_port_info[data.serial_ports[1]][1])
-        # Creazione della casella di controllo
-        checkbox1 = tk.Checkbutton(self.locomotive_window,text=data.Textlines[57], variable=port1_checkbox_var, command = lambda: appoint_selection(1))
-        checkbox1.grid(row=1, column=2, padx=5, sticky=tk.W)
-        
-
-        # Terza coppia label-entry
-        max_loco_label = tk.Label(self.locomotive_window, text=data.Textlines[90])
-        max_loco_label.grid(row=2, column=0, sticky=tk.W, padx=5)  # Posiziona a sinistra
-        max_loco_entry = tk.Entry(self.locomotive_window,width=10)
-        max_loco_entry.grid(row=2, column=1, padx=5, pady=5, sticky=tk.E)  # Posiziona a destra
-
-        SO_label = tk.Label(self.locomotive_window, text=data.Textlines[91])
-        SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
-        
-    #Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-        var_SO = tk.StringVar(value='windows')
-        SO_button = ttk.Menubutton(self.locomotive_window,text="windows",width=8)
-        SO = tk.Menu(port0_button, tearoff=0)
-        SO_button.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
-        SO_button["menu"] = SO
-        SO.delete(0, "end")
-
-        for item in data.SO.keys():
-            SO.add_radiobutton(
-                label=item,
-                value=item,
-                variable=var_SO,
-                command=lambda:SO_button.configure(text=var_SO.get())
-                )
-        
-        port1_button.config(style='UniqueCustom.TMenubutton')
-
-        settings_button = tk.Button(self.locomotive_window, text=data.Textlines[50], width=5,
-                                    command=active_settings)
-        settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
-    
-
-        self.locomotive_window.bind('<Return>', lambda event: active_settings())
-        self.locomotive_window.bind("<Escape>", lambda event: utilities.on_close(self.locomotive_window,"settings"))
-
-        # self.locomotive_window.bind('<Control-l>', lambda event: open_dropdown_menu(port0))
-        # self.locomotive_window.bind('<Control-r>', lambda event: open_dropdown_menu(port1))
-        # self.locomotive_window.bind('<Control-s>', lambda event: open_dropdown_menu(SO))
-
-    def RFID_window(self,algo,circuit_window,GUI):
-        
-        def show_page_info():
-            if self.info_window is None or not self.info_window.winfo_exists():
-                info_text = data.Textlines[66]+"\n"+ data.Textlines[67]+"\n"+data.Textlines[68] + "\n" +data.Textlines[69]
-                self.info_window = tk.Toplevel(self.locomotive_window)
-                self.info_window.title(data.Textlines[16])
-                self.info_window.geometry("270x150")
-                self.info_window.transient(self.locomotive_window)
-                #Seleziona la pagina appena creata
-                self.info_window.focus_set()
-
-                self.info_window.protocol("WM_DELETE_WINDOW", lambda: self.info_window.destroy())
-                self.info_window.bind('<Return>', lambda event: self.info_window.destroy())
-                self.info_window.bind("<Escape>", lambda event: self.info_window.destroy())
-
-                label = tk.Label(self.info_window, text=info_text)
-                label.pack(padx=5, pady=10)
-
-                close_button = tk.Button(self.info_window, text=data.Textlines[43], command=self.info_window.destroy)
-                close_button.pack(pady=10)
-            else:
-                utilities.show_error_box(data.Textlines[20],self.locomotive_window,GUI,"main")
-    #Funzione che fa il refresh della tabella
-        def refresh():
-            utilities.update_circuit_table(columns,tree)
-     
-        def enable_circuitWindow():
-            circuit_window.attributes("-alpha", 1)
-            circuit_window.grab_set()
-
-        def open_locomotive_creation_window():
-            locomotive_window = GUI.open_locomotive_window("creation", data.Textlines[12], "250x170",self.locomotive_window)
-            if locomotive_window:
-                locomotive_window.creation_window(GUI)
-
-        def active_settings():
-
-            id      = RFID_entry.get()
-
-            #controllo sugli input
-            if not id.isdigit() or int(id) < 1 :
-                utilities.show_error_box(data.Textlines[24],self.locomotive_window,GUI,"")
-            else:
-                # if not database.calibred:
-                    #Controllo che locmotives data non sia vuoto
-                    if data.locomotives_data:
-                        index_to_replace = utilities.CalcolaIDtreno('ID',int(id))
-                        #Controllo che l'elemento inserito esista
-                        if index_to_replace is not None:
-                            #controllare se tutti i sensori sono calibrati quando si invia
-                            if not data.sensor_response[0] == "_/_":
-                                message = data.sensor_response[0] 
-                                message = message.split("/")
-
-                                LocotagRFID = utilities.CalcolaIDtreno('RFIDtag', message[1])
-                                #Controllo che il messaggio non sia gia presente all'interno di quella locomotiva
-                                if LocotagRFID is None:
-                                    data.calibred = True
-                                    algo.calibred_RFID(index_to_replace,message[1])
-                                    print("QUI")
-                                    data.sensor_response[0] = "_/_"
-                                    refresh()
-                                else:
-                                    utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",self.locomotive_window,GUI,"")
-                            else:
-                                utilities.show_info(data.Textlines[70]+"\n"+ data.Textlines[71]+"\n"+data.Textlines[72])
-                        else:
-                            utilities.show_error_box(data.Textlines[29],self.locomotive_window,GUI,"")
-                    else:
-                        #Potrei mettere l'altra finestra
-                        utilities.show_error_box(data.Textlines[35],self.locomotive_window,GUI,"")
+                print(data.serial_ports)
+                print(data.SO)
+                GUI.serial_port = data.serial_ports[0]
+            #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
+            data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
+            data.serial_port_info[data.serial_ports[1]][1]      = port1_enabled
             
-            if data.control_var_errore:
-                RFID_entry.delete(0, tk.END)
-                data.control_var_errore = False
-            # else:
-            #     utilities.on_close(self.locomotive_window,"RFID")
+        if data.control_var_errore:
+            max_loco_entry.delete(0, tk.END)
+            data.control_var_errore = False
+        else:
+            utilities.on_close(locomotive_window,"settings")
 
-        self.info_window = None
+    #Serve a non permettere di selezionare il secondo checkbox se il primo non è selezionato
+    def appoint_selection(checkbox):
+        if checkbox == 0:
+            if port0_checkbox_var.get():
+                checkbox1.config(state='normal')
+            else:
+                checkbox1.config(state='disabled')
+        else:
+            if port1_checkbox_var.get():
+                checkbox0.config(state='disabled')
+            else:
+                checkbox0.config(state='normal')
 
-        self.image_info = utilities.process_image(GUI.image_info_path, 'resize', 35, 25)
-        info_button = tk.Button(self.locomotive_window, image= self.image_info, borderwidth=0, 
-                                command=show_page_info)
-        info_button.grid(row=0, column=0, pady=(10, 0), padx=(7,0),sticky=tk.W)
+    # def open_dropdown_menu(menu_button):
+    #     menu = port0_button["menu"]
+    #     if isinstance(menu, tk.Menu):
+    #         menu.post(menu_button.winfo_rootx(), menu_button.winfo_rooty() + menu_button.winfo_height())
+    #     else:
+    #         print("Menu non disponibile per il Menubutton:", menu_button)
+    
+    ports_available = []
+    for i in range(10):
+        if utilities.port_exist(i):
+            ports_available.append(i)
+        i+=1
 
-        image_refresh_path = utilities.asset_path('refresh','png')
-        self.image_refresh = utilities.process_image(image_refresh_path, 'resize', 25, 25)
-        refresh_button = tk.Button(self.locomotive_window,  image= self.image_refresh, borderwidth=0,
-                                    command=refresh)
-        refresh_button.grid(row=0, column=0, pady=(10, 0), padx=(0,67), sticky=tk.E)
+    style = ttk.Style()
+    style.configure('UniqueCustom.TMenubutton',padding=(),background="white") 
+
+    centralina_label = tk.Label(locomotive_window, text=data.Textlines[88])
+    centralina_label.grid(row=0, column=0, sticky=tk.W, padx=5)
+
+#Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
+    centralina_port = data.serial_ports[0]
+    var_port0 = tk.StringVar(value=centralina_port)
+    port0_button = ttk.Menubutton(locomotive_window, text=centralina_port, width=8)
+    port0 = tk.Menu(port0_button, tearoff=0)
+    port0_button.grid(row=0, column=1, padx=5, pady=5, sticky=tk.E)
+    port0_button["menu"] = port0
+    port0.delete(0, "end")
+    for item in ports_available:
+        port0.add_radiobutton(
+            label=item,
+            value=item,
+            variable=var_port0,
+            command=lambda:port0_button.configure(text=var_port0.get())
+            )
+    
+    port0_button.config(style='UniqueCustom.TMenubutton')
+
+    port0_checkbox_var = tk.BooleanVar()
+    port0_checkbox_var.set(data.serial_port_info[data.serial_ports[0]][1])
+    # Creazione della casella di controllo
+    checkbox0 = tk.Checkbutton(locomotive_window,text=data.Textlines[57], variable=port0_checkbox_var, command = lambda: appoint_selection(0))
+    checkbox0.grid(row=0, column=2, padx=5, sticky=tk.W)
+    # checkbox0.select()
+
+    RFID_label = tk.Label(locomotive_window, text=data.Textlines[89])
+    RFID_label.grid(row=1, column=0, sticky=tk.W, padx=5)
+
+
+#Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
+    RFID_port = data.serial_ports[1]
+    var_port1 = tk.StringVar(value=RFID_port)
+    port1_button = ttk.Menubutton(locomotive_window, text=RFID_port, width=8)
+    port1 = tk.Menu(port0_button, tearoff=0)
+    port1_button.grid(row=1, column=1, padx=5, pady=5, sticky=tk.E)
+    port1_button["menu"] = port1
+    port1.delete(0, "end")
+    for item in ports_available:
+        port1.add_radiobutton(
+            label=item,
+            value=item,
+            variable=var_port1,
+            command=lambda:port1_button.configure(text=var_port1.get())
+            )
+    
+    port1_button.config(style='UniqueCustom.TMenubutton')
+
+    port1_checkbox_var = tk.BooleanVar()
+    port1_checkbox_var.set(data.serial_port_info[data.serial_ports[1]][1])
+    print(data.serial_port_info[data.serial_ports[1]][1])
+    # Creazione della casella di controllo
+    checkbox1 = tk.Checkbutton(locomotive_window,text=data.Textlines[57], variable=port1_checkbox_var, command = lambda: appoint_selection(1))
+    checkbox1.grid(row=1, column=2, padx=5, sticky=tk.W)
+    
+
+    # Terza coppia label-entry
+    max_loco_label = tk.Label(locomotive_window, text=data.Textlines[90])
+    max_loco_label.grid(row=2, column=0, sticky=tk.W, padx=5)  # Posiziona a sinistra
+    max_loco_entry = tk.Entry(locomotive_window,width=10)
+    max_loco_entry.grid(row=2, column=1, padx=5, pady=5, sticky=tk.E)  # Posiziona a destra
+
+    SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
+    SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
+    
+#Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
+    var_SO = tk.StringVar(value='windows')
+    SO_button = ttk.Menubutton(locomotive_window,text="windows",width=8)
+    SO = tk.Menu(port0_button, tearoff=0)
+    SO_button.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
+    SO_button["menu"] = SO
+    SO.delete(0, "end")
+
+    for item in data.SO.keys():
+        SO.add_radiobutton(
+            label=item,
+            value=item,
+            variable=var_SO,
+            command=lambda:SO_button.configure(text=var_SO.get())
+            )
+    
+    port1_button.config(style='UniqueCustom.TMenubutton')
+
+    settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
+                                command=active_settings)
+    settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
+
+
+    locomotive_window.bind('<Return>', lambda event: active_settings())
+    locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
+
+    # self.locomotive_window.bind('<Control-l>', lambda event: open_dropdown_menu(port0))
+    # self.locomotive_window.bind('<Control-r>', lambda event: open_dropdown_menu(port1))
+    # self.locomotive_window.bind('<Control-s>', lambda event: open_dropdown_menu(SO))
+
+def RFID_window(locomotive_window,algo,circuit_window,GUI):
+    
+    locomotive_window.info_window = None
+
+    def show_page_info():
+
+        locomotive_window1 = GUI.open_locomotive_window("info", data.Textlines[16], "275x150",locomotive_window)
+        if locomotive_window1:
+            info_text = data.Textlines[66]+"\n"+ data.Textlines[67]+"\n"+data.Textlines[68] + "\n" +data.Textlines[69]
+
+            locomotive_window1.transient(locomotive_window)
+
+            locomotive_window1.protocol("WM_DELETE_WINDOW", lambda: locomotive_window1.destroy())
+            locomotive_window1.bind('<Return>', lambda event: locomotive_window1.destroy())
+            locomotive_window1.bind("<Escape>", lambda event: locomotive_window1.destroy())
+
+            label = tk.Label(locomotive_window1, text=info_text)
+            label.pack(padx=5, pady=10)
+
+            close_button = tk.Button(locomotive_window1, text=data.Textlines[43], command=locomotive_window1.destroy)
+            close_button.pack(pady=10)
+
+#Funzione che fa il refresh della tabella
+    def refresh():
+        utilities.update_circuit_table(columns,tree)
+    
+    def enable_circuitWindow():
+        circuit_window.attributes("-alpha", 1)
+        circuit_window.grab_set()
+
+    def open_locomotive_creation_window():
+        locomotive_window1 = GUI.open_locomotive_window("creation", data.Textlines[12], "250x170",locomotive_window)
+        if locomotive_window1:
+            creation_window(locomotive_window1,GUI)
+
+    def active_settings():
+
+        id      = RFID_entry.get()
+
+        #controllo sugli input
+        if not id.isdigit() or int(id) < 1 :
+            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+        else:
+            # if not database.calibred:
+                #Controllo che locmotives data non sia vuoto
+                if data.locomotives_data:
+                    index_to_replace = utilities.CalcolaIDtreno('ID',int(id))
+                    #Controllo che l'elemento inserito esista
+                    if index_to_replace is not None:
+                        #controllare se tutti i sensori sono calibrati quando si invia
+                        if not data.sensor_response[0] == "_/_":
+                            message = data.sensor_response[0] 
+                            message = message.split("/")
+
+                            LocotagRFID = utilities.CalcolaIDtreno('RFIDtag', message[1])
+                            #Controllo che il messaggio non sia gia presente all'interno di quella locomotiva
+                            if LocotagRFID is None:
+                                data.calibred = True
+                                algo.calibred_RFID(index_to_replace,message[1])
+                                print("QUI")
+                                data.sensor_response[0] = "_/_"
+                                refresh()
+                            else:
+                                utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",locomotive_window,GUI,"")
+                        else:
+                            utilities.show_info(data.Textlines[70]+"\n"+ data.Textlines[71]+"\n"+data.Textlines[72])
+                    else:
+                        utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
+                else:
+                    #Potrei mettere l'altra finestra
+                    utilities.show_error_box(data.Textlines[35],locomotive_window,GUI,"")
         
-        ADD_button = tk.Button(self.locomotive_window, text=data.Textlines[52], width=7,
-                                    command=open_locomotive_creation_window)
-        ADD_button.grid(row=0, column=0, pady=(10, 0), padx=(0,7),sticky=tk.E)
+        if data.control_var_errore:
+            RFID_entry.delete(0, tk.END)
+            data.control_var_errore = False
+        # else:
+        #     utilities.on_close(self.locomotive_window,"RFID")
 
-        RFID_label = tk.Label(self.locomotive_window, text=data.Textlines[92])
-        RFID_label.grid(row=2, column=0, sticky=tk.W,padx=5)  # Posiziona a sinistra
-        RFID_entry = tk.Entry(self.locomotive_window, width=5)
-        RFID_entry.grid(row=2, column=0, pady=5, sticky=tk.E)  # Posiziona a destra
+    
+    locomotive_window.image_info = utilities.process_image(GUI.image_info_path, 'resize', 35, 25)
+    info_button = tk.Button(locomotive_window, image= locomotive_window.image_info, borderwidth=0, 
+                            command=show_page_info)
+    info_button.grid(row=0, column=0, pady=(10, 0), padx=(7,0),sticky=tk.W)
 
-        columns = (data.Textlines[96], data.Textlines[95], data.Textlines[80])
-        tree = ttk.Treeview(self.locomotive_window, columns=columns, show='headings')
-        refresh()
+    image_refresh_path = utilities.asset_path('refresh','png')
+    locomotive_window.image_refresh = utilities.process_image(image_refresh_path, 'resize', 25, 25)
+    refresh_button = tk.Button(locomotive_window,  image= locomotive_window.image_refresh, borderwidth=0,
+                                command=refresh)
+    refresh_button.grid(row=0, column=0, pady=(10, 0), padx=(0,67), sticky=tk.E)
+    
+    ADD_button = tk.Button(locomotive_window, text=data.Textlines[52], width=7,
+                                command=open_locomotive_creation_window)
+    ADD_button.grid(row=0, column=0, pady=(10, 0), padx=(0,7),sticky=tk.E)
 
-        settings_button = tk.Button(self.locomotive_window, text=data.Textlines[51], width=7,
-                                    command=active_settings)
-        settings_button.grid(row=3, column=0, pady=(10, 0), sticky="ns")
+    RFID_label = tk.Label(locomotive_window, text=data.Textlines[92])
+    RFID_label.grid(row=2, column=0, sticky=tk.W,padx=5)  # Posiziona a sinistra
+    RFID_entry = tk.Entry(locomotive_window, width=5)
+    RFID_entry.grid(row=2, column=0, pady=5, sticky=tk.E)  # Posiziona a destra
 
-        self.locomotive_window.bind('<Return>', lambda event: active_settings())
-        #GUI.open_locomotive_creation_window()
-        self.locomotive_window.bind('<+>', lambda event: open_locomotive_creation_window())
-        self.locomotive_window.bind('<i>', lambda event: show_page_info())
-        self.locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
-        self.locomotive_window.bind("<Escape>", lambda event: (enable_circuitWindow(),utilities.on_close(self.locomotive_window,"RFID")))
-        
-        #Salvo la pagina, mi serve per bloccare la pagina circuit
-        data.locomotive_RFID_window = self.locomotive_window
+    columns = (data.Textlines[96], data.Textlines[95], data.Textlines[80])
+    tree = ttk.Treeview(locomotive_window, columns=columns, show='headings')
+    refresh()
 
-        #Non permette altre azioni finche non chiudi la finestra, quando chiudi riabilita la circuit_window
-        self.locomotive_window.protocol("WM_DELETE_WINDOW", lambda: (enable_circuitWindow(),utilities.on_close(self.locomotive_window,"RFID")))
-        self.locomotive_window.grab_set()
+    settings_button = tk.Button(locomotive_window, text=data.Textlines[51], width=7,
+                                command=active_settings)
+    settings_button.grid(row=3, column=0, pady=(10, 0), sticky="ns")
+
+    locomotive_window.bind('<Return>', lambda event: active_settings())
+    #GUI.open_locomotive_creation_window()
+    locomotive_window.bind('<+>', lambda event: open_locomotive_creation_window())
+    locomotive_window.bind('<i>', lambda event: show_page_info())
+    locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
+    locomotive_window.bind("<Escape>", lambda event: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
+    
+    #Salvo la pagina, mi serve per bloccare la pagina circuit
+    data.locomotive_RFID_window = locomotive_window
+
+    #Non permette altre azioni finche non chiudi la finestra, quando chiudi riabilita la circuit_window
+    locomotive_window.protocol("WM_DELETE_WINDOW", lambda: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
+    locomotive_window.grab_set()
 '''
                 ___      _                               _      _            __      __  _                _                    
         o O O  / __|    (_)      _ _    __     _  _     (_)    | |_          \ \    / / (_)    _ _     __| |    ___   __ __ __ 
@@ -890,10 +872,10 @@ class Windows:
         v -> Permette di avviare la videocamera selezionata come predefinita dal pc
 '''
 
-class circuit_window(Windows):
+class circuit_window:
  
-    def __init__(self,locomotive_window,title,nscambi,container,GUI):
-        super().__init__(locomotive_window,title,"")
+    def __init__(self,locomotive_window,nscambi,container,GUI):
+        self.locomotive_window = locomotive_window
         self.nscambi = nscambi
         #self.serial_port = data.serial_ports[0] -- Non permette dinamicità
         self.GUI = GUI
@@ -990,7 +972,7 @@ class circuit_window(Windows):
         #GUI = self.GUI
         locomotive_window = self.GUI.open_locomotive_window("RFID", data.Textlines[17], "312x360",self.locomotive_window)
         if locomotive_window:
-            locomotive_window.RFID_window(self.algo,self.locomotive_window,self.GUI)     
+            RFID_window(locomotive_window,self.algo,self.locomotive_window,self.GUI)     
 
 
     def open_circuit_window(self,automatico):

@@ -52,6 +52,7 @@ variabili_apertura = {
     "locomotive_remove_var":   False,
     "locomotive_modify_var":   False,
     "locomotive_circuit_var":  False,
+    "locomotive_info_var":     False,
     "locomotive_control_var":  []
 }
 
