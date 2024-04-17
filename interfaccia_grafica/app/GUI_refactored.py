@@ -92,7 +92,7 @@ class GUI(tk.Frame):
 
         # Labels
         # Database Locomotive
-        self.locomotive_label = tk.Label(self.container, text=data.Textlines[2], bg="#c0c0c0")
+        self.locomotive_label = tk.Label(self.container, text="DATABASE LOCOMOTIVE", bg="#c0c0c0")
         self.locomotive_label.pack(side="left",pady=(5,0), padx=(300,300))
         # self.locomotive_label.place(relx=0.5, rely=0.05, anchor="center")
 
@@ -129,7 +129,7 @@ class GUI(tk.Frame):
         self.locomotive_info_window = None
 
         #Tabella
-        self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
+        self.columns = ("ID Locale", "ID Locomotive", "Colore", "Nome")
         self.tree = ttk.Treeview(self, columns=self.columns, show='headings')
         for col in self.columns:
             self.tree.heading(col, text=col)
@@ -137,14 +137,14 @@ class GUI(tk.Frame):
 
         # Bottoni
         # Aggiungi locomotiva
-        self.add_button = tk.Button(self, text=data.Textlines[7], height=2, 
+        self.add_button = tk.Button(self, text="AGGIUNGI LOCOMOTIVA", height=2, 
                                     command=self.open_locomotive_creation_window)
         self.add_button.pack(side="left", padx=5)
         self.locomotive_creation_window = None
         self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())
 
         # Rimuovi locomotiva
-        self.remove_button = tk.Button(self, text=data.Textlines[8], height=2, 
+        self.remove_button = tk.Button(self, text="RIMUOVI LOCOMOTIVA", height=2, 
                                        command=self.open_locomotive_remove_window)
         self.remove_button.pack(side="left", padx=5)
         self.remove_button.config(state='disabled')
@@ -152,7 +152,7 @@ class GUI(tk.Frame):
         
 
         # Modifica locomotiva
-        self.modify_button = tk.Button(self, text=data.Textlines[9], height=2, 
+        self.modify_button = tk.Button(self, text="MODIFICA LOCOMOTIVA", height=2, 
                                        command=self.open_locomotive_modify_window)
         self.modify_button.pack(side="left", padx=5)
         self.modify_button.config(state='disabled')
@@ -194,7 +194,7 @@ class GUI(tk.Frame):
         self.container.bind("<o>", lambda event: self.on_off())
 
         # Stop generale
-        self.STOP_button = tk.Button(self, text=data.Textlines[10], background="#f08080", height=2, width=15, 
+        self.STOP_button = tk.Button(self, text="STOP GENERALE", background="#f08080", height=2, width=15, 
                                     command=self.GENERAL_STOP_START)
         self.STOP_button.pack(side="left", padx=5)
         self.STOP_button.config(state='disabled')
@@ -209,6 +209,7 @@ class GUI(tk.Frame):
 
         #Fa riferimento alla pagina creata nel circuit
         self.locomotive_RFID_window = None
+        
     '''
                     ___    _   _    ___   
             o O O  / __|  | | | |  |_ _|  
@@ -331,7 +332,7 @@ class GUI(tk.Frame):
     def open_info_window(self):
         if self.locomotive_info_window is None or not self.locomotive_info_window .winfo_exists():
             info_text = data.Textlines[60] + "\n" + data.Textlines[61] + "\n"+ data.Textlines[62] +"\n"+ data.Textlines[63]
-            self.locomotive_info_window = tk.Toplevel(self)
+            self.locomotive_info_window = tk.Toplevel(self.container)
             #Seleziona la pagina appena creata
             self.locomotive_info_window.focus_set()
             self.locomotive_info_window.title(data.Textlines[16])
@@ -459,12 +460,36 @@ class GUI(tk.Frame):
         language      = self.var_language.get()
         if language != data.languages[0] and utilities.are_you_sure(data.Textlines[74]):
             #utilities.translate(language)
-            self.container.on_close_root()
+            #self.container.on_close_root()
             # Identifica l'indice della stringa nel vettore
             index = data.languages.index(language)
             # Rimuovi la stringa dal suo attuale indice
             data.languages.pop(index)
             # Inserisci la stringa nella prima posizione del vettore
             data.languages.insert(0, language)
+            utilities.translate()
             print(data.languages)
-            self.after(20,self.container.reopen_window())
+            #self.after(20,self.container.reopen_window())
+            self.container.refresh()
+            self.refresh()
+
+    def refresh(self):
+        #Prendo tutti i widget della pagina
+        children = self.container.winfo_children()
+
+        for child in children:
+             # Chiudi solo le finestre Toplevel
+            if isinstance(child, tk.Toplevel):
+                child.destroy()
+
+        #Cambio il nome dei label nella lingua giusta, anche il link dell'immagine
+        self.locomotive_label.configure(text=data.Textlines[2])
+        self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
+        self.add_button.configure(text=data.Textlines[7])
+        self.remove_button.configure(text=data.Textlines[8])
+        self.modify_button.configure(text=data.Textlines[9])
+        self.STOP_button.configure(text=data.Textlines[10])
+        self.image_flag_Path = utilities.asset_path(f'{data.languages[0]}','png')
+        self.image_flag = utilities.process_image(self.image_flag_Path, 'resize', 25, 20)
+        self.flag_button.configure(image=self.image_flag)
+

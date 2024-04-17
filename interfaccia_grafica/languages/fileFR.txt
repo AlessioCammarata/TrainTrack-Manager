@@ -1,6 +1,6 @@
 -Titoli finestre | 1-18
 Gestion de locomotives
-BASE DE DONNÉES LOCOMOTIVE
+BASE DE LOCOMOTIVE
 ID Local
 ID Locomotive
 Couleur
