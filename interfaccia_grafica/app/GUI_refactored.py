@@ -332,7 +332,7 @@ class GUI(tk.Frame):
     def open_info_window(self):
         if self.locomotive_info_window is None or not self.locomotive_info_window .winfo_exists():
             info_text = data.Textlines[60] + "\n" + data.Textlines[61] + "\n"+ data.Textlines[62] +"\n"+ data.Textlines[63]
-            self.locomotive_info_window = tk.Toplevel(self)
+            self.locomotive_info_window = tk.Toplevel(self.container)
             #Seleziona la pagina appena creata
             self.locomotive_info_window.focus_set()
             self.locomotive_info_window.title(data.Textlines[16])
