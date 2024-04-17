@@ -1,0 +1,101 @@
+-Títulos de ventanas | 1-18
+Gestión de Locomotoras
+DATOS DE LOCOMOTORAS
+ID Local
+ID de Locomotora
+Color
+Nombre
+AGREGAR LOCOMOTORA
+ELIMINAR LOCOMOTORA
+MODIFICAR LOCOMOTORA
+DETENER GENERAL
+Configuraciones
+Creación de Locomotora
+Eliminación de Locomotora
+Eliminación de Locomotora
+Gestión de circuito/control automático
+Información
+Configuraciones RFID
+INICIO GENERAL
+-Mensajes de Error | 20-41
+No se puede abrir otra página
+El puerto serie COM
+no está disponible
+No se pueden agregar más locomotoras
+Entrada incorrecta
+Has superado el límite de longitud/tamaño
+No se puede agregar más de una locomotora con el mismo nombre o ID (máx.
+locomotoras para este circuito)
+ID y nombre no coinciden con ninguna locomotora registrada
+ID no válido
+Nombre o Locoid ya ingresado
+El sistema no puede manejar más de
+La ruta al puerto relacionado con la centralita no existe
+La ruta al puerto relacionado con los sensores RFID no existe
+Tag ya ingresado en la locomotora
+Tabla vacía, ingrese locomotoras
+Conecta una cámara
+Antes de iniciar el modo automático, conecta y habilita el puerto relacionado con los sensores
+Error de decodificación. Asegúrate de que el dispositivo esté enviando datos correctamente.
+Error al abrir el puerto serie:
+REINICIAR el algoritmo
+está desconectado
+-Botones | 43 - 57
+Cerrar
+Guardar
+Siguiente
+Anterior
+Detener
+Eliminar
+Modificar
+Activar
+Confirmar
+Agregar
+VIDEO APAGADO
+VIDEO ENCENDIDO
+AUTOMÁTICO
+MANUAL
+Habilitar
+
+-Mensajes de advertencia o Información | 60 - 73
+Gestión de las locomotoras
+Desde aquí puedes agregar locomotoras a tu sistema,
+con los diversos botones también puedes modificar, eliminar y
+controlar las locomotoras que has ingresado
+Como se ha ingresado el último ID, al avanzar, iniciarás el circuito
+Antes de continuar, asegúrate de tener solo la locomotora a la que deseas cambiar la dirección en las vías
+Calibración de las etiquetas de las locomotoras.
+Acercar la locomotora ya ingresada en la tabla,
+presionar el botón de actualización, luego seleccionar
+el ID Local de esa locomotora y confirmar.
+Para continuar, calibra las etiquetas RFID.
+Pasa la locomotora correspondiente al ID ingresado bajo el sensor correspondiente a su ID
+Presiona CONFIRMAR y repite el procedimiento
+¿Estás seguro de que quieres continuar?
+Al proceder, el programa se reiniciará. Todos los datos ingresados en la tabla se perderán.
+
+
+
+
+-Etiquetas | 80 - 97
+Nombre
+LocoID:
+Color*:
+ID:
+ID de la locomotora a modificar:
+Nuevo
+Ajustar la velocidad:
+Dirección:
+Puerto serial de la Central DCC:
+Puerto serial de los sensores RFID:
+Número máximo de locomotoras:
+Sistema Operativo actual:
+ID del sensor a asociar:
+CONTROL AUTOMÁTICO DEL CIRCUITO
+CONTROL MANUAL DEL CIRCUITO
+etiqueta RFID
+ID Local
+Cambio
+
+
+SP
