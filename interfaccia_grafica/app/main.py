@@ -3,6 +3,7 @@ import GUI_refactored
 import utilities
 import data
 from algorithm import Algorithm
+import os
 
 # @singleton
 class App(tk.Tk):
@@ -29,6 +30,14 @@ class App(tk.Tk):
 
 
 if __name__ == "__main__":
+    #cerco la dir attuale e Salvo la parent dir attuale in data
+    folder_path = os.path.abspath(os.path.join(os.getcwd()))
+    
+    # SOLO DURANTE IL FILE ESECUTIVO
+    # parent_directory = os.path.dirname(os.path.dirname(folder_path))
+    # data.path = parent_directory
+    data.path = folder_path
+
     utilities.translate()
     app = App()
     gui = GUI_refactored.GUI(app)

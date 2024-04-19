@@ -12,6 +12,7 @@ SO = {
     'windows': True,
     'linux' :  False
 }
+path = ""
 
 #Tiene a mente tutte le stringhe del programma
 Textlines = []

@@ -36,7 +36,7 @@ indicatoron = [('Menubutton.border',
 #Funzione che riassume il path relativo
 def asset_path(asset_name: str, extenction: str) -> str:
     if data.SO['windows']:
-        return "interfaccia_grafica\\assets\\" + asset_name + "." + extenction
+        return data.path + "\\assets\\" + asset_name + "." + extenction
     elif data.SO['linux']:
         return "interfaccia_grafica/assets/" + asset_name + "." + extenction
 
@@ -173,7 +173,7 @@ def translate():
     print(data.languages[0])
     data.Textlines = []
     # Apro il file in modalità lettura
-    with open("interfaccia_grafica\\languages\\file{}.txt".format(data.languages[0]), 'r',encoding='utf-8') as file:
+    with open(data.path + "\\languages\\file{}.txt".format(data.languages[0]), 'r',encoding='utf-8') as file:
         # Leggo ogni riga del file
         for line in file:
             # Aggiungo la riga alla lista
