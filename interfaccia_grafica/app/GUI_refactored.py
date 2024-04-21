@@ -313,8 +313,9 @@ class GUI(tk.Frame):
 
         if self.locomotive_control_window[id_controllo] is None or not self.locomotive_control_window[id_controllo].winfo_exists():
             #Apri solo se il button è sullo stato normal, non si puo togliere il print
-            print(self.control_button['state'])
-            if self.control_button['state'] == 'normal':
+            #Apri solo se il button è sullo stato normal, non si puo togliere il print(self.control_button['state']), 
+            # Equivale a questo : self.control_button['state'] == 'norma'
+            if self.on_button.cget("background") == "#00ff00":
                 data.variabili_apertura["locomotive_control_var"][id_controllo] = True
                 self.locomotive_control_window[id_controllo] = tk.Toplevel(self.container)
                 self.locomotive_control_window[id_controllo].transient(self.container)
