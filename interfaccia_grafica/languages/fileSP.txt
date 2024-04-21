@@ -72,8 +72,8 @@ Para continuar, calibra las etiquetas RFID.
 Pasa la locomotora correspondiente al ID ingresado bajo el sensor correspondiente a su ID
 Presiona CONFIRMAR y repite el procedimiento
 ¿Estás seguro de que quieres continuar?
-Al proceder, el programa se reiniciará. Todos los datos ingresados en la tabla se perderán.
-
+Al proceder, se cerrarán todas las ventanas adicionales en comparación con la principal.
+Para continuar, agregue otra locomotora.
 
 
 

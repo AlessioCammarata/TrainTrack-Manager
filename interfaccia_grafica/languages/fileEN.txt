@@ -72,8 +72,8 @@ To proceed, calibrate the RFID tags.
 Pass the locomotive corresponding to the entered ID under the sensor corresponding to its ID
 Press CONFIRM and repeat the procedure.
 Are you sure you want to continue?
-Proceeding the program restarts. All data entered in the table will be lost.
-
+By proceeding, all additional windows compared to the main one will be closed.
+To continue, add another locomotive.
 
 
 

@@ -72,8 +72,8 @@ Pour continuer, calibrez les tags RFID.
 Passez la locomotive correspondant à l'ID saisi, sous le capteur correspondant à son ID
 Appuyez sur CONFIRMER et répétez la procédure
 Êtes-vous sûr de vouloir continuer?
-En continuant, le programme redémarrera. Toutes les données saisies dans le tableau seront perdues.
-
+En procédant, toutes les fenêtres supplémentaires par rapport à la principale seront fermées.
+Pour continuer, ajoutez une autre locomotive.
 
 
 

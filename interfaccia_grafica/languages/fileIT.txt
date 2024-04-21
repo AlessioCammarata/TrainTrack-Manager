@@ -72,8 +72,8 @@ Per andare avanti calibrare i tag RFID.
 Passa la locomotiva corrispondente all'ID inserito, sotto al sensore corrispondente al suo ID
 Premi CONFERMA e rifai il procedimento
 Sei sicuro di voler continuare?
-Procedendo il programma si riavviera.Tutti i dati inseriti in tabella andranno persi.
-
+Procedendo tutte le finestre in piu ripsetto alla principale verranno chiuse.
+Per continuare aggiungere un altra locomotiva
 
 
 

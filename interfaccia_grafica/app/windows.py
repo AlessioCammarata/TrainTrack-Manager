@@ -884,6 +884,8 @@ class circuit_window:
         self.algo = self.container.algo
         #creazione dell'oggetto camera
         self.camera = cam.Camera(self.locomotive_window)
+        #Flag che si utilizza per creare una sola volta i deviatoi
+        self.flag = False
 
         
     def change_Sensors(self,text,RFIDtag):
@@ -1052,20 +1054,22 @@ class circuit_window:
             current_color = start_button.cget("background")            
 
             if utilities.is_serial_port_available(data.serial_ports[1]):
-                if current_color == "red":
-                    new_color = "#00ff00"
-                    self.algo.start_algo(self)
-                    RFID_button.config(state='normal')
-                    #Assegnazione del tasto
-                    root.bind("<s>", lambda event: (self.open_RFID_window(),root.attributes("-alpha", 0.5)))
-                else: 
-                    new_color = "red"
-                    self.algo.stop_algo()
-                    RFID_button.config(state='disabled')
-                    #Disfuznione del tasto
-                    root.unbind("<s>")
-                start_button.config(background=new_color)
-
+                if len(data.locomotives_data) >= 2:
+                    if current_color == "red":
+                        new_color = "#00ff00"
+                        self.algo.start_algo(self)
+                        RFID_button.config(state='normal')
+                        #Assegnazione del tasto
+                        root.bind("<s>", lambda event: (self.open_RFID_window(),root.attributes("-alpha", 0.5)))
+                    else: 
+                        new_color = "red"
+                        self.algo.stop_algo()
+                        RFID_button.config(state='disabled')
+                        #Disfuznione del tasto
+                        root.unbind("<s>")
+                    start_button.config(background=new_color)
+                else:
+                    utilities.show_error_box(data.Textlines[75],self.locomotive_window,self.GUI,"main")
             else:
                 utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,self.GUI,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False
@@ -1471,8 +1475,8 @@ class circuit_window:
         #gestione dei pin ARDUINO
         if utilities.is_serial_port_available(data.serial_ports[0]):
             #Se la finestra è chiusa allora crea i deviatoi, serve a non creare i deviatoi ogno volta che si switcha da auto a manuale
-            if not data.variabili_apertura["locomotive_circuit_var"]:
-                data.variabili_apertura["locomotive_circuit_var"] = True
+            if not self.flag:
+                self.flag = True
                 #Comando che accende il led di controllo
                 comandi.crea_deviatoio(36,36)
                 # comandi.crea_deviatoio(1,41)
