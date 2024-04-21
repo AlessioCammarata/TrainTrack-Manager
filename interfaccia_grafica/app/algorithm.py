@@ -66,6 +66,10 @@ class Algorithm:
 
                         #tengo in memoria la risposta per la registrazione delle locomotive
                         data.sensor_response[0] = response
+
+                        if data.variabili_apertura["locomotive_RFID_var"]:
+                            message = response.split("/")
+                            data.label.configure(text=message[1])
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
                     if data.calibred and self.flag:
                         # self.GUI.on_off()

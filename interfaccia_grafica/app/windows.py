@@ -790,6 +790,11 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
                             command=show_page_info)
     info_button.grid(row=0, column=0, pady=(10, 0), padx=(7,0),sticky=tk.W)
 
+    tag_label = tk.Label(locomotive_window, text="", relief = tk.SUNKEN, width=10)
+    tag_label.grid(row=0, column=0, pady=(10, 0), padx=(60,0),sticky=tk.W)
+    tag_label.config(state="disabled")
+    data.label = tag_label
+
     image_refresh_path = utilities.asset_path('refresh','png')
     locomotive_window.image_refresh = utilities.process_image(image_refresh_path, 'resize', 25, 25)
     refresh_button = tk.Button(locomotive_window,  image= locomotive_window.image_refresh, borderwidth=0,

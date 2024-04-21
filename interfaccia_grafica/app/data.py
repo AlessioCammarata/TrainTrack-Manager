@@ -147,3 +147,7 @@ RRoutes = {
 percorsi_assegnati = []
 criticita = []
 root_occupied = ""
+
+
+#La label è quella della pagina rfid
+label = ""
