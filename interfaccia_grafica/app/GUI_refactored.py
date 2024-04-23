@@ -486,7 +486,13 @@ class GUI(tk.Frame):
 
         #Cambio il nome dei label nella lingua giusta, anche il link dell'immagine
         self.locomotive_label.configure(text=data.Textlines[2])
+        
+        #cambio il nome delle colonne della tabella
+        self.tree['columns'] = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
         self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
+        for col in self.columns:
+            self.tree.heading(col, text=col)
+
         self.add_button.configure(text=data.Textlines[7])
         self.remove_button.configure(text=data.Textlines[8])
         self.modify_button.configure(text=data.Textlines[9])
