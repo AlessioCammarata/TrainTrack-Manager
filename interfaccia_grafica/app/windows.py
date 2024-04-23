@@ -525,7 +525,8 @@ def settings_window(locomotive_window,GUI):
         for item in data.SO:
             data.SO[item] = False
         data.SO[SO] = True
-        data.SO_used = SO
+        # data.SO_used = SO
+        
         #controlli sugli input, non so bene che sistemare
         if  not max_loco.isdigit() or rfid == centralina:
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
@@ -676,9 +677,15 @@ def settings_window(locomotive_window,GUI):
     SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
     SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
     
+    #Calcoliamo il SO attuale
+    SO_used = data.SO.keys()
+    for SO in SO_used:
+        if data.SO[SO]:
+            aSO = SO
+
 #Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-    var_SO = tk.StringVar(value=data.SO_used)
-    SO_button = ttk.Menubutton(locomotive_window,text=data.SO_used,width=8)
+    var_SO = tk.StringVar(value=aSO)
+    SO_button = ttk.Menubutton(locomotive_window,text=aSO,width=8)
     SO = tk.Menu(port0_button, tearoff=0)
     SO_button.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
     SO_button["menu"] = SO
