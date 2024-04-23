@@ -12,6 +12,7 @@ SO = {
     'windows': True,
     'linux' :  False
 }
+SO_used = 'windows'
 path = ""
 
 #Tiene a mente tutte le stringhe del programma

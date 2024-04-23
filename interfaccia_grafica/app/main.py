@@ -31,7 +31,7 @@ class App(tk.Tk):
 
 if __name__ == "__main__":
     #cerco la dir attuale e Salvo la parent dir attuale in data - MISERVERUNPEZZOINPIUPERILTESTING
-    folder_path = os.path.abspath(os.path.join(os.getcwd()))
+    folder_path = os.path.abspath(os.path.join(os.getcwd(),'interfaccia_grafica'))
     
     # SOLO DURANTE IL FILE ESECUTIVO
     # parent_directory = os.path.dirname(os.path.dirname(folder_path))

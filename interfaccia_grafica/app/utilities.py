@@ -38,7 +38,7 @@ def asset_path(asset_name: str, extenction: str) -> str:
     if data.SO['windows']:
         return data.path + "\\assets\\" + asset_name + "." + extenction
     elif data.SO['linux']:
-        return "interfaccia_grafica/assets/" + asset_name + "." + extenction
+        return data.path + "/assets/" + asset_name + "." + extenction
 
 # Funzione che riassume i resize e i rotate
 def process_image(image_path, operation, *args):
