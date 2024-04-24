@@ -179,6 +179,7 @@ class Algorithm:
     #in questo momento la locomotivaq 1 e la 2 partono a velocita stabilita
     def start_throttle(self,circuit_window):
         if utilities.is_serial_port_available(data.serial_ports[0]):
+            comandi.open_current(1)
             for i in range(2):
                 #Impostiamo un percorso e la direzione da prendere
                 data.locomotives_data[i]['Direzione'] = i
@@ -189,6 +190,7 @@ class Algorithm:
                 self.gestione_velocita(circuit_window,i,velocita)
 
                 print(data.criticita)
+            
             #Per ora non funzione
             # for item in data.criticita:
             #     semaphore = traffic_light.Semaphore(circuit_window,item)
