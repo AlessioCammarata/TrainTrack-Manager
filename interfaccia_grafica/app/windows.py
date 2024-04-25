@@ -528,7 +528,7 @@ def settings_window(locomotive_window,GUI):
         # data.SO_used = SO
         
         #controlli sugli input, non so bene che sistemare
-        if  not max_loco.isdigit() or rfid == centralina:
+        if rfid == centralina:
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
         elif int(max_loco) > data.max_loco_standard:
             utilities.show_error_box(data.Textlines[31] + "{} locomotive".format(data.max_loco_standard),locomotive_window,GUI,"")
@@ -600,7 +600,7 @@ def settings_window(locomotive_window,GUI):
     #         menu.post(menu_button.winfo_rootx(), menu_button.winfo_rooty() + menu_button.winfo_height())
     #     else:
     #         print("Menu non disponibile per il Menubutton:", menu_button)
-    
+        
     ports_available = []
     for i in range(10):
         if utilities.port_exist(i):
@@ -708,7 +708,7 @@ def settings_window(locomotive_window,GUI):
 
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
-
+    locomotive_window.bind("<FocusIn>",   lambda event: max_loco_entry.focus_set())
     # self.locomotive_window.bind('<Control-l>', lambda event: open_dropdown_menu(port0))
     # self.locomotive_window.bind('<Control-r>', lambda event: open_dropdown_menu(port1))
     # self.locomotive_window.bind('<Control-s>', lambda event: open_dropdown_menu(SO))
@@ -812,10 +812,14 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
                                 command=open_locomotive_creation_window)
     ADD_button.grid(row=0, column=0, pady=(10, 0), padx=(0,7),sticky=tk.E)
 
+    #Permette di inserire solo numeri
+    validate_input = locomotive_window.register(lambda P: P.isdigit() or P == '')
+
     RFID_label = tk.Label(locomotive_window, text=data.Textlines[92])
     RFID_label.grid(row=2, column=0, sticky=tk.W,padx=5)  # Posiziona a sinistra
-    RFID_entry = tk.Entry(locomotive_window, width=5)
+    RFID_entry = tk.Entry(locomotive_window, width=5, validate="key", validatecommand=(validate_input, '%P'))
     RFID_entry.grid(row=2, column=0, pady=5, sticky=tk.E)  # Posiziona a destra
+
 
     columns = (data.Textlines[96], data.Textlines[95], data.Textlines[80])
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings')
@@ -831,7 +835,8 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     locomotive_window.bind('<i>', lambda event: show_page_info())
     locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
     locomotive_window.bind("<Escape>", lambda event: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
-    
+    locomotive_window.bind("<FocusIn>",   lambda event: RFID_entry.focus_set())
+
     #Salvo la pagina, mi serve per bloccare la pagina circuit
     data.locomotive_RFID_window = locomotive_window
 
