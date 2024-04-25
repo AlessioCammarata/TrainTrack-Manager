@@ -71,7 +71,7 @@ class Algorithm:
                             message = response.split("/")
                             data.label.configure(text=message[1])
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
-                    if data.calibred and self.flag:
+                    if data.calibred and self.flag and len(data.locomotives_data) >= 2:
                         # self.GUI.on_off()
                         #creo il thread e lo metto in memoria
                         utilities.show_info(data.Textlines[64])

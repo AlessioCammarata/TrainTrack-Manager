@@ -73,7 +73,7 @@ Passez la locomotive correspondant à l'ID saisi, sous le capteur correspondant 
 Appuyez sur CONFIRMER et répétez la procédure
 Êtes-vous sûr de vouloir continuer?
 En procédant, toutes les fenêtres supplémentaires par rapport à la principale seront fermées.
-Pour continuer, ajoutez une autre locomotive.
+Pour démarrer le circuit automatique, il faut insérer au moins 2 locomotives.
 
 
 

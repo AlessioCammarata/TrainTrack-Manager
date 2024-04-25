@@ -73,7 +73,7 @@ Passa la locomotiva corrispondente all'ID inserito, sotto al sensore corrisponde
 Premi CONFERMA e rifai il procedimento
 Sei sicuro di voler continuare?
 Procedendo tutte le finestre in piu ripsetto alla principale verranno chiuse.
-Per continuare aggiungere un altra locomotiva
+Per avviare il circuito automatico bisogna inserire almeno 2 locomotive
 
 
 

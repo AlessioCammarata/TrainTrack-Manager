@@ -1066,22 +1066,22 @@ class circuit_window:
             current_color = start_button.cget("background")            
 
             if utilities.is_serial_port_available(data.serial_ports[1]):
-                if len(data.locomotives_data) >= 2:
-                    if current_color == "red":
-                        new_color = "#00ff00"
-                        self.algo.start_algo(self)
-                        RFID_button.config(state='normal')
-                        #Assegnazione del tasto
-                        root.bind("<s>", lambda event: (self.open_RFID_window(),root.attributes("-alpha", 0.5)))
-                    else: 
-                        new_color = "red"
-                        self.algo.stop_algo()
-                        RFID_button.config(state='disabled')
-                        #Disfuznione del tasto
-                        root.unbind("<s>")
-                    start_button.config(background=new_color)
-                else:
-                    utilities.show_error_box(data.Textlines[75],self.locomotive_window,self.GUI,"main")
+                if len(data.locomotives_data) < 2: utilities.show_info(data.Textlines[75])
+                if current_color == "red":
+                    new_color = "#00ff00"
+                    self.algo.start_algo(self)
+                    RFID_button.config(state='normal')
+                    #Assegnazione del tasto
+                    root.bind("<s>", lambda event: (self.open_RFID_window(),root.attributes("-alpha", 0.5)))
+                else: 
+                    new_color = "red"
+                    self.algo.stop_algo()
+                    RFID_button.config(state='disabled')
+                    #Disfuznione del tasto
+                    root.unbind("<s>")
+                start_button.config(background=new_color)
+
+                    
             else:
                 utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,self.GUI,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False

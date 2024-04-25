@@ -73,7 +73,7 @@ Pass the locomotive corresponding to the entered ID under the sensor correspondi
 Press CONFIRM and repeat the procedure.
 Are you sure you want to continue?
 By proceeding, all additional windows compared to the main one will be closed.
-To continue, add another locomotive.
+To start the automatic circuit, you need to insert at least 2 locomotives.
 
 
 

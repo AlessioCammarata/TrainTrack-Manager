@@ -73,7 +73,7 @@ Pasa la locomotora correspondiente al ID ingresado bajo el sensor correspondient
 Presiona CONFIRMAR y repite el procedimiento
 ¿Estás seguro de que quieres continuar?
 Al proceder, se cerrarán todas las ventanas adicionales en comparación con la principal.
-Para continuar, agregue otra locomotora.
+Para iniciar el circuito automático, es necesario insertar al menos 2 locomotoras.
 
 
 
