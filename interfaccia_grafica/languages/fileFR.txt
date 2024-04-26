@@ -57,23 +57,23 @@ AUTOMATIQUE
 MANUEL
 Activer
 
--Messages d'Avertissement ou d'Informations | 60 - 73
-Gestion des locomotives
-D'ici, vous pouvez ajouter des locomotives à votre système,
-avec les différents boutons vous pouvez également modifier, supprimer, et
-contrôler les locomotives que vous avez insérées
+-Messages d'Avertissement ou d'Informations | 60 - 68
 Puisque le dernier ID a été inséré, en continuant, vous démarrerez le circuit
 Avant de continuer, assurez-vous de n'avoir que la locomotive à laquelle vous souhaitez changer l'adresse sur les rails
-Calibrage des tags des locomotives.
-Approchez-vous de la locomotive déjà insérée dans le tableau,
-appuyez sur le bouton de rafraîchissement, puis sélectionnez
-l'ID Local de cette locomotive et confirmez.
 Pour continuer, calibrez les tags RFID.
 Passez la locomotive correspondant à l'ID saisi, sous le capteur correspondant à son ID
 Appuyez sur CONFIRMER et répétez la procédure
 Êtes-vous sûr de vouloir continuer?
 En procédant, toutes les fenêtres supplémentaires par rapport à la principale seront fermées.
 Pour démarrer le circuit automatique, il faut insérer au moins 2 locomotives.
+
+
+
+
+
+
+
+
 
 
 
@@ -96,6 +96,32 @@ CIRCUIT DE CONTRÔLE MANUEL
 tag RFID
 ID Local
 Change
+
+Informations | 100 - 122
+Ce que vous pouvez faire avec Train Track:
+Gestion des locomotives
+À partir d'ici, vous pouvez ajouter des locomotives à votre système en appuyant sur le bouton ou en appuyant sur '+' (sur le clavier).
+Depuis l'interface, vous pouvez également modifier 'm' (sur le clavier), supprimer '-', et contrôler les locomotives que vous avez ajoutées.
+Boutons Principaux
+Avec le bouton rouge ou avec la touche 'o' (sur le clavier), vous pouvez mettre sous tension le circuit, assurez-vous que TOUT est correctement connecté.
+Après avoir ajouté des locomotives au tableau et avoir mis sous tension, vous pourrez commander les locomotives, soit en appuyant sur le bouton avec l'image d'un train, soit en tapant le numéro correspondant à l'ID local de la locomotive. En cas de plus de 9 locomotives, vous devrez appuyer sur 'Contrôle-numéro', donc pour la locomotive 15 'Contrôle-5'.
+Avec le bouton d'arrêt général ou avec la touche 'barre d'espace' (sur le clavier), vous pouvez arrêter le système sans couper le courant.
+Avec le bouton du gamepad ou avec la touche 'c' (sur le clavier), vous pouvez voir le dessin du circuit et commuter les aiguillages en temps réel, ils peuvent être cliqués ou vous pouvez cliquer sur la touche correspondant au numéro de l'aiguillage (sur le clavier), cela en mode MANUEL.
+Il existe également la version automatique, en appuyant à nouveau sur la touche 'c', qui gère le système tout seul à l'aide des capteurs, mais au moins 2 locomotives et jusqu'à 3 sont nécessaires.
+Depuis les paramètres ou avec la touche 's' (sur le clavier), vous pouvez configurer les ports qui communiqueront avec les systèmes Arduino.
+Cette page est également accessible en appuyant sur la touche 'i' (sur le clavier).
+Jusqu'à 4 langues sont disponibles, toutes avec leurs traductions certifiées.
+Toutes les pages peuvent être fermées avec la touche 'esc', celles qui possèdent le bouton pour envoyer la commande, dans le cas où il n'y a pas d'erreurs, peuvent également être fermées avec la touche 'entrée'.
+Informations Générales sur l'Application
+
+Système de Gestion Automatique
+Sur la page principale, vous pouvez voir le passage des locomotives grâce au changement de couleur des capteurs affichés sur la carte.
+Il est également possible d'utiliser une caméra si vous souhaitez connecter le système à distance, il suffit de sélectionner la caméra comme principale dans le système d'exploitation. Elle sera activée en appuyant sur la touche 'v' ou sur la touche 'VIDÉO OFF'.
+Calibration des tags RFID des locomotives.
+Approchez la locomotive déjà insérée dans le tableau, ce qui est lu par les capteurs sera affiché dans la boîte en haut, puis sélectionnez l'ID Local de cette locomotive et confirmez.
+Si vous n'avez pas au moins 2 locomotives, l'algorithme ne démarrera pas, vous pouvez en ajouter depuis le bouton ajouter ou avec la touche '+'.
+Informations sur le circuit automatique
+
 
 
 FR

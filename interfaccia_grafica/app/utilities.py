@@ -86,7 +86,7 @@ def show_error_box(descrizione,finestra,finestra_padre,importance):
 
 #Funzione per WARNING
 def are_you_sure(descrizione):
-    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[73], icon='warning')
+    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[65], icon='warning')
     return risposta
 
 #Funzione per INFO

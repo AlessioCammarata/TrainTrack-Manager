@@ -74,7 +74,7 @@ class Algorithm:
                     if data.calibred and self.flag and len(data.locomotives_data) >= 2:
                         # self.GUI.on_off()
                         #creo il thread e lo metto in memoria
-                        utilities.show_info(data.Textlines[64])
+                        utilities.show_info(data.Textlines[60])
                         process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
                         self.threads[1] = process_messages_thread
                         #pulisco la queue - avvio il thread - setto la flag

@@ -57,23 +57,23 @@ AUTOMATICO
 MANUALE
 Abilita
 
--Messaggi d'avviso o Informazioni | 60 - 73
-Gestione delle locomotive
-Da qui puoi aggiungere locomotive al tuo sistema,
-con i vari tasti puoi anche modificare, eliminare, e
-controllare le locomotive da te inserite
+-Messaggi d'avviso | 60 - 68
 Siccome l'ultimo ID è stato inserito, andando avanti, avvierai il circuito
 Prima di continuare assicurati di avere solo la locomotiva alla quale si vuole cambiare l'indirizzo sui binari
-Calibrazione tag delle locomotive.
-Avvicinare la locomotiva gia inserita nella tabella,
-premere il tasto refresh, dopodiche selezionare 
-l'ID Locale di quella locomotiva e confermare.
 Per andare avanti calibrare i tag RFID.
 Passa la locomotiva corrispondente all'ID inserito, sotto al sensore corrispondente al suo ID
 Premi CONFERMA e rifai il procedimento
 Sei sicuro di voler continuare?
 Procedendo tutte le finestre in piu ripsetto alla principale verranno chiuse.
 Per avviare il circuito automatico bisogna inserire almeno 2 locomotive
+
+
+
+
+
+
+
+
 
 
 
@@ -96,6 +96,32 @@ CONTROLLO MANUALE CIRCUITO
 tag RFID
 ID Locale
 Cambio
+
+-Informazioni | 100 - 122
+Cosa puoi fare con Train Track:
+Gestione delle locomotive
+Da qui puoi aggiungere locomotive al tuo sistema, premendo il bottone o schiacciando '+' (da tastiera).
+Dall'interfaccia puoi anche modificare 'm' (da tastiera), eliminare '-', e controllare le locomotive da te inserite.
+Bottoni Principali
+Tramite il tasto rosso o con il tasto 'o' (da tastiera) puoi avviare la corrente al circuito, assicurati che sia TUTTO connesso correttamente.
+Dopo aver aggiunto locomotive alla tabella e aver avviato la corrente sara possibile comandare le locomotive, potrai farlo attraverso il tasto con l'immagine di un treno o digitando il numero relativo all'id locale della locomotiva, nel caso in cui si ha piu di 9 locomotive bisognerà premere 'Control-numero', quindi per la locomotiva 15 'Control-5'.
+Con il tasto stop generale o con il tasto 'spacebar' (da tastiera) è possibile bloccare il sistema senza togliere la corrente.
+Tramite il bottone del gamepad o con il tasto 'c' (da tastiera) è possibile vedere il disegno del circuito e scambiare i deviatoi in tempo reale essi possono essere cliccati o si puo cliccare il tasto relativo al numero dello scambio (da tastiera), questo nella modalita MANUALE.
+È infatti disponibile la versione automatica, premendo di nuovo il tasto 'c', che tramite i sensori gestisce il sistema da solo, sono necessarie pero almeno 2 locomotive e massimo 3. 
+Dalle impostazioni o con il tasto 's' (da tastiera) è possibile impostare le porte che comunicheranno con i sistemi Arduino.
+Questa pagina è reperibile anche premendo il tasto 'i' (da tastiera).
+Sono disponibili fino a 4 Linguaggi, tutti con le relative traduzioni certificate.
+Tutte le pagine possono essere chiuse da tastiera con il tasto 'esc', quelle che possiedono il bottone per inviare il comando nel caso in cui non ci siano errori anche con il tasto 'enter'.
+Informazioni Generali sull'App
+
+Sistema di gestione Automatico
+Nella pagina principale è possibile notare il passggio delle locomotive tramite il cambio di colore dei sensori mostrati nella mappa.
+È inoltre possibile utilizzare una videocamera nel caso in cui si voglia collegare il sistema da remoto, bastera selezionare la videocamera come principale del sistema operativo. Essa verra attivata alla pressione del tasto 'v' o del tasto 'VIDEO OFF'.
+Calibrazione tag RFID delle locomotive.
+Avvicinare la locomotiva gia inserita nella tabella, nella casella in alto verra mostrato cio che viene letto dai sensori, dopodiche selezionare l'ID Locale di quella locomotiva e confermare.
+Nel caso in cui non ci siano almeno 2 locomotive l'algoritmo non partira, è possibile aggiungerne dal bottone aggiungi o con il tasto '+'.
+Informazioni sul circuito automatico
+
 
 
 IT

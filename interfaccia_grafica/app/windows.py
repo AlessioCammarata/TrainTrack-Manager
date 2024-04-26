@@ -34,8 +34,8 @@ import utilities
 def creation_window(locomotive_window,GUI):
 
     def save_locomotive():
-        global locomotive_names
-        global id
+        # global locomotive_names
+        # global id
         name            = name_entry.get()
         loco_id         = loco_id_entry.get()
         color           = var_color.get()
@@ -43,7 +43,7 @@ def creation_window(locomotive_window,GUI):
         controllo_loco  = len(data.locomotives_data)<data.max_loco #Controllo per vedere che il numero delle locomotive non sia al limite
 
         #controllo sugli input
-        if name == "" or not loco_id.isdigit() or int(loco_id)==0:
+        if name == "" or int(loco_id)==0:
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
             #open_locomotive_creation_window()
         elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
@@ -109,7 +109,8 @@ def creation_window(locomotive_window,GUI):
                 data.locomotives_data.append(locomotive)
                 GUI.update_table()
                 #Aggiornamento dei bottoni a seconda degli input
-                locomotive_names = [locomotive['Nome'] for locomotive in data.locomotives_data]
+                # locomotive_names = [locomotive['Nome'] for locomotive in data.locomotives_data]
+
                 #setto la variabile relativa alla calibrazione dell RFID a False
                 data.calibred = False
             else: 
@@ -132,9 +133,11 @@ def creation_window(locomotive_window,GUI):
     name_entry = tk.Entry(locomotive_window)
     name_entry.pack()
 
+    validate_input = locomotive_window.register(lambda P: P.isdigit() or P == '')
+
     loco_id_label = tk.Label(locomotive_window, text=data.Textlines[81])
     loco_id_label.pack()
-    loco_id_entry = tk.Entry(locomotive_window)
+    loco_id_entry = tk.Entry(locomotive_window, validate="key", validatecommand=(validate_input, '%P'))
     loco_id_entry.pack()
 
     color_label = tk.Label(locomotive_window, text=data.Textlines[82])
@@ -163,6 +166,7 @@ def creation_window(locomotive_window,GUI):
     save_button = tk.Button(locomotive_window, text=data.Textlines[44], command=save_locomotive)
     save_button.pack(pady=(10,0))
     
+    name_entry.focus_set()
     #permette di avviare la funzione con il tasto invio
     locomotive_window.bind('<Return>', lambda event: save_locomotive())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"creation"))
@@ -174,7 +178,7 @@ def remove_window(locomotive_window,GUI):
         id      = ID_entry.get()
 
         #controllo sugli input
-        if name == "" or not id.isdigit() or int(id) < 1:
+        if name == "" :
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
 
         else:
@@ -232,14 +236,17 @@ def remove_window(locomotive_window,GUI):
     name_entry = tk.Entry(locomotive_window)
     name_entry.pack()
 
+    validate_input = locomotive_window.register(lambda P: P.isdigit() or P == '')
+
     ID_label = tk.Label(locomotive_window, text=data.Textlines[83])
     ID_label.pack()
-    ID_entry = tk.Entry(locomotive_window)
+    ID_entry = tk.Entry(locomotive_window, validate="key", validatecommand=(validate_input, '%P'))
     ID_entry.pack()
 
     remove_button = tk.Button(locomotive_window, text=data.Textlines[48], command=remove_locomotive)
     remove_button.pack()
 
+    name_entry.focus_set()
     #permette di avviare la funzione con il tasto invio
     locomotive_window.bind('<Return>', lambda event: remove_locomotive())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"remove"))
@@ -256,7 +263,7 @@ def modify_window(locomotive_window,GUI):
             loco_id = "404"
 
         #controlli sugli input
-        if not loco_id.isdigit() or not id.isdigit() or int(loco_id)==0 or int(id)==0:
+        if int(loco_id)==0 or int(id)==0:
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
 
         elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
@@ -311,7 +318,7 @@ def modify_window(locomotive_window,GUI):
 
                     #Sostituisci il dizionario all'indice trovato con il nuovo dizionario
                     if data.locomotives_data[index_to_replace]['LocoID'] != loco_id:
-                        if utilities.are_you_sure(data.Textlines[65]):
+                        if utilities.are_you_sure(data.Textlines[61]):
                             if color != "Default":
                                 #prima di sostituire la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
                                 data.color_available.insert(0,data.locomotives_data[index_to_replace]['Colore'])
@@ -374,10 +381,12 @@ def modify_window(locomotive_window,GUI):
         loco_id_entry.delete(0, tk.END)
         color_button.configure(text = "Default")
     
+    validate_input = locomotive_window.register(lambda P: P.isdigit() or P == '')
+
     # Creazione del form per la nuova locomotiva
     ID_label = tk.Label(locomotive_window, text=data.Textlines[84])
     ID_label.pack()
-    ID_entry = tk.Entry(locomotive_window)
+    ID_entry = tk.Entry(locomotive_window, validate="key", validatecommand=(validate_input, '%P'))
     ID_entry.pack()
 
     name_label = tk.Label(locomotive_window, text=data.Textlines[85]+" "+ data.Textlines[80]+":")
@@ -387,7 +396,7 @@ def modify_window(locomotive_window,GUI):
 
     loco_id_label = tk.Label(locomotive_window, text=data.Textlines[85]+" "+data.Textlines[81])
     loco_id_label.pack()
-    loco_id_entry = tk.Entry(locomotive_window)
+    loco_id_entry = tk.Entry(locomotive_window, validate="key", validatecommand=(validate_input, '%P'))
     loco_id_entry.pack()
 
     color_label = tk.Label(locomotive_window, text=data.Textlines[82])
@@ -416,6 +425,7 @@ def modify_window(locomotive_window,GUI):
     modify_button = tk.Button(locomotive_window, text=data.Textlines[49], command=modify_locomotive)
     modify_button.pack(pady=(10,0))
 
+    ID_entry.focus_set()
     #permette di avviare la funzione con il tasto invio
     locomotive_window.bind('<Return>', lambda event: modify_locomotive())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"modify"))
@@ -667,11 +677,12 @@ def settings_window(locomotive_window,GUI):
     checkbox1 = tk.Checkbutton(locomotive_window,text=data.Textlines[57], variable=port1_checkbox_var, command = lambda: appoint_selection(1))
     checkbox1.grid(row=1, column=2, padx=5, sticky=tk.W)
     
+    validate_input = locomotive_window.register(lambda P: P.isdigit() or P == '')
 
     # Terza coppia label-entry
     max_loco_label = tk.Label(locomotive_window, text=data.Textlines[90])
     max_loco_label.grid(row=2, column=0, sticky=tk.W, padx=5)  # Posiziona a sinistra
-    max_loco_entry = tk.Entry(locomotive_window,width=10)
+    max_loco_entry = tk.Entry(locomotive_window,width=10,validate="key", validatecommand=(validate_input, '%P'))
     max_loco_entry.grid(row=2, column=1, padx=5, pady=5, sticky=tk.E)  # Posiziona a destra
 
     SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
@@ -719,24 +730,38 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
     def show_page_info():
 
-        locomotive_window1 = GUI.open_locomotive_window("info", data.Textlines[16], "275x150",locomotive_window)
+        locomotive_window1 = GUI.open_locomotive_window("info", data.Textlines[16], "600x400",locomotive_window)
         if locomotive_window1:
-            info_text = data.Textlines[66]+"\n"+ data.Textlines[67]+"\n"+data.Textlines[68] + "\n" +data.Textlines[69]
 
+            info_text = (
+                    "1. "+data.Textlines[116]+"\n\n"
+                    " - "+data.Textlines[117]+"\n\n"
+                    " - "+data.Textlines[118]+"\n\n\n"
+                    "2. "+data.Textlines[119]+"\n\n"
+                    " - "+data.Textlines[120]+"\n\n"
+                    " - "+data.Textlines[121]
+                )
+                 
+            label_title = tk.Label(locomotive_window1, text=data.Textlines[122], font=('Helvetica', 14, 'bold'))
+            label_title.pack(pady=10)
+            
+            text = tk.Text(locomotive_window1, wrap='word', width=60, height=20)
+            text.insert(tk.END, info_text)
+            text.config(state='disabled')
+            text.pack(padx=10, pady=5)
+            
             locomotive_window1.transient(locomotive_window)
 
             locomotive_window1.protocol("WM_DELETE_WINDOW", lambda: locomotive_window1.destroy())
             locomotive_window1.bind('<Return>', lambda event: locomotive_window1.destroy())
             locomotive_window1.bind("<Escape>", lambda event: locomotive_window1.destroy())
 
-            label = tk.Label(locomotive_window1, text=info_text)
-            label.pack(padx=5, pady=10)
-
             close_button = tk.Button(locomotive_window1, text=data.Textlines[43], command=locomotive_window1.destroy)
             close_button.pack(pady=10)
 
+
 #Funzione che fa il refresh della tabella
-    def refresh():
+    def refresh(event):
         utilities.update_circuit_table(columns,tree)
     
     def enable_circuitWindow():
@@ -747,43 +772,41 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
         locomotive_window1 = GUI.open_locomotive_window("creation", data.Textlines[12], "250x170",locomotive_window)
         if locomotive_window1:
             creation_window(locomotive_window1,GUI)
+            locomotive_window1.bind("<Destroy>", refresh)
+        
 
     def active_settings():
 
         id      = RFID_entry.get()
 
-        #controllo sugli input
-        if not id.isdigit() or int(id) < 1 :
-            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
-        else:
-            # if not database.calibred:
-                #Controllo che locmotives data non sia vuoto
-                if data.locomotives_data:
-                    index_to_replace = utilities.CalcolaIDtreno('ID',int(id))
-                    #Controllo che l'elemento inserito esista
-                    if index_to_replace is not None:
-                        #controllare se tutti i sensori sono calibrati quando si invia
-                        if not data.sensor_response[0] == "_/_":
-                            message = data.sensor_response[0] 
-                            message = message.split("/")
+        # if not database.calibred:
+            # Controllo che locmotives data non sia vuoto
+        if data.locomotives_data:
+            index_to_replace = utilities.CalcolaIDtreno('ID',int(id))
+            # Controllo che l'elemento inserito esista
+            if index_to_replace is not None:
+                # controllare se tutti i sensori sono calibrati quando si invia
+                if not data.sensor_response[0] == "_/_":
+                    message = data.sensor_response[0] 
+                    message = message.split("/")
 
-                            LocotagRFID = utilities.CalcolaIDtreno('RFIDtag', message[1])
-                            #Controllo che il messaggio non sia gia presente all'interno di quella locomotiva
-                            if LocotagRFID is None:
-                                data.calibred = True
-                                algo.calibred_RFID(index_to_replace,message[1])
-                                print("QUI")
-                                data.sensor_response[0] = "_/_"
-                                refresh()
-                            else:
-                                utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",locomotive_window,GUI,"")
-                        else:
-                            utilities.show_info(data.Textlines[70]+"\n"+ data.Textlines[71]+"\n"+data.Textlines[72])
+                    LocotagRFID = utilities.CalcolaIDtreno('RFIDtag', message[1])
+                    # Controllo che il messaggio non sia gia presente all'interno di quella locomotiva
+                    if LocotagRFID is None:
+                        data.calibred = True
+                        algo.calibred_RFID(index_to_replace,message[1])
+                        print("QUI")
+                        data.sensor_response[0] = "_/_"
+                        refresh("")
                     else:
-                        utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
+                        utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",locomotive_window,GUI,"")
                 else:
-                    #Potrei mettere l'altra finestra
-                    utilities.show_error_box(data.Textlines[35],locomotive_window,GUI,"")
+                    utilities.show_info(data.Textlines[62]+"\n"+ data.Textlines[63]+"\n"+data.Textlines[64])
+            else:
+                utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
+        else:
+            # Potrei mettere l'altra finestra
+            utilities.show_error_box(data.Textlines[35],locomotive_window,GUI,"")
         
         if data.control_var_errore:
             RFID_entry.delete(0, tk.END)
@@ -802,11 +825,11 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     tag_label.config(state="disabled")
     data.label = tag_label
 
-    image_refresh_path = utilities.asset_path('refresh','png')
-    locomotive_window.image_refresh = utilities.process_image(image_refresh_path, 'resize', 25, 25)
-    refresh_button = tk.Button(locomotive_window,  image= locomotive_window.image_refresh, borderwidth=0,
-                                command=refresh)
-    refresh_button.grid(row=0, column=0, pady=(10, 0), padx=(0,67), sticky=tk.E)
+    # image_refresh_path = utilities.asset_path('refresh','png')
+    # locomotive_window.image_refresh = utilities.process_image(image_refresh_path, 'resize', 25, 25)
+    # refresh_button = tk.Button(locomotive_window,  image= locomotive_window.image_refresh, borderwidth=0,
+    #                             command=refresh)
+    # refresh_button.grid(row=0, column=0, pady=(10, 0), padx=(0,67), sticky=tk.E)
     
     ADD_button = tk.Button(locomotive_window, text=data.Textlines[52], width=7,
                                 command=open_locomotive_creation_window)
@@ -817,13 +840,14 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
     RFID_label = tk.Label(locomotive_window, text=data.Textlines[92])
     RFID_label.grid(row=2, column=0, sticky=tk.W,padx=5)  # Posiziona a sinistra
+    #controllo sugli input,
     RFID_entry = tk.Entry(locomotive_window, width=5, validate="key", validatecommand=(validate_input, '%P'))
     RFID_entry.grid(row=2, column=0, pady=5, sticky=tk.E)  # Posiziona a destra
 
 
     columns = (data.Textlines[96], data.Textlines[95], data.Textlines[80])
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings')
-    refresh()
+    refresh("")
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[51], width=7,
                                 command=active_settings)
@@ -833,7 +857,6 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     #GUI.open_locomotive_creation_window()
     locomotive_window.bind('<+>', lambda event: open_locomotive_creation_window())
     locomotive_window.bind('<i>', lambda event: show_page_info())
-    locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
     locomotive_window.bind("<Escape>", lambda event: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
     locomotive_window.bind("<FocusIn>",   lambda event: RFID_entry.focus_set())
 
@@ -1071,7 +1094,7 @@ class circuit_window:
             current_color = start_button.cget("background")            
 
             if utilities.is_serial_port_available(data.serial_ports[1]):
-                if len(data.locomotives_data) < 2: utilities.show_info(data.Textlines[75])
+                if len(data.locomotives_data) < 2: utilities.show_info(data.Textlines[67])
                 if current_color == "red":
                     new_color = "#00ff00"
                     self.algo.start_algo(self)

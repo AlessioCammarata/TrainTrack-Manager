@@ -336,18 +336,39 @@ class GUI(tk.Frame):
 
     def open_info_window(self):
 
-        locomotive_window = self.open_locomotive_window("modify", data.Textlines[16], "275x150",self.container)
+        locomotive_window = self.open_locomotive_window("modify", data.Textlines[16], "600x400",self.container)
         if locomotive_window:
-            info_text = data.Textlines[60] + "\n" + data.Textlines[61] + "\n"+ data.Textlines[62] +"\n"+ data.Textlines[63]
 
+            info_text = (
+                    data.Textlines[100] +     "\n\n\n"
+                    "1. "+data.Textlines[101]+"\n\n"
+                    " - "+data.Textlines[102]+"\n\n"
+                    " - "+data.Textlines[103]+"\n\n\n"
+                    "2. "+data.Textlines[104]+"\n\n"
+                    " - "+data.Textlines[105]+"\n\n"
+                    " - "+data.Textlines[106]+"\n\n"
+                    " - "+data.Textlines[107]+"\n\n"
+                    " - "+data.Textlines[108]+"\n\n"
+                    " - "+data.Textlines[109]+"\n\n"
+                    " - "+data.Textlines[110]+"\n\n"
+                    " - "+data.Textlines[111]+"\n\n"
+                    " - "+data.Textlines[112]+"\n\n"
+                    " - "+data.Textlines[113]
+                )
+            
+            label_title = tk.Label(locomotive_window, text=data.Textlines[114], font=('Helvetica', 14, 'bold'))
+            label_title.pack(pady=10)
+            
+            text = tk.Text(locomotive_window, wrap='word', width=60, height=20)
+            text.insert(tk.END, info_text)
+            text.config(state='disabled')
+            text.pack(padx=10, pady=5)
+            
             locomotive_window.transient(self.container)
 
             locomotive_window.protocol("WM_DELETE_WINDOW", lambda: locomotive_window.destroy())
             locomotive_window.bind('<Return>', lambda event: locomotive_window.destroy())
             locomotive_window.bind("<Escape>", lambda event: locomotive_window.destroy())
-
-            label = tk.Label(locomotive_window, text=info_text)
-            label.pack(padx=5, pady=10)
 
             close_button = tk.Button(locomotive_window, text=data.Textlines[43], command=locomotive_window.destroy)
             close_button.pack(pady=10)
@@ -460,7 +481,7 @@ class GUI(tk.Frame):
 
     def change_language(self):
         language      = self.var_language.get()
-        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[74]):
+        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[66]):
             #utilities.translate(language)
             #self.container.on_close_root()
             # Identifica l'indice della stringa nel vettore
