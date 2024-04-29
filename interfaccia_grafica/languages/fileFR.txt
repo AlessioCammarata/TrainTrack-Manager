@@ -66,8 +66,8 @@ Appuyez sur CONFIRMER et répétez la procédure
 Êtes-vous sûr de vouloir continuer?
 En procédant, toutes les fenêtres supplémentaires par rapport à la principale seront fermées.
 Pour démarrer le circuit automatique, il faut insérer au moins 2 locomotives.
-
-
+Pour modifier les paramètres relatifs aux locomotives maximales, le nombre de locomotives dans le tableau DOIT être inférieur à celles déjà présentes.
+Si vous continuez, le tableau sera vidé.
 
 
 

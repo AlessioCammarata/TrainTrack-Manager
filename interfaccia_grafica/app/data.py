@@ -107,6 +107,8 @@ Sensors = {
     "Sensore 7":   ["","","","","black"],
     "Sensore 8":   ["","","","","red"]
 }
+#La label è quella della pagina rfid
+label = ""
 
 #array dei canvas
 canvas_array = [""]
@@ -131,6 +133,7 @@ Se partono da 7 viaggiano verso sinistra e cominciano alla stazione
  8-ABEDCB     -> Schiva F,G,H         -> Ricomincia da B, BEDCB
  9-ABEDCGHFE  -> Non schiva niente    -> Ricomincia Da E, EDCGHF
 '''
+#Test di algo
 #Per ora senza ripetizioni
 LRoutes = {
 1: [7,3,4,5,6,8],
@@ -147,10 +150,7 @@ RRoutes = {
 9: [1,2,5,4,3,7,8,6]
 }
 
+
 percorsi_assegnati = []
 criticita = []
 root_occupied = ""
-
-
-#La label è quella della pagina rfid
-label = ""

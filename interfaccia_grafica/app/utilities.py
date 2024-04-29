@@ -119,7 +119,7 @@ def find_port_path(function_port):
 #Funzione che controlla se la porta seriale chiamata è collegata o meno e se è stata inizializzata - in caso non sia stata inizializzata, la inizializza
 def is_serial_port_available(function_port):
     if data.root:
-        show_info("ROOT")
+        # show_info("ROOT")
         return True
     if data.serial_port_info[function_port][1]:
         # Costruisci il percorso del dispositivo della porta seriale

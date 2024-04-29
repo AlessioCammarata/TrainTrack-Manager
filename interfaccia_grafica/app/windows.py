@@ -43,7 +43,7 @@ def creation_window(locomotive_window,GUI):
         controllo_loco  = len(data.locomotives_data)<data.max_loco #Controllo per vedere che il numero delle locomotive non sia al limite
 
         #controllo sugli input
-        if name == "" or int(loco_id)==0:
+        if name == "" or int(loco_id)==0 or not loco_id.isdigit():
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
 
         elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
@@ -179,7 +179,7 @@ def remove_window(locomotive_window,GUI):
         id      = ID_entry.get()
 
         #controllo sugli input
-        if name == "" :
+        if name == "" or not id.isdigit():
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
 
         else:
@@ -262,11 +262,10 @@ def modify_window(locomotive_window,GUI):
         color       = var_color.get()
 
         #Assegnazione di default
-        if loco_id == "":
-            loco_id = "404"
+        if loco_id == "": loco_id = "404"
 
         #controlli sugli input
-        if int(loco_id)==0 or int(id)==0:
+        if int(loco_id)==0 or int(id)==0 or not id.isdigit():
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
 
         elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
@@ -534,6 +533,7 @@ def settings_window(locomotive_window,GUI):
         #Assegnazione di default
         if max_loco == '' : max_loco = str(data.max_loco)
         if int(max_loco) == 2005 : data.root = True
+
         #Distruttivo ma non so come scriverlo in meno righe
         for item in data.SO:
             data.SO[item] = False
@@ -543,7 +543,7 @@ def settings_window(locomotive_window,GUI):
         if rfid == centralina:
             utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
         elif int(max_loco) > data.max_loco_standard:
-            utilities.show_error_box(data.Textlines[31] + " {} locomotive".format(data.max_loco_standard),locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[31] + " {} ".format(data.max_loco_standard) + data.Textlines[123],locomotive_window,GUI,"")
         elif not utilities.port_exist(centralina) and port0_enabled:
             utilities.show_error_box(data.Textlines[32],locomotive_window,GUI,"")
         elif not utilities.port_exist(rfid) and port1_enabled:
@@ -553,20 +553,19 @@ def settings_window(locomotive_window,GUI):
             rfid = int(rfid)
             max_loco = int(max_loco)
 
-            #kfdsfhjsh
-            print("DENTRO")
+            #Controlla che il max loco non sia uguale a quello gia presente, nel caso in cui sia minore al numero di locomotive inserite,le cancella tutte
             if max_loco != data.max_loco:
-                if not data.locomotives_data:
-                    data.max_loco = max_loco
-                else:
-                    if utilities.are_you_sure("Per cambiare le impostazioni relative alle locomotive massime, il database DEVE essere VUOTO. \nSe si continua verrà svuotata la tabella.\n"):
-                        data.locomotives_data = []
+                if data.locomotives_data and max_loco < len(data.locomotives_data):
+                    if utilities.are_you_sure( data.Textlines[68] +"\n"+ data.Textlines[69] +"\n"):
+                        #Rimuove tutte le locomotive, fino a che non si arriva al limite stabilito
+                        for i in range(len(data.locomotives_data)-max_loco):
+                            data.locomotives_data.remove(data.locomotives_data[-1])
                         data.max_loco = max_loco
                         GUI.update_table()
+                else:
+                    data.max_loco = max_loco
 
-
-            # print(database.serial_port_info)
-            # print(data.serial_port_info[data.serial_ports[0]])
+            #Si controlla che almeno una delle due sia diversa
             if centralina != data.serial_ports[0] or rfid != data.serial_ports[1]:
                 # Creare un dizionario temporaneo con le chiavi modificate
                 temp_dict = {
@@ -581,13 +580,18 @@ def settings_window(locomotive_window,GUI):
                 data.serial_ports[0] = centralina
                 data.serial_ports[1] = rfid
 
-                print(data.serial_ports)
-                print(data.SO)
+                # print(data.serial_ports)
+                # print(data.SO)
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
             data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
             data.serial_port_info[data.serial_ports[1]][1]      = port1_enabled
-            
+        
+        if data.root:
+            #Amministratore
+            utilities.show_info("ROOT")
+
+        #Controllo se la finestra ha avuto degli errori (reset) o no (chiude) 
         if data.control_var_errore:
             max_loco_entry.delete(0, tk.END)
             data.control_var_errore = False
@@ -606,14 +610,8 @@ def settings_window(locomotive_window,GUI):
                 checkbox0.config(state='disabled')
             else:
                 checkbox0.config(state='normal')
-
-    # def open_dropdown_menu(menu_button):
-    #     menu = port0_button["menu"]
-    #     if isinstance(menu, tk.Menu):
-    #         menu.post(menu_button.winfo_rootx(), menu_button.winfo_rooty() + menu_button.winfo_height())
-    #     else:
-    #         print("Menu non disponibile per il Menubutton:", menu_button)
         
+    #Controlla le prime 10 porte se sono libere
     ports_available = []
     for i in range(10):
         if utilities.port_exist(i):
@@ -723,13 +721,11 @@ def settings_window(locomotive_window,GUI):
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
     locomotive_window.bind("<FocusIn>",   lambda event: max_loco_entry.focus_set())
-    # self.locomotive_window.bind('<Control-l>', lambda event: open_dropdown_menu(port0))
-    # self.locomotive_window.bind('<Control-r>', lambda event: open_dropdown_menu(port1))
-    # self.locomotive_window.bind('<Control-s>', lambda event: open_dropdown_menu(SO))
 
+#Logica della finestra delle impostazioni della pagina dei tag RFID
 def RFID_window(locomotive_window,algo,circuit_window,GUI):
     
-    locomotive_window.info_window = None
+    # locomotive_window.info_window = None
 
     def show_page_info():
 
@@ -782,8 +778,10 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
         id      = RFID_entry.get()
 
-        # if not database.calibred:
-            # Controllo che locmotives data non sia vuoto
+        #Assegnazione di default
+        if id == "": id = 0
+
+        # Controllo che locmotives data non sia vuoto
         if data.locomotives_data:
             index_to_replace = utilities.CalcolaIDtreno('ID',int(id))
             # Controllo che l'elemento inserito esista
@@ -827,12 +825,6 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     tag_label.grid(row=0, column=0, pady=(10, 0), padx=(60,0),sticky=tk.W)
     tag_label.config(state="disabled")
     data.label = tag_label
-
-    # image_refresh_path = utilities.asset_path('refresh','png')
-    # locomotive_window.image_refresh = utilities.process_image(image_refresh_path, 'resize', 25, 25)
-    # refresh_button = tk.Button(locomotive_window,  image= locomotive_window.image_refresh, borderwidth=0,
-    #                             command=refresh)
-    # refresh_button.grid(row=0, column=0, pady=(10, 0), padx=(0,67), sticky=tk.E)
     
     ADD_button = tk.Button(locomotive_window, text=data.Textlines[52], width=7,
                                 command=open_locomotive_creation_window)
@@ -930,7 +922,7 @@ class circuit_window:
         #Flag che si utilizza per creare una sola volta i deviatoi
         self.flag = False
 
-        
+    #Funzione che permette di cambiare il colore del sensore quando passa un treno
     def change_Sensors(self,text,RFIDtag):
         id = utilities.CalcolaIDtreno('RFIDtag',RFIDtag)
         data.canvas_array[0].itemconfig(data.Sensors[text][3], fill=data.locomotives_data[id]['Colore'])
@@ -953,47 +945,16 @@ class circuit_window:
             # new_color = "#8fbc8f"   if current_color == "#f08080" else "#f08080"
             # new_text  =    "/"      if current_color == "#f08080" else "|"
             button.config(background=new_color,text=new_text)
-        # data.serial_port_info[self.serial_port][1] 
+
         #Controlla che la porta relativa la centralina abbia il permesso e che esista il percorso
         if utilities.is_serial_port_available(data.serial_ports[0]):
             comandi.cambia_deviatoio(data.Turnouts[text][1])
         else:
             print("MOCC")
         #Cambio lo stato del Turnout, su questa logica si basa il colore rosso 
-            # if not data.Turnouts[text][0]:
-            #     data.Turnouts[text][0] = True
-            # else:
-            #     data.Turnouts[text][0] = False 
         self.change_color(text,data.Turnouts[text][0])
         data.Turnouts[text][0] = not data.Turnouts[text][0]
         
-    #Funzione che controlla se lo scambio_doppio è selezionato da almeno 1 dei due, se è cosi non cambia il centrale ma l'altro, senno lo cambia
-    # def controlla_scambi_doppi(self,text):
-    #     if database.Turnouts[text][3] == database.Turnouts['Cambio 4'][3]:
-    #         #qui siamo entrati sia nel caso in cui text è 4 sia se è 8
-    #         if database.Turnouts['Cambio 4'][0] and database.Turnouts['Cambio 8'][0]:
-    #             #dato che una è una curva e l'altra è un segmento, bisogna specificare il caso
-    #             if text == 'Cambio 4':
-    #                 database.canvas_array[0].itemconfig(database.Turnouts[text][2], fill="red")
-    #             else:
-    #                 database.canvas_array[0].itemconfig(database.Turnouts[text][2], outline="red")
-    #         else:
-    #             #nel caso in cui non siano entrambi attivi, esegue semplicemente la funzione
-    #             self.change_color(text,database.Turnouts[text][0])
-            
-    #     elif database.Turnouts[text][3] == database.Turnouts['Cambio 6'][3]:
-    #         #qui siamo entrati sia nel caso in cui text è 6 sia se è 7
-    #         if database.Turnouts['Cambio 6'][0] and database.Turnouts['Cambio 7'][0]:
-    #             #dato che sono entrambe curve basta un solo comando, non si cambia quello comune
-    #             database.canvas_array[0].itemconfig(database.Turnouts[text][2], outline="red")
-    #         else:
-    #             #nel caso in cui non siano entrambi attivi, esegue semplicemente la funzione
-    #             self.change_color(text,database.Turnouts[text][0])
-    #     else:
-    #         #nel caso in cui non siano tra gli scambi doppi, esegue semplicemente la funzione
-    #         self.change_color(text,database.Turnouts[text][0])
-
-
     #Funzione che ccambia il colore dello scambio in base a come è nel circuito
     def change_color(self,text,activated):
         if text not in {'Cambio 3', 'Cambio 4', 'Cambio 5'}:
@@ -1013,13 +974,14 @@ class circuit_window:
                 data.canvas_array[0].itemconfig(data.Turnouts[text][3], outline="red")
                 data.canvas_array[0].itemconfig(data.Turnouts[text][2], fill="black")
 
+    #Funzione che apre la finestra delle impostazioni RFID
     def open_RFID_window(self):
         #GUI = self.GUI
         locomotive_window = self.GUI.open_locomotive_window("RFID", data.Textlines[17], "312x360",self.locomotive_window)
         if locomotive_window:
             RFID_window(locomotive_window,self.algo,self.locomotive_window,self.GUI)     
 
-
+    #Funzione principale del circuito, qui si trova il canvas
     def open_circuit_window(self,automatico):
         #creo un oggetto Algorithm
         '''
@@ -1031,7 +993,7 @@ class circuit_window:
         ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
         '''
  
-            #funzione che gestisce il bottone che attiva la webcam
+    #funzione che gestisce il bottone che attiva la webcam
         def change_color_webcam():
             current_color = webcam.cget("background")
             new_color = "green" if current_color == "blue" else "blue"
@@ -1039,6 +1001,7 @@ class circuit_window:
             
             if current_color == "blue" :
                 controlloCam = self.camera.cattura_webcam("esiste")
+                #Controlla che la cam sia aperta ed esista
                 if controlloCam:
                     webcam.config(background=new_color,text=new_text)
                     self.camera.cattura_webcam("")
@@ -1050,11 +1013,12 @@ class circuit_window:
 
     #funzione che gestisce il cambio da manuale a automatico
         def change_window(text,root):
-            #root.destroy()
+
             #controllo per effettuare correttamente il cap.release
             if text==data.Textlines[56] and self.camera.impostazioni[0]!="": 
                 self.camera.cattura_webcam("chiudi")
             
+            #Controlla se la porta dei sensori è abilitata
             if data.serial_port_info[data.serial_ports[1]][1]:
                 
                 #Distrugge tutti i widget presenti nella pagina corrente
@@ -1072,26 +1036,21 @@ class circuit_window:
     # Funzione per creare un label con un checkbutton
         def create_label_with_button(canvas, x, y, text):
             label = canvas.create_text(x, y, text=data.Textlines[97] +" "+ text[-1], anchor=tk.W)  # Crea il testo sul canvas
-            if automatico:
-                pass
-                #button = tk.Button(canvas, text="OFF", width=3, height=1,bg="blue" ,command=lambda: change_color_webcam(text,button))
+            #crea tutti i bottoni dgli scambi
+            if data.Turnouts[text][0]:
+                color = "#8fbc8f"
+                text_turnout = "/"
             else:
-                if data.Turnouts[text][0]:
-                    color = "#8fbc8f"
-                    text_turnout = "/"
-                else:
-                    color = "#f08080"
-                    text_turnout = "|"
-                button = tk.Button(canvas, text=text_turnout, width=3, height=1,bg=color ,command=lambda: self.change_Turnouts(text,button))
-                #Otteniamo il numero dello scambio, 2 metodi uno piu generale uno piu specifico
-                id = text[-1]
-                #id = ''.join(c for c in text if c.isdigit())
-                root.bind("<KeyPress-{}>".format(id), lambda event: self.change_Turnouts(text,button))
+                color = "#f08080"
+                text_turnout = "|"
+            button = tk.Button(canvas, text=text_turnout, width=3, height=1,bg=color ,command=lambda: self.change_Turnouts(text,button))
+            #Otteniamo il numero dello scambio
+            id = text[-1]
+            root.bind("<KeyPress-{}>".format(id), lambda event: self.change_Turnouts(text,button))
             canvas.create_window(x + 55, y + 0, window=button, anchor=tk.W)  # Crea il bottone vicino al testo sul canvas
             return label, button
 
-  
-
+    #Funzione che da inizio se possibile all'algoritmo, essa avvia i sensori
         def START():
             #gestione grafica degllo start dell'Auto version
             current_color = start_button.cget("background")            
@@ -1111,8 +1070,7 @@ class circuit_window:
                     #Disfuznione del tasto
                     root.unbind("<s>")
                 start_button.config(background=new_color)
-
-                    
+      
             else:
                 utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,self.GUI,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False
@@ -1121,7 +1079,6 @@ class circuit_window:
         #---------CREAZIONE DELLA PAGINA---------
         
         root = self.locomotive_window
-        # root.configure(bg="blue")
 
         canvas_width = 1200
         canvas_height = 708
@@ -1131,12 +1088,6 @@ class circuit_window:
 
         canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, bg="white")
         canvas.pack(side=tk.LEFT, expand=True)
-
-        #Test
-        # opacity_path = utilities.asset_path('power_icon','png')
-        # database.label_opacity_circuit = tk.Label(root, image=utilities.process_image(opacity_path,'opacity',1))
-        # database.label_opacity_circuit.pack()
-
 
         #tengo in memoria il canvas
         data.canvas_array[0] = canvas
@@ -1179,7 +1130,6 @@ class circuit_window:
             canvas.create_text(50, 400, text="|2|", anchor=tk.W) 
             canvas.create_text(870,370, text="|1|", anchor=tk.W) 
 
-            #webcam = create_label_with_button(canvas,600,350,"Attiva Webcam")
             #Tolgo i bottoni che non posso schiacciare
             for i in data.Turnouts:
                 root.unbind("<KeyPress-{}>".format(i[-1]))
@@ -1212,11 +1162,7 @@ class circuit_window:
         
             self.container.attributes("-alpha", 1)
             self.locomotive_window.grab_release()
-        # feature_button.pack(side=tk.LEFT)
-        #locomotive_label.pack(padx=472,pady=10,side=tk.LEFT)
   
-
-
         #----DISEGNO CIRCUITO---- link docs: https://www.pythontutorial.net/tkinter/tkinter-canvas/
 
         # Percorso dell'immagine originale
@@ -1231,7 +1177,7 @@ class circuit_window:
         casetta = utilities.process_image(casetta_path,'resize', 100, 100)
         # binario = process_image(binario_path,'resize', 100, 100)
         sensore = utilities.process_image(sensore_path,'resize', 40, 40)
-        sensore_rotated1 = utilities.process_image(sensore_path,'rotate', -90, 40, 40)  # Ruota a sinistra
+        # sensore_rotated1 = utilities.process_image(sensore_path,'rotate', -90, 40, 40)  # Ruota a sinistra
         sensore_rotated2 = utilities.process_image(sensore_path,'rotate', -180, 40, 40)  # Ruota di 180
         sensore_rotated3 = utilities.process_image(sensore_path,'rotate', 90, 40, 40)  # Ruota a destra
 
@@ -1313,15 +1259,6 @@ class circuit_window:
         #linea in alto dritta
         canvas.create_line((293, 31), (1000, 31), width=8, fill='black')
         canvas.create_line((293, 31), (1000, 31), width=4, fill='white')
-
-        
-        # Disegna l'immagine come sfondo centrata sulla linea superiore
-        # x = 270
-        # for i in range(8):
-        #     canvas.create_image(x, -20, anchor=tk.NW, image=binario)
-        #     x += 95
-        #     i +=1
-        # canvas.create_image(365, -20, anchor=tk.NW, image=binario)
         
         #curva esterna in alto a destra
         canvas.create_arc((825, 270), (1175, 30), style=tk.ARC, start=0, extent=90, width=8, outline="black")
@@ -1535,18 +1472,6 @@ class circuit_window:
                         comandi.crea_deviatoio(i,i+40) # vanno nel loro pin corrispondente + 40 
                     
                     data.Turnouts[str][1] = i
-
-        # blocco_RFID = tk.Canvas(root, bg="#00ff00", highlightthickness=0)
-        # blocco_RFID.place(x=0, y=0, relwidth=1, relheight=1)
-
-        
-        # # Aggiungere la gestione del click del mouse sui label
-        # cambi_label.bind("<Button-1>", lambda event: label_clicked(event, "Cambi"))
-        # semafori_label.bind("<Button-1>", lambda event: label_clicked(event, "Semafori"))
-
-        # # Funzione per gestire il click del mouse sui label
-        # def label_clicked(event, label_text):
-        #     print("Label cliccato:", label_text)
 
         # Eseguire il loop principale
         root.mainloop()

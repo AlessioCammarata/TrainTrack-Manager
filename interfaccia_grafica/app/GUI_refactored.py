@@ -515,7 +515,7 @@ class GUI(tk.Frame):
         self.locomotive_label.configure(text=data.Textlines[2])
         
         #cambio il nome delle colonne della tabella
-        self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
+        self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[80])
         self.tree['columns'] = self.columns
         for col in self.columns:
             self.tree.heading(col, text=col)

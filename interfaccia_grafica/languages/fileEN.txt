@@ -66,8 +66,8 @@ Press CONFIRM and repeat the procedure.
 Are you sure you want to continue?
 By proceeding, all additional windows compared to the main one will be closed.
 To start the automatic circuit, you need to insert at least 2 locomotives.
-
-
+To change the settings related to maximum locomotives, the number of locomotives in the table MUST be less than those already present.
+If you continue, the table will be emptied.
 
 
 
