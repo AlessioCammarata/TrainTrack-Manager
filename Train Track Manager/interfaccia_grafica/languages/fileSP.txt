@@ -1,0 +1,127 @@
+-Títulos de ventanas | 1-18
+Gestión de Locomotoras
+DATOS DE LOCOMOTORAS
+ID Local
+ID de Locomotora
+Color
+Nombre
+AGREGAR LOCOMOTORA
+ELIMINAR LOCOMOTORA
+MODIFICAR LOCOMOTORA
+DETENER GENERAL
+Configuraciones
+Creación de Locomotora
+Eliminación de Locomotora
+Eliminación de Locomotora
+Gestión de circuito/control automático
+Información
+Configuraciones RFID
+INICIO GENERAL
+-Mensajes de Error | 20-41
+No se puede abrir otra página
+El puerto serie COM
+no está disponible
+No se pueden agregar más locomotoras
+Entrada incorrecta
+Has superado el límite de longitud/tamaño
+No se puede agregar más de una locomotora con el mismo nombre o ID (máx.
+locomotoras para este circuito)
+ID y nombre no coinciden con ninguna locomotora registrada
+ID no válido
+Nombre o Locoid ya ingresado
+El sistema no puede manejar más de
+La ruta al puerto relacionado con la centralita no existe
+La ruta al puerto relacionado con los sensores RFID no existe
+Tag ya ingresado en la locomotora
+Tabla vacía, ingrese locomotoras
+Conecta una cámara
+Antes de iniciar el modo automático, conecta y habilita el puerto relacionado con los sensores
+Error de decodificación. Asegúrate de que el dispositivo esté enviando datos correctamente.
+Error al abrir el puerto serie:
+REINICIAR el algoritmo
+está desconectado
+-Botones | 43 - 57
+Cerrar
+Guardar
+Siguiente
+Anterior
+Detener
+Eliminar
+Modificar
+Activar
+Confirmar
+Agregar
+VIDEO APAGADO
+VIDEO ENCENDIDO
+AUTOMÁTICO
+MANUAL
+Habilitar
+
+-Mensajes de advertencia o Información | 60 - 68
+Como se ha ingresado el último ID, al avanzar, iniciarás el circuito
+Antes de continuar, asegúrate de tener solo la locomotora a la que deseas cambiar la dirección en las vías
+Para continuar, calibra las etiquetas RFID.
+Pasa la locomotora correspondiente al ID ingresado bajo el sensor correspondiente a su ID
+Presiona CONFIRMAR y repite el procedimiento
+¿Estás seguro de que quieres continuar?
+Al proceder, se cerrarán todas las ventanas adicionales en comparación con la principal.
+Para iniciar el circuito automático, es necesario insertar al menos 2 locomotoras.
+
+
+
+
+
+
+
+
+
+
+
+-Etiquetas | 80 - 97
+Nombre
+LocoID:
+Color*:
+ID:
+ID de la locomotora a modificar:
+Nuevo
+Ajustar la velocidad:
+Dirección:
+Puerto serial de la Central DCC:
+Puerto serial de los sensores RFID:
+Número máximo de locomotoras:
+Sistema Operativo actual:
+ID del sensor a asociar:
+CONTROL AUTOMÁTICO DEL CIRCUITO
+CONTROL MANUAL DEL CIRCUITO
+etiqueta RFID
+ID Local
+Cambio
+
+Información | 100 - 122
+Qué se puede hacer con Train Track:
+Gestión de locomotoras
+Desde aquí puedes agregar locomotoras a tu sistema, presionando el botón o pulsando '+' (en el teclado).
+Desde la interfaz también puedes modificar 'm' (en el teclado), eliminar '-', y controlar las locomotoras que has añadido.
+Botones Principales
+Con el botón rojo o con la tecla 'o' (en el teclado) puedes encender la corriente en el circuito, asegúrate de que TODO esté conectado correctamente.
+Después de agregar locomotoras a la tabla y encender la corriente, podrás controlar las locomotoras, ya sea presionando el botón con la imagen de un tren, o escribiendo el número correspondiente al ID local de la locomotora. En caso de tener más de 9 locomotoras, tendrás que presionar 'Control-número', por lo tanto, para la locomotora 15 'Control-5'.
+Con el botón de parada general o con la tecla 'barra espaciadora' (en el teclado) puedes detener el sistema sin cortar la corriente.
+Con el botón del gamepad o con la tecla 'c' (en el teclado) puedes ver el dibujo del circuito e intercambiar las desviaciones en tiempo real, se pueden hacer clic en ellas o se puede hacer clic en la tecla correspondiente al número de la desviación (en el teclado), esto en el modo MANUAL.
+También está disponible la versión automática, pulsando de nuevo la tecla 'c', que gestiona el sistema solo a través de los sensores, pero se necesitan al menos 2 locomotoras y como máximo 3.
+Desde la configuración o con la tecla 's' (en el teclado) puedes configurar los puertos que comunicarán con los sistemas Arduino.
+Esta página también se puede acceder presionando la tecla 'i' (en el teclado).
+Hasta 4 idiomas están disponibles, todos con sus traducciones certificadas.
+Todas las páginas se pueden cerrar con la tecla 'esc', aquellas que tienen el botón para enviar el comando, en caso de que no haya errores, también se pueden cerrar con la tecla 'enter'.
+Información General sobre la Aplicación
+
+Sistema de Gestión Automática
+En la página principal puedes ver el paso de las locomotoras mediante el cambio de color de los sensores mostrados en el mapa.
+También es posible utilizar una cámara si se desea conectar el sistema a distancia, solo tienes que seleccionar la cámara como principal en el sistema operativo. Se activará al presionar la tecla 'v' o la tecla 'VIDEO OFF'.
+Calibración de las etiquetas RFID de las locomotoras.
+Acerca la locomotora ya insertada en la tabla, lo que es leído por los sensores se mostrará en el cuadro de arriba, luego selecciona el ID Local de esa locomotora y confirma.
+Si no tienes al menos 2 locomotoras, el algoritmo no arrancará, puedes agregarlas desde el botón agregar o con la tecla '+'.
+Información sobre el circuito automático
+
+
+
+SP

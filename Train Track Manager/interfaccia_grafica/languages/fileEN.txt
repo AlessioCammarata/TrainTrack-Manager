@@ -1,0 +1,127 @@
+-Window Titles | 1-18
+Management of Locomotives
+LOCOMOTIVE DATABASE
+Local ID
+Locomotive ID
+Color
+Name
+ADD LOCOMOTIVE
+REMOVE LOCOMOTIVE
+EDIT LOCOMOTIVE
+GENERAL STOP
+Settings
+Locomotive Creation
+Locomotive Removal
+Locomotive Deletion
+Control Circuit/Auto Management
+Information
+RFID Settings
+GENERAL START
+-Error Messages | 20-41
+You cannot open another page
+the serial port COM 
+is not available
+You cannot add more locomotives
+Incorrect input entered
+You have exceeded the length/size limit
+You cannot enter more than one locomotive with the same name or ID (max 
+locomotives for this circuit)
+ID and name do not match any registered locomotive
+Invalid ID
+Name or LocoID already entered
+The system cannot manage more than
+The path to the control unit port does not exist
+The path to the RFID sensor port does not exist
+Tag already inserted into the locomotive
+Table empty, insert locomotives
+Connect a camera
+Before starting automatic mode, connect and enable the port related to the sensors
+Decoding error. Make sure the device is sending data correctly.
+Error opening serial port:
+RESTART the algorithm
+is disconnected
+-Buttons | 43 - 56
+Close
+Save
+Next
+Go Back
+Stop
+Remove
+Edit
+Activate
+Confirm
+Add
+VIDEO OFF
+VIDEO ON
+AUTOMATIC
+MANUAL
+Enable
+
+-Warning or Information Messages | 60 - 68
+Since the last ID has been entered, moving forward, you will start the circuit
+Before proceeding, make sure you have only the locomotive you want to change the address on the tracks
+To proceed, calibrate the RFID tags.
+Pass the locomotive corresponding to the entered ID under the sensor corresponding to its ID
+Press CONFIRM and repeat the procedure.
+Are you sure you want to continue?
+By proceeding, all additional windows compared to the main one will be closed.
+To start the automatic circuit, you need to insert at least 2 locomotives.
+
+
+
+
+
+
+
+
+
+
+
+-Labels | 80 - 97
+Name
+LocoID:
+Color*:
+ID:
+Locomotive ID to edit:
+New
+Adjust speed:
+Direction:
+DCC Control Unit Serial Port Number:
+RFID Sensor Serial Port Number:
+Max number of locomotives:
+Current Operating System:
+Sensor ID to associate:
+CIRCUIT AUTOMATIC CONTROL
+CIRCUIT MANUAL CONTROL
+RFID tag
+Local ID
+Turnout
+
+Information | 100 - 122
+What you can do with Train Track:
+Locomotive Management
+From here you can add locomotives to your system, by pressing the button or by pressing '+' (on the keyboard).
+From the interface you can also modify 'm' (on the keyboard), delete '-', and control the locomotives you have added.
+Main Buttons
+With the red button or with the 'o' key (on the keyboard) you can turn on the power to the circuit, make sure EVERYTHING is connected correctly.
+After adding locomotives to the table and turning on the power, you will be able to control the locomotives, either by pressing the button with the picture of a train, or by typing the number corresponding to the local ID of the locomotive. In case you have more than 9 locomotives, you will need to press 'Control-number', so for locomotive 15 'Control-5'.
+With the general stop button or with the 'spacebar' key (on the keyboard) you can stop the system without cutting off the power.
+With the gamepad button or with the 'c' key (on the keyboard) you can view the circuit drawing and switch the points in real time, they can be clicked on or you can click on the key corresponding to the point number (on the keyboard), this in MANUAL mode.
+There is also the automatic version, by pressing the 'c' key again, which manages the system alone through the sensors, but at least 2 locomotives and up to 3 are needed.
+From the settings or with the 's' key (on the keyboard) you can set the ports that will communicate with the Arduino systems.
+This page can also be accessed by pressing the 'i' key (on the keyboard).
+Up to 4 languages are available, all with their certified translations.
+All pages can be closed with the 'esc' key, those that have the button to send the command, in case there are no errors, can also be closed with the 'enter' key.
+General Information about the Application
+
+Automatic Management System
+On the main page you can see the passage of locomotives by the change of color of the sensors shown on the map.
+It is also possible to use a camera if you want to connect the system remotely, just select the camera as the main one in the operating system. It will be activated by pressing the 'v' key or the 'VIDEO OFF' key.
+RFID tag calibration of locomotives.
+Approach the locomotive already inserted in the table, what is read by the sensors will be shown in the box above, then select the Local ID of that locomotive and confirm.
+If you do not have at least 2 locomotives, the algorithm will not start, you can add them from the add button or with the '+' key.
+Information about the automatic circuit
+
+
+
+EN
