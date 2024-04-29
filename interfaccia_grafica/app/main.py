@@ -38,6 +38,7 @@ if __name__ == "__main__":
     # data.path = parent_directory
     data.path = folder_path
 
+    #Aggiorno la lingua, con quella standard+.
     utilities.translate()
     app = App()
     gui = GUI_refactored.GUI(app)

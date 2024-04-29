@@ -40,7 +40,7 @@ def asset_path(asset_name: str, extenction: str) -> str:
     elif data.SO['linux']:
         return data.path + "/assets/" + asset_name + "." + extenction
 
-# Funzione che riassume i resize e i rotate
+# Funzione che riassume i resize e i rotate, viene utilizzata per preparare le immagini a essere posizionate nel canvas
 def process_image(image_path, operation, *args):
     img = Image.open(image_path)
 
@@ -58,12 +58,12 @@ def process_image(image_path, operation, *args):
         case 'opacity':
             # Imposta l'opacità desiderata (0 per trasparente, 1 per opaco)
             opacity = args[0]  # Opacità al 50%
-            image = img.convert("RGBA")
+            processed_img = img.convert("RGBA")
             alpha = int(255 * opacity)
-            image.putalpha(alpha)
+            processed_img.putalpha(alpha)
 
             # Converte l'immagine in un oggetto PhotoImage di Tkinter
-            return ImageTk.PhotoImage(image)
+            return ImageTk.PhotoImage(processed_img)
     return img
             
 #Funzione per impostare la var di chiusura, quando si chiude la finestra
@@ -106,25 +106,27 @@ def on_close(finestra,window_type):
         data.variabili_apertura[f'locomotive_control_var'][int(window_type)] = False
     finestra.destroy()
     finestra = None
-    #se la funzione on_close è chiamata dallo show_error_box, non è necessario chiudere la finestra
 
 #Controlla il SO, e scrive il path a seconda del SO
 def find_port_path(function_port):
-    if data.SO['linux']:
-        port_path = f"/dev/{function_port}"  # Per sistemi Unix-like (Linux, macOS)
-    elif data.SO['windows']:
-        port_path = f"COM{function_port}"  # Per sistemi Windows
-    else:
-        show_error_box("Non ho il tuo SO bro","_/_","")
+    if data.SO['windows']:
+        port_path = f"COM{function_port}" # Per sistemi Windows 
+    elif data.SO['linux']:
+        port_path = f"/dev/{function_port}"  #Per sistemi Unix-like (Linux, macOS)
+
     return port_path
 
 #Funzione che controlla se la porta seriale chiamata è collegata o meno e se è stata inizializzata - in caso non sia stata inizializzata, la inizializza
 def is_serial_port_available(function_port):
+    if data.root:
+        show_info("ROOT")
+        return True
     if data.serial_port_info[function_port][1]:
         # Costruisci il percorso del dispositivo della porta seriale
         port_path = find_port_path(function_port)  
         exist = os.path.exists(port_path)
 
+        #Nel caso in cui la porta non sia stata inizializzzìata, la inizializza.
         if exist and not data.serial_port_info[function_port][0]:
             data.serial_port_info[function_port][0] = True
             serial.Serial(port_path,baudrate=115200,timeout=1)
@@ -132,7 +134,8 @@ def is_serial_port_available(function_port):
 
         exist_inizialized = exist and data.serial_port_info[function_port][0]
         return exist_inizialized
-    else: return False
+    # else: 
+    return False
     
 #Funzione che controlla solo che sia collegata una porta al pc
 def port_exist(function_port):

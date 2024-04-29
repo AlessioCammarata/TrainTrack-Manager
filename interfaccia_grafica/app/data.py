@@ -8,6 +8,8 @@
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
 
 '''
+root = False
+
 SO = {
     'windows': True,
     'linux' :  False
@@ -21,8 +23,8 @@ languages = ['IT','EN','FR','SP']
 
 locomotives_data =      []           # Lista per salvare i dati delle locomo
 #locomotive_names =      []           # Lista per i nomi delle locomotive
-max_loco_standard =     11           # Numero max di locomotive che il sistema puo gestire
-max_loco         =      11           # Numero max di locomotive che il sistema lavora
+max_loco_standard =     20           # Numero max di locomotive che il sistema puo gestire
+max_loco         =      20           # Numero max di locomotive che il sistema lavora
 max_length_name  =      20           # Numero max di caratteri che il nome puo avere
 max_size_loco_id =   10293           # Numero max dell'indirizzo che si puo dare ad una locomotiva
 K_velocita       = 126/100           # Costante basata sulla velocita massima possibile di una locomotiva (0-126)

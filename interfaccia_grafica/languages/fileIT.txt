@@ -66,8 +66,8 @@ Premi CONFERMA e rifai il procedimento
 Sei sicuro di voler continuare?
 Procedendo tutte le finestre in piu ripsetto alla principale verranno chiuse.
 Per avviare il circuito automatico bisogna inserire almeno 2 locomotive
-
-
+Per cambiare le impostazioni relative alle locomotive massime, il database DEVE essere VUOTO.
+Se si continua verrà svuotata la tabella.
 
 
 
