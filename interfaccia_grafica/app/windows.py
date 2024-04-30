@@ -532,7 +532,7 @@ def settings_window(locomotive_window,GUI):
         print(port1_enabled)
         #Assegnazione di default
         if max_loco == '' : max_loco = str(data.max_loco)
-        if int(max_loco) == 2005 : data.root = True
+        data.root = False if int(max_loco) == 2005 and data.root else True 
 
         #Distruttivo ma non so come scriverlo in meno righe
         for item in data.SO:
@@ -589,7 +589,8 @@ def settings_window(locomotive_window,GUI):
         
         if data.root:
             #Amministratore
-            utilities.show_info("ROOT")
+            utilities.show_info("ROOT BOSS alexein")
+            locomotive_window.focus_set()
 
         #Controllo se la finestra ha avuto degli errori (reset) o no (chiude) 
         if data.control_var_errore:
