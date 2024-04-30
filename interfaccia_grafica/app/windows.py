@@ -1457,12 +1457,12 @@ class circuit_window:
         data.Turnouts['Cambio 8'][2] = cambio8def
         data.Turnouts['Cambio 8'][3] = cambio8
         # canvas.create_oval((230, canvas_height-110), (900, canvas_height-563), outline="black", width=2)
-    
+
+        
         #gestione dei pin ARDUINO
         if utilities.is_serial_port_available(data.serial_ports[0]):
             #Se la finestra è chiusa allora crea i deviatoi, serve a non creare i deviatoi ogno volta che si switcha da auto a manuale
             if not self.flag:
-                self.flag = True
                 #Comando che accende il led di controllo
                 comandi.crea_deviatoio(36,36)
                 # comandi.crea_deviatoio(1,41)
@@ -1478,6 +1478,8 @@ class circuit_window:
                         comandi.crea_deviatoio(i,i+40) # vanno nel loro pin corrispondente + 40 
                     
                     data.Turnouts[str][1] = i
-
+        if not self.flag: 
+            self.locomotive_window.deiconify()
+            self.flag = True
         # Eseguire il loop principale
         root.mainloop()

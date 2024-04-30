@@ -257,7 +257,8 @@ class GUI(tk.Frame):
             # window_var.transient(root)
 
             #Rende la finestra visibile di nuovo
-            window_var.deiconify()
+            if not window_type == "circuit": window_var.deiconify()
+            
             return window_var
 
         utilities.show_error_box(data.Textlines[20],window_var,self,"main")
@@ -290,7 +291,8 @@ class GUI(tk.Frame):
     def open_control(self):
 
         open=True
-        
+                    
+            
         #Nel caso in cui la seriale non sia collegata, si chiede all'utente se vuole continuare
         if not utilities.is_serial_port_available(self.serial_port):
             open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41])
@@ -298,9 +300,9 @@ class GUI(tk.Frame):
         if open :
             #creazione di circuit per decidere il tipo di controllo del sistema
             locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "",self.container)
-
+            
             if locomotive_window:
-                
+
                 #Impostazioni di pagina, al premere del tasto ESC e al premere della x rossa, chiude la finestra, ferma l'algoritmo, toglie l'opacita e rilascia la pagina padre
 
                 locomotive_window.bind("<Escape>", lambda event: (utilities.on_close(locomotive_window,"circuit"),
