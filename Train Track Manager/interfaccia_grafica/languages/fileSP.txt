@@ -66,8 +66,8 @@ Presiona CONFIRMAR y repite el procedimiento
 ¿Estás seguro de que quieres continuar?
 Al proceder, se cerrarán todas las ventanas adicionales en comparación con la principal.
 Para iniciar el circuito automático, es necesario insertar al menos 2 locomotoras.
-
-
+Para cambiar la configuración relacionada con las locomotoras máximas, el número de locomotoras en la tabla DEBE ser menor que las ya presentes.
+Si continúas, se vaciará la tabla.
 
 
 
