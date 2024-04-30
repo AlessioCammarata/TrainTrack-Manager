@@ -590,6 +590,8 @@ def settings_window(locomotive_window,GUI):
         if data.root:
             #Amministratore
             utilities.show_info("ROOT BOSS alexein")
+            for i in data.serial_port_info:
+                data.serial_port_info[i][1] = True
             locomotive_window.focus_set()
 
         #Controllo se la finestra ha avuto degli errori (reset) o no (chiude) 

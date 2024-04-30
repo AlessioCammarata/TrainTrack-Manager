@@ -88,7 +88,7 @@ class Algorithm:
                     print(data.Textlines[40])
                 time.sleep(0.1)
         except serial.SerialException as e:
-            print(data.Textlines[41]+f" {e}, \n"+data.Textlines[42])
+            print(data.Textlines[21]+ str(data.serial_ports[1])+" "+data.Textlines[41]+f"\n{e}")
 
     '''
                     ___      _      __ _         
@@ -119,7 +119,7 @@ class Algorithm:
              
     def stop_algo(self):
         #Controlla che la funzione sia stata chiamata
-        if self.called:
+        if self.called and not data.root:
             data.terminate = True
             # Attendi che i thread terminino
             if self.threads[0].is_alive() or self.threads[1].is_alive():
