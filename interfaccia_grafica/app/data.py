@@ -63,7 +63,7 @@ variabili_apertura = {
 #Salvo la pagina, mi serve per bloccare la pagina circuit
 locomotive_RFID_window = ""
 
-color_available = ["Red", "Green", "lightblue", "Yellow", "Fuchsia", "Orange", "Pink", "Brown", "Gray", "Cyan","lightgray","Default"]
+color_available = ["Red", "Green", "Lightblue", "Yellow", "Fuchsia", "Orange", "Pink", "Brown", "Gray", "Cyan","Lightgray","Default"]
 
 #Creazione in memoria dei deviatoi
 # Turnout["Cambio1"] = [Stato Turnout, ID turnout, canvasdef, canvas]
