@@ -517,8 +517,10 @@ class GUI(tk.Frame):
         #cambio il nome delle colonne della tabella
         self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[80])
         self.tree['columns'] = self.columns
+
         for col in self.columns:
             self.tree.heading(col, text=col)
+            self.tree.column(col, anchor='center')
 
         #Aggiornamento dei labels
         self.add_button.configure(text=data.Textlines[7])
