@@ -28,7 +28,7 @@ exe = EXE(
     [],
     name='Loco_Transport',
     shortcut=("Desktop", "Loco_Transport"),
-    icon='..\\assets\\icon.ico',
+    icon='..\\assets\\window_loco.ico',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

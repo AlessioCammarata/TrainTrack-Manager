@@ -224,6 +224,12 @@ class GUI(tk.Frame):
         #Controllo per vedere se la finestra è gia aperta
         if window_var is None or not window_var.winfo_exists():
             window_var = tk.Toplevel(root)
+            if window_type == 'info':
+                window_var.iconbitmap(utilities.asset_path("info", "ico"))
+            elif window_type in ['settings', 'RFID']:
+                window_var.iconbitmap(utilities.asset_path("controllo", "ico"))
+            else: window_var.iconbitmap(utilities.asset_path("icon_control", "ico"))
+
             data.variabili_apertura[f'locomotive_{window_type}_var'] = True
             #if necessario, la control è gestita tramite un vettore
             # if att == 'locomotive_control_window':
@@ -339,7 +345,7 @@ class GUI(tk.Frame):
     def open_info_window(self):
 
         #Creazione della finestra per le informazioni
-        locomotive_window = self.open_locomotive_window("modify", data.Textlines[16], "600x400",self.container)
+        locomotive_window = self.open_locomotive_window("info", data.Textlines[16], "600x400",self.container)
         if locomotive_window:
 
             #Serie di informazioni sull'applicazione
