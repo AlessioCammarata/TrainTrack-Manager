@@ -532,7 +532,9 @@ def settings_window(locomotive_window,GUI):
         print(port1_enabled)
         #Assegnazione di default
         if max_loco == '' : max_loco = str(data.max_loco)
-        data.root = False if int(max_loco) == 2005 and data.root else True 
+        #Amministratore
+
+        data.root = True if int(max_loco) == 2005 and not data.root else False
 
         #Distruttivo ma non so come scriverlo in meno righe
         for item in data.SO:
@@ -812,6 +814,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
             # Potrei mettere l'altra finestra
             utilities.show_error_box(data.Textlines[35],locomotive_window,GUI,"")
         
+        locomotive_window.focus_set()
         if data.control_var_errore:
             RFID_entry.delete(0, tk.END)
             data.control_var_errore = False

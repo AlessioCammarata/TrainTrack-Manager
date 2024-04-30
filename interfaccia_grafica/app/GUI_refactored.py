@@ -224,6 +224,8 @@ class GUI(tk.Frame):
         #Controllo per vedere se la finestra è gia aperta
         if window_var is None or not window_var.winfo_exists():
             window_var = tk.Toplevel(root)
+            #Nasconde la finestra
+            window_var.withdraw()
             if window_type == 'info':
                 window_var.iconbitmap(utilities.asset_path("info", "ico"))
             elif window_type in ['settings', 'RFID']:
@@ -238,14 +240,24 @@ class GUI(tk.Frame):
             setattr(self, att, window_var)
             window_var.transient(root)
             window_var.protocol("WM_DELETE_WINDOW", lambda:utilities.on_close(window_var,window_type))
-
+            
             #Seleziona la pagina appena creata
             window_var.focus_set()
             window_var.title(window_title)
+            
+
+            width = self.winfo_rootx()
+            height = self.winfo_rooty()
+
+            window_var.tk.call('wm', 'geometry', window_var._w, f"{width}x{height}+{width-50}+{height-50}")
             window_var.geometry(window_size)
+            window_var.update_idletasks()
+
             window_var.resizable(False, False)
             # window_var.transient(root)
 
+            #Rende la finestra visibile di nuovo
+            window_var.deiconify()
             return window_var
 
         utilities.show_error_box(data.Textlines[20],window_var,self,"main")
