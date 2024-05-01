@@ -92,7 +92,7 @@ class GUI(tk.Frame):
 
         # Labels
         # Database Locomotive
-        self.locomotive_label = tk.Label(self.container, text="DATABASE LOCOMOTIVE", bg="#c0c0c0")
+        self.locomotive_label = tk.Label(self.container, text="DATABASE LOCOMOTIVE", bg="#c0c0c0", width=20)
         self.locomotive_label.pack(side="left",pady=(5,0), padx=(300,300))
         # self.locomotive_label.place(relx=0.5, rely=0.05, anchor="center")
 
@@ -124,7 +124,7 @@ class GUI(tk.Frame):
         self.image_info = utilities.process_image(self.image_info_path, 'resize', 45, 35)
         self.info_button = tk.Button(self.container, image= self.image_info, bg="#c0c0c0", borderwidth=0, 
                                        command=self.open_info_window)
-        self.info_button.pack(side="left", padx=(0,0),pady=(5,0))
+        self.info_button.pack(side="left",  padx=(0,0),pady=(5,0))
         self.container.bind("<i>", lambda event: self.open_info_window())
         self.locomotive_info_window = None
 
@@ -137,14 +137,14 @@ class GUI(tk.Frame):
 
         # Bottoni
         # Aggiungi locomotiva
-        self.add_button = tk.Button(self, text="AGGIUNGI LOCOMOTIVA", height=2, 
+        self.add_button = tk.Button(self, text="AGGIUNGI LOCOMOTIVA", height=2, width=20, 
                                     command=self.open_locomotive_creation_window)
         self.add_button.pack(side="left", padx=5)
         self.locomotive_creation_window = None
         self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())
 
         # Rimuovi locomotiva
-        self.remove_button = tk.Button(self, text="RIMUOVI LOCOMOTIVA", height=2, 
+        self.remove_button = tk.Button(self, text="RIMUOVI LOCOMOTIVA", height=2, width=20,
                                        command=self.open_locomotive_remove_window)
         self.remove_button.pack(side="left", padx=5)
         self.remove_button.config(state='disabled')
@@ -152,7 +152,7 @@ class GUI(tk.Frame):
         
 
         # Modifica locomotiva
-        self.modify_button = tk.Button(self, text="MODIFICA LOCOMOTIVA", height=2, 
+        self.modify_button = tk.Button(self, text="MODIFICA LOCOMOTIVA", height=2, width=22,
                                        command=self.open_locomotive_modify_window)
         self.modify_button.pack(side="left", padx=5)
         self.modify_button.config(state='disabled')
