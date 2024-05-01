@@ -181,3 +181,10 @@ def translate():
         for line in file:
             # Aggiungo la riga alla lista
             data.Textlines.append(line.strip())
+    color_update()
+
+def color_update():
+    i=0
+    for colors in data.colors:
+        data.colors[colors] = data.Textlines[140+i]
+        i += 1

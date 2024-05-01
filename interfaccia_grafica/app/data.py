@@ -65,6 +65,25 @@ locomotive_RFID_window = ""
 
 color_available = ["Red", "Green", "Lightblue", "Yellow", "Fuchsia", "Orange", "Pink", "Brown", "Gray", "Cyan","Lightgray","Default"]
 
+# Traduzione dei colori - In questo dizionario vengono inserite le traduzioni per ogni elemento
+# colors = {
+#     "Red":         "",
+#     "Green":       "",
+#     "Lightblue":   "",
+#     "Yellow":      "",
+#     "Fuchsia":     "",
+#     "Orange":      "",
+#     "Pink":        "",
+#     "Brown":       "",
+#     "Gray":        "",
+#     "Cyan":        "",
+#     "Lightgray":   "",
+#     "Default":     ""
+# }
+colors = {}
+for color in color_available:
+    colors[color] = ""
+    
 #Creazione in memoria dei deviatoi
 # Turnout["Cambio1"] = [Stato Turnout, ID turnout, canvasdef, canvas]
 Turnouts = {                   
@@ -75,7 +94,7 @@ Turnouts = {
     "Cambio 5":   [False,"","",""],
     "Cambio 6":   [False,"","",""],
     "Cambio 7":   [False,"","",""],
-    "Cambio 8":   [True,"","",""]
+    "Cambio 8":   [False,"","",""]
 }
 
 #Non lo sto usando per ora

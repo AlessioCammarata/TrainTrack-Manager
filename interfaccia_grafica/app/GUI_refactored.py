@@ -460,7 +460,7 @@ class GUI(tk.Frame):
             self.tree.insert('', tk.END, values=(
                 locomotive['ID'],
                 locomotive['LocoID'],
-                locomotive['Colore'],
+                data.colors[locomotive['Colore']],
                 locomotive['Nome']
             ),tags=('color'))
 
@@ -520,6 +520,7 @@ class GUI(tk.Frame):
             #Aggiorna la pagina con la nuova lingua inserita
             self.container.refresh()
             self.refresh()
+            self.update_table()
 
     #Funzione che serve per aggiornare la lingua della pagina principale
     def refresh(self):

@@ -125,3 +125,28 @@ Informazioni sul circuito automatico
 
 
 IT
+
+
+
+
+
+
+
+
+
+
+
+
+-Colori | 140 - 151
+Rosso
+Verde
+Azzurro chiaro
+Giallo
+Fucsia
+Arancione
+Rosa
+Marrone
+Grigio
+Ciano
+Grigio chiaro
+Default

@@ -125,3 +125,28 @@ Information about the automatic circuit
 
 
 EN
+
+
+
+
+
+
+
+
+
+
+
+
+-Colors  | 140 - 151
+Red
+Green
+Lightblue
+Yellow
+Fuchsia
+Orange
+Pink
+Brown
+Gray
+Cyan
+Lightgray
+Default

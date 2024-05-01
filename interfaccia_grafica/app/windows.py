@@ -153,7 +153,7 @@ def creation_window(locomotive_window,GUI):
     color.delete(0, "end")
     for item in data.color_available:
         color.add_radiobutton(
-            label=item,
+            label=data.colors[item],
             value=item,
             variable=var_color,
             command=lambda:color_button.configure(text=var_color.get())
@@ -413,7 +413,7 @@ def modify_window(locomotive_window,GUI):
     color.delete(0, "end")
     for item in data.color_available:
         color.add_radiobutton(
-            label=item,
+            label=data.colors[item],
             value=item,
             variable=var_color,
             command=lambda:color_button.configure(text=var_color.get())

@@ -125,3 +125,28 @@ Informations sur le circuit automatique
 
 
 FR
+
+
+
+
+
+
+
+
+
+
+
+
+-Couleurs | 140 - 151
+Rouge
+Vert
+Bleu clair
+Jaune
+Fuchsia
+Orange
+Rose
+Marron
+Gris
+Cyan
+Gris clair
+Default

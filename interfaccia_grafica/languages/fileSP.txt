@@ -125,3 +125,28 @@ Información sobre el circuito automático
 
 
 SP
+
+
+
+
+
+
+
+
+
+
+
+
+-Colores | 140 - 151
+Rojo
+Verde
+Azul claro
+Amarillo
+Fucsia
+Naranja
+Rosa
+Marrón
+Gris
+Cian
+Gris claro
+Default
