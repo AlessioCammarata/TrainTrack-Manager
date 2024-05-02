@@ -145,7 +145,7 @@ def creation_window(locomotive_window,GUI):
 
 #Il numero dei colori all'interno del vettore deve essere almeno pari al numero di locomotive massime del sistema, senno errore
     var_color = tk.StringVar(value=data.color_available[-1])
-    color_button = ttk.Menubutton(locomotive_window,text="Default",width=19)
+    color_button = ttk.Menubutton(locomotive_window,text=data.color_available[-1],width=19)
     color = tk.Menu(color_button, tearoff=0)
     color_button.pack()
 
@@ -156,7 +156,7 @@ def creation_window(locomotive_window,GUI):
             label=data.colors[item],
             value=item,
             variable=var_color,
-            command=lambda:color_button.configure(text=var_color.get())
+            command=lambda item = item :color_button.configure(text=data.colors[item])
             )
     
     style1 = ttk.Style()
@@ -419,7 +419,7 @@ def modify_window(locomotive_window,GUI):
             label=data.colors[item],
             value=item,
             variable=var_color,
-            command=lambda:color_button.configure(text=var_color.get())
+            command=lambda item = item :color_button.configure(text=data.colors[item])
             )
     
     # style1 = ttk.Style()
