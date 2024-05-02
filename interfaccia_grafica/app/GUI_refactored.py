@@ -451,6 +451,7 @@ class GUI(tk.Frame):
         
     #funzione per aggioranre la tabella - all'interno c'è anche la funzione che gestisce il menu a tendina del controllo
     def update_table(self):
+        
         # Pulizia della tabella
         for row in self.tree.get_children():
             self.tree.delete(row)
@@ -463,6 +464,8 @@ class GUI(tk.Frame):
                 data.colors[locomotive['Colore']],
                 locomotive['Nome']
             ),tags=('color'))
+            if locomotive['RFIDtag'] == "":
+                data.calibred = False
 
         self.tree.tag_configure('color', background='#EDEDED')
 
@@ -497,7 +500,7 @@ class GUI(tk.Frame):
                 value=loco,
                 variable=self.var_locomotive,
                 command= self.open_locomotive_control)
-
+            
     #Aiuta la gestione dei tasti per aprire la pagina di controllo relativa alla locomotiva
     def set_var_keypress_locomotive_control(self,id):
         id_controllo = utilities.CalcolaIDtreno('ID',id)

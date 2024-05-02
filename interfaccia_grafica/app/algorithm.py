@@ -73,8 +73,12 @@ class Algorithm:
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
                     if data.calibred and self.flag and len(data.locomotives_data) >= 2:
                         # self.GUI.on_off()
-                        #creo il thread e lo metto in memoria
+                        
+                        # circuit_window.RFID_button.config(state='disabled')
                         utilities.show_info(data.Textlines[60])
+                        circuit_window.RFID_button.config(state='normal')
+                        
+                        #creo il thread e lo metto in memoria
                         process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
                         self.threads[1] = process_messages_thread
                         #pulisco la queue - avvio il thread - setto la flag

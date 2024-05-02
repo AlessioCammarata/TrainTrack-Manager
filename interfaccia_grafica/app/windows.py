@@ -191,6 +191,9 @@ def remove_window(locomotive_window,GUI):
 
                 #controllo su se trova l'indice e il nome equaivale a quello inserito 
                 if index is not None and name == data.locomotives_data[index]['Nome']:
+                    
+                    #Sett a True la variabile della calibrazione, il calcolo viene poi effettuato nell'update table
+                    data.calibred = True
                     #prima di rimuovere la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
                     data.color_available.insert(0,data.locomotives_data[index]['Colore'])
                     data.locomotives_data.remove(data.locomotives_data[index])
@@ -814,7 +817,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
             # Potrei mettere l'altra finestra
             utilities.show_error_box(data.Textlines[35],locomotive_window,GUI,"")
         
-        locomotive_window.focus_set()
+        RFID_entry.focus_set()
         if data.control_var_errore:
             RFID_entry.delete(0, tk.END)
             data.control_var_errore = False
@@ -1062,17 +1065,23 @@ class circuit_window:
             current_color = start_button.cget("background")            
 
             if utilities.is_serial_port_available(data.serial_ports[1]):
-                if len(data.locomotives_data) < 2: utilities.show_info(data.Textlines[67])
+                
                 if current_color == "red":
+                    lenght = len(data.locomotives_data)
+                    if lenght < 2: 
+                        utilities.show_info(data.Textlines[67])
+                        self.RFID_button.config(state='normal')
+                    elif not data.calibred: self.RFID_button.config(state='normal')
+
                     new_color = "#00ff00"
                     self.algo.start_algo(self)
-                    RFID_button.config(state='normal')
+                    # self.RFID_button.config(state='normal')
                     #Assegnazione del tasto
                     root.bind("<s>", lambda event: (self.open_RFID_window(),root.attributes("-alpha", 0.5)))
                 else: 
                     new_color = "red"
                     self.algo.stop_algo()
-                    RFID_button.config(state='disabled')
+                    self.RFID_button.config(state='disabled')
                     #Disfuznione del tasto
                     root.unbind("<s>")
                 start_button.config(background=new_color)
@@ -1107,10 +1116,10 @@ class circuit_window:
 
             image_RFID_path = utilities.asset_path('controllo','png')
             image_RFID = utilities.process_image(image_RFID_path, 'resize', 40, 40)
-            RFID_button = tk.Button(frame, image= image_RFID, borderwidth=0, 
+            self.RFID_button = tk.Button(frame, image= image_RFID, borderwidth=0, 
                                            command=lambda:(self.open_RFID_window(),root.attributes("-alpha", 0.5)))
-            RFID_button.pack(side="left", padx=(10,5),pady=(5,0))
-            RFID_button.config(state='disabled')
+            self.RFID_button.pack(side="left", padx=(10,5),pady=(5,0))
+            self.RFID_button.config(state='disabled')
 
             image_power_path = utilities.asset_path('power_icon','png')
             image_power = utilities.process_image(image_power_path,'resize',35,35)
