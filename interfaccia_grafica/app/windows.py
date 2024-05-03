@@ -697,36 +697,23 @@ def settings_window(locomotive_window,GUI):
     max_loco_entry = tk.Entry(locomotive_window,width=10,validate="key", validatecommand=(validate_input, '%P'))
     max_loco_entry.grid(row=2, column=1, padx=5, pady=5, sticky=tk.E)  # Posiziona a destra
 
-#     SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
-#     SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
+    SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
+    SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
     
-#     #Calcoliamo il SO attuale
-#     SO_used = data.SO.keys()
-#     for SO in SO_used:
-#         if data.SO[SO]:
-#             aSO = SO
+    #Calcoliamo il SO attuale
+    # SO_used = data.SO.keys()
+    # for SO in SO_used:
+    #     if data.SO[SO]:
+    #         aSO = SO
 
-# #Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-#     var_SO = tk.StringVar(value=aSO)
-#     SO_button = ttk.Menubutton(locomotive_window,text=aSO,width=8)
-#     SO = tk.Menu(port0_button, tearoff=0)
-#     SO_button.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
-#     SO_button["menu"] = SO
-#     SO.delete(0, "end")
-
-#     for item in data.SO.keys():
-#         SO.add_radiobutton(
-#             label=item,
-#             value=item,
-#             variable=var_SO,
-#             command=lambda:SO_button.configure(text=var_SO.get())
-#             )
+    actual_SO_label = tk.Label(locomotive_window, text=data.SO + " " + data.architecture)
+    actual_SO_label.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
     
     port1_button.config(style='UniqueCustom.TMenubutton')
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
                                 command=active_settings)
-    settings_button.grid(row=4, column=0, pady=(15, 0), padx=(180,0), sticky="nsew")
+    settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
 
     #Attiviamo la selezione del 0 che è la standard
     appoint_selection(0)

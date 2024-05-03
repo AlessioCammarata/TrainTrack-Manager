@@ -11,11 +11,11 @@
 #Var amministratore
 root = False
 
-SO = {
-    'windows': False,
-    'linux' :  False
-}
-# SO_used = 'windows'
+#Sistema Operativo attuale e architettura
+SO = ""
+architecture = ""
+
+#In questa var viene memorizzata la path assoluta del programma che viene calcolata durante l'avvio
 path = ""
 
 #Tiene a mente tutte le stringhe del programma
@@ -23,7 +23,6 @@ Textlines = []
 languages = ['IT','EN','FR','SP']
 
 locomotives_data =      []           # Lista per salvare i dati delle locomo
-#locomotive_names =      []           # Lista per i nomi delle locomotive
 max_loco_standard =     11           # Numero max di locomotive che il sistema puo gestire --- Solo 11 colori disponibili
 max_loco         =      11           # Numero max di locomotive che il sistema lavora
 max_length_name  =      20           # Numero max di caratteri che il nome puo avere

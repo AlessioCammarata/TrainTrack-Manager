@@ -4,6 +4,7 @@ import utilities
 import data
 from algorithm import Algorithm
 import os
+import platform
 
 # @singleton
 class App(tk.Tk):
@@ -31,13 +32,12 @@ class App(tk.Tk):
 
 
 if __name__ == "__main__":
+    sistema_operativo = platform.system()
 
-    if os.name == 'nt':
-       data.SO['windows'] = True
-    else:
-        data.SO['linux'] = True
+    data.SO = sistema_operativo
+    data.architecture = platform.machine()
     
-    print(data.SO)
+    print(sistema_operativo)
     #cerco la dir attuale e Salvo la parent dir attuale in data - MISERVERUNPEZZOINPIUPERILTESTING
     folder_path = os.path.abspath(os.path.join(os.getcwd(),'interfaccia_grafica'))
     

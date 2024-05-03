@@ -35,10 +35,9 @@ indicatoron = [('Menubutton.border',
 
 #Funzione che riassume il path relativo
 def asset_path(asset_name: str, extenction: str) -> str:
-    if data.SO['windows']:
-        return data.path + "\\assets\\" + asset_name + "." + extenction
-    elif data.SO['linux']:
-        return data.path + "/assets/" + asset_name + "." + extenction
+        
+                    # Per sistemi Windows                                                Per sistemi Unix-like (Linux, macOS)
+    return data.path + "\\assets\\" + asset_name + "." + extenction if data.SO == 'Windows' else data.path + "/assets/" + asset_name + "." + extenction
 
 # Funzione che riassume i resize e i rotate, viene utilizzata per preparare le immagini a essere posizionate nel canvas
 def process_image(image_path, operation, *args):
@@ -54,16 +53,6 @@ def process_image(image_path, operation, *args):
             processed_img = rotated_img.resize((args[1], args[2]), Image.BILINEAR)
             return ImageTk.PhotoImage(processed_img)
         
-        #Test, non serve ora come ora
-        case 'opacity':
-            # Imposta l'opacità desiderata (0 per trasparente, 1 per opaco)
-            opacity = args[0]  # Opacità al 50%
-            processed_img = img.convert("RGBA")
-            alpha = int(255 * opacity)
-            processed_img.putalpha(alpha)
-
-            # Converte l'immagine in un oggetto PhotoImage di Tkinter
-            return ImageTk.PhotoImage(processed_img)
     return img
             
 #Funzione per impostare la var di chiusura, quando si chiude la finestra
@@ -109,12 +98,10 @@ def on_close(finestra,window_type):
 
 #Controlla il SO, e scrive il path a seconda del SO
 def find_port_path(function_port):
-    if data.SO['windows']:
-        port_path = f"COM{function_port}" # Per sistemi Windows 
-    elif data.SO['linux']:
-        port_path = f"/dev/{function_port}"  #Per sistemi Unix-like (Linux, macOS)
 
-    return port_path
+            # Per sistemi Windows                       Per sistemi Unix-like (Linux, macOS)
+    return f"COM{function_port}" if data.SO == 'Windows' else f"/dev/{function_port}"  
+    
 
 #Funzione che controlla se la porta seriale chiamata è collegata o meno e se è stata inizializzata - in caso non sia stata inizializzata, la inizializza
 def is_serial_port_available(function_port):
@@ -223,7 +210,8 @@ def translate():
     print(data.languages[0])
     data.Textlines = []
     # Apro il file in modalità lettura
-    with open(data.path + "\\languages\\file{}.txt".format(data.languages[0]), 'r',encoding='utf-8') as file:
+    relative_path = "\\languages\\file{}.txt".format(data.languages[0]) if data.SO == 'Windows' else "/languages/file{}.txt".format(data.languages[0])
+    with open(data.path + relative_path , 'r',encoding='utf-8') as file:
         # Leggo ogni riga del file
         for line in file:
             # Aggiungo la riga alla lista
