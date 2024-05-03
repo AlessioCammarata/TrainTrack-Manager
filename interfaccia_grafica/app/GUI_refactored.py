@@ -307,13 +307,13 @@ class GUI(tk.Frame):
 
                 locomotive_window.bind("<Escape>", lambda event: (utilities.on_close(locomotive_window,"circuit"),
                                                                                 self.container.algo.stop_algo(),
-                                                                                self.container.attributes("-alpha", 1),
+                                                                                # self.container.attributes("-alpha", 1),
                                                                                 locomotive_window.grab_release(),
                                                                                 ))
                 #locomotive_circuit_window.transient(self.root)
                 locomotive_window.protocol("WM_DELETE_WINDOW", lambda:(utilities.on_close(locomotive_window,"circuit"),
                                                                                     self.container.algo.stop_algo(),
-                                                                                    self.container.attributes("-alpha", 1),
+                                                                                    # self.container.attributes("-alpha", 1),
                                                                                     locomotive_window.grab_release(),
                                                                                     ))
     

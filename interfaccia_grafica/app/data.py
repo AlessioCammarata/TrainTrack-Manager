@@ -8,6 +8,7 @@
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
 
 '''
+#Var amministratore
 root = False
 
 SO = {
@@ -34,15 +35,15 @@ var_supporto = None                 #Var che aiuta l'apertura della gestione loc
 # impostazioni connessione seriale, 
 # serial_port è quella che fa riferimento alla centralina dcc, 
 # serial_port1 è quella che fa riferimento ai sensori RFID
-serial_port     = 6
-serial_port1    = 5
+serial_port     = "–"
+serial_port1    = "-"
 
 serial_ports = [serial_port,serial_port1]
 
 #dizionario che controlla se il collegamento seriale per l'algoritmo è stato inizializzato o no e se la porta è abilitata o disabilitata dall'utente
 # Serial_port_info[serial_ports[0]][0] = Inizialized, Serial_port_info[serial_ports[0]][1] = Enabled
 serial_port_info = {
-    serial_ports[0]: [False,True], 
+    serial_ports[0]: [False,False], 
     serial_ports[1]: [False,False]
 }
 # Variabile che serve a controllare se c'è stato un errore

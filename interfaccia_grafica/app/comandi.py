@@ -46,7 +46,7 @@ def throttle(memoria,ID, SPEED, DIR):
 #funzione per lo stop di una singola locomotiva dato l'ID
 
 def STOP(memoria,ID):
-    comando = os.system('echo "<t {} {} 0 1>" > {}'.format(memoria,ID,name_serial_port()))
+    comando = ('echo "<t {} {} 0 1>" > {}'.format(memoria,ID,name_serial_port()))
     subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
 
 #funzione per cambiare indirizzo al controller della locomotiva

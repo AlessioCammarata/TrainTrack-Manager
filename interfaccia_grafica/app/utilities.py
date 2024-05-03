@@ -146,6 +146,46 @@ def port_exist(function_port):
     print(data.serial_ports)
     return exist
 
+#Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
+def set_port_var():
+    ports_available = ["",""]
+    enable = True
+    #Controlla le prime 10 porte se sono libere
+    flag = 0
+    
+    for i in range(10):
+        if port_exist(i) and flag<2:
+           ports_available[flag] = i
+           flag+=1 
+        i+=1
+
+    #Reimposta i valori standard nel caso in cui sia stato modificato qualcosa - Esce nel caso in cui non ci sia nessuna porta collegata
+    if flag < 2: 
+        ports_available[1] = data.serial_ports[1]
+        enable = False
+        if flag < 1: 
+            ports_available[0] = data.serial_ports[0]
+            return 0
+        
+
+    #Dizionario temporale che aggiorna le chiavi
+    temp_dict = {
+                    ports_available[0]: data.serial_port_info.pop(data.serial_ports[0]),
+                    ports_available[1]: data.serial_port_info.pop(data.serial_ports[1])
+                }
+    
+    #assegnazione delle porte nel vettore
+    data.serial_ports[0] = ports_available[0]
+    data.serial_ports[1] = ports_available[1]
+
+    # Aggiornare il dizionario originale con le nuove chiavi
+    data.serial_port_info.update(temp_dict)
+    
+    #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+    data.serial_port_info[data.serial_ports[0]][1]      = enable
+    data.serial_port_info[data.serial_ports[1]][1]      = enable
+    return data.serial_ports
+
 #Funzione che permette di aggiornare la tabella delle calibrazioni RFID
 def update_circuit_table(columns,tree):
         

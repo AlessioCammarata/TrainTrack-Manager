@@ -41,6 +41,10 @@ if __name__ == "__main__":
 
     #Aggiorno la lingua, con quella standard+.
     utilities.translate()
+
+    #Aggiorno le porte collegate nel caso in cui ci siano
+    print(utilities.set_port_var())
+
     app = App()
     gui = GUI_refactored.GUI(app)
     app.mainloop()

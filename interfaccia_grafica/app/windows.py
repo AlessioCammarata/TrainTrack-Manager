@@ -535,6 +535,7 @@ def settings_window(locomotive_window,GUI):
         print(port1_enabled)
         #Assegnazione di default
         if max_loco == '' : max_loco = str(data.max_loco)
+        
         #Amministratore
 
         data.root = True if int(max_loco) == 2005 and not data.root else False
@@ -554,8 +555,9 @@ def settings_window(locomotive_window,GUI):
         elif not utilities.port_exist(rfid) and port1_enabled:
             utilities.show_error_box(data.Textlines[33],locomotive_window,GUI,"")
         else:
-            centralina = int(centralina)
-            rfid = int(rfid)
+
+            if not centralina == "–": centralina = int(centralina)
+            if not rfid == "-": rfid = int(rfid)
             max_loco = int(max_loco)
 
             #Controlla che il max loco non sia uguale a quello gia presente, nel caso in cui sia minore al numero di locomotive inserite,le cancella tutte
@@ -772,7 +774,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
         utilities.update_circuit_table(columns,tree)
     
     def enable_circuitWindow():
-        circuit_window.attributes("-alpha", 1)
+        # circuit_window.attributes("-alpha", 1)
         circuit_window.grab_set()
 
     def open_locomotive_creation_window():
@@ -1077,7 +1079,9 @@ class circuit_window:
                     self.algo.start_algo(self)
                     # self.RFID_button.config(state='normal')
                     #Assegnazione del tasto
-                    root.bind("<s>", lambda event: (self.open_RFID_window(),root.attributes("-alpha", 0.5)))
+                    root.bind("<s>", lambda event: (self.open_RFID_window(),
+                                                    # root.attributes("-alpha", 0.5)
+                                                    ))
                 else: 
                     new_color = "red"
                     self.algo.stop_algo()
@@ -1117,7 +1121,9 @@ class circuit_window:
             image_RFID_path = utilities.asset_path('controllo','png')
             image_RFID = utilities.process_image(image_RFID_path, 'resize', 40, 40)
             self.RFID_button = tk.Button(frame, image= image_RFID, borderwidth=0, 
-                                           command=lambda:(self.open_RFID_window(),root.attributes("-alpha", 0.5)))
+                                           command=lambda:(self.open_RFID_window(),
+                                                        #    root.attributes("-alpha", 0.5)
+                                                           ))
             self.RFID_button.pack(side="left", padx=(10,5),pady=(5,0))
             self.RFID_button.config(state='disabled')
 
@@ -1149,7 +1155,7 @@ class circuit_window:
             for i in data.Turnouts:
                 root.unbind("<KeyPress-{}>".format(i[-1]))
 
-            self.container.attributes("-alpha", 0.5)
+            # self.container.attributes("-alpha", 0.5)
             self.locomotive_window.grab_set()
         else:
             text = data.Textlines[55]
@@ -1175,7 +1181,7 @@ class circuit_window:
             root.unbind("<s>")
             root.unbind("<v>")
         
-            self.container.attributes("-alpha", 1)
+            # self.container.attributes("-alpha", 1)
             self.locomotive_window.grab_release()
   
         #----DISEGNO CIRCUITO---- link docs: https://www.pythontutorial.net/tkinter/tkinter-canvas/
