@@ -31,6 +31,13 @@ class App(tk.Tk):
 
 
 if __name__ == "__main__":
+
+    if os.name == 'nt':
+       data.SO['windows'] = True
+    else:
+        data.SO['linux'] = True
+    
+    print(data.SO)
     #cerco la dir attuale e Salvo la parent dir attuale in data - MISERVERUNPEZZOINPIUPERILTESTING
     folder_path = os.path.abspath(os.path.join(os.getcwd(),'interfaccia_grafica'))
     

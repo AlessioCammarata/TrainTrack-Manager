@@ -528,7 +528,7 @@ def settings_window(locomotive_window,GUI):
         centralina    = var_port0.get()
         rfid          = var_port1.get()
         max_loco      = max_loco_entry.get()
-        SO            = var_SO.get()
+        # SO            = var_SO.get()
         port0_enabled = port0_checkbox_var.get()
         port1_enabled = port1_checkbox_var.get()
 
@@ -541,9 +541,9 @@ def settings_window(locomotive_window,GUI):
         data.root = True if int(max_loco) == 2005 and not data.root else False
 
         #Distruttivo ma non so come scriverlo in meno righe
-        for item in data.SO:
-            data.SO[item] = False
-        data.SO[SO] = True
+        # for item in data.SO:
+        #     data.SO[item] = False
+        # data.SO[SO] = True
         
         #controlli sugli input, non so bene che sistemare
         if rfid == centralina:
@@ -697,36 +697,36 @@ def settings_window(locomotive_window,GUI):
     max_loco_entry = tk.Entry(locomotive_window,width=10,validate="key", validatecommand=(validate_input, '%P'))
     max_loco_entry.grid(row=2, column=1, padx=5, pady=5, sticky=tk.E)  # Posiziona a destra
 
-    SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
-    SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
+#     SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
+#     SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
     
-    #Calcoliamo il SO attuale
-    SO_used = data.SO.keys()
-    for SO in SO_used:
-        if data.SO[SO]:
-            aSO = SO
+#     #Calcoliamo il SO attuale
+#     SO_used = data.SO.keys()
+#     for SO in SO_used:
+#         if data.SO[SO]:
+#             aSO = SO
 
-#Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
-    var_SO = tk.StringVar(value=aSO)
-    SO_button = ttk.Menubutton(locomotive_window,text=aSO,width=8)
-    SO = tk.Menu(port0_button, tearoff=0)
-    SO_button.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
-    SO_button["menu"] = SO
-    SO.delete(0, "end")
+# #Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
+#     var_SO = tk.StringVar(value=aSO)
+#     SO_button = ttk.Menubutton(locomotive_window,text=aSO,width=8)
+#     SO = tk.Menu(port0_button, tearoff=0)
+#     SO_button.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
+#     SO_button["menu"] = SO
+#     SO.delete(0, "end")
 
-    for item in data.SO.keys():
-        SO.add_radiobutton(
-            label=item,
-            value=item,
-            variable=var_SO,
-            command=lambda:SO_button.configure(text=var_SO.get())
-            )
+#     for item in data.SO.keys():
+#         SO.add_radiobutton(
+#             label=item,
+#             value=item,
+#             variable=var_SO,
+#             command=lambda:SO_button.configure(text=var_SO.get())
+#             )
     
     port1_button.config(style='UniqueCustom.TMenubutton')
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
                                 command=active_settings)
-    settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
+    settings_button.grid(row=4, column=0, pady=(15, 0), padx=(180,0), sticky="nsew")
 
     #Attiviamo la selezione del 0 che è la standard
     appoint_selection(0)

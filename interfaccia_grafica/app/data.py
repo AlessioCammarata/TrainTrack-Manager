@@ -12,7 +12,7 @@
 root = False
 
 SO = {
-    'windows': True,
+    'windows': False,
     'linux' :  False
 }
 # SO_used = 'windows'

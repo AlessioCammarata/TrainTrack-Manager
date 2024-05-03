@@ -265,7 +265,7 @@ class GUI(tk.Frame):
 
     #Apre la pagina delle impostazioni
     def open_settings_window(self):
-        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x200",self.container)
+        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x160",self.container)
         if locomotive_window:
             windows.settings_window(locomotive_window,self)
 
