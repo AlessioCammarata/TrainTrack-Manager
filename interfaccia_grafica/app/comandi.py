@@ -4,7 +4,6 @@ With these command you could be able to control both the system and all the loco
 '''
 
 import data
-import os
 import time
 import subprocess
 
