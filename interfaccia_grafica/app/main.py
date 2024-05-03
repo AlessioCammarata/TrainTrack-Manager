@@ -33,7 +33,7 @@ class App(tk.Tk):
 
 if __name__ == "__main__":
     sistema_operativo = platform.system()
-
+    if sistema_operativo == "Darwin": sistema_operativo = "macOS"
     data.SO = sistema_operativo
     data.architecture = platform.machine()
     
