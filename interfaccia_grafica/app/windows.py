@@ -728,8 +728,8 @@ def settings_window(locomotive_window,GUI):
                                 command=active_settings)
     settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
 
-    #Attiviamo la selezione del 1 che è la standard
-    appoint_selection(1)
+    #Attiviamo la selezione del 0 che è la standard
+    appoint_selection(0)
 
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
