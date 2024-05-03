@@ -147,26 +147,31 @@ def port_exist(function_port):
     return exist
 
 #Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
-def set_port_var():
+def set_port_var(*args):
     ports_available = ["",""]
-    enable = True
-    #Controlla le prime 10 porte se sono libere
-    flag = 0
-    
-    for i in range(10):
-        if port_exist(i) and flag<2:
-           ports_available[flag] = i
-           flag+=1 
-        i+=1
+    port1_enable = True
+    port2_enable = True
 
-    #Reimposta i valori standard nel caso in cui sia stato modificato qualcosa - Esce nel caso in cui non ci sia nessuna porta collegata
-    if flag < 2: 
-        ports_available[1] = data.serial_ports[1]
-        enable = False
-        if flag < 1: 
-            ports_available[0] = data.serial_ports[0]
-            return 0
+    if not args:
         
+        #Controlla le prime 10 porte se sono libere
+        flag = 0
+        for i in range(10):
+            if port_exist(i) and flag<2:
+               ports_available[flag] = i
+               flag+=1 
+            i+=1
+
+        #Reimposta i valori standard nel caso in cui sia stato modificato qualcosa - Esce nel caso in cui non ci sia nessuna porta collegata
+        if flag < 2: 
+            ports_available[1] = data.serial_ports[1]
+            port2_enable = False
+            if flag < 1: 
+                ports_available[0] = data.serial_ports[0]
+                return 0
+    else:
+        ports_available[0]  = args[0]
+        ports_available[1]  = args[1]
 
     #Dizionario temporale che aggiorna le chiavi
     temp_dict = {
@@ -180,10 +185,12 @@ def set_port_var():
 
     # Aggiornare il dizionario originale con le nuove chiavi
     data.serial_port_info.update(temp_dict)
-    
-    #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
-    data.serial_port_info[data.serial_ports[0]][1]      = enable
-    data.serial_port_info[data.serial_ports[1]][1]      = enable
+
+    if not args:
+        #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        data.serial_port_info[data.serial_ports[0]][1]      = port1_enable
+        data.serial_port_info[data.serial_ports[1]][1]      = port2_enable
+
     return data.serial_ports
 
 #Funzione che permette di aggiornare la tabella delle calibrazioni RFID

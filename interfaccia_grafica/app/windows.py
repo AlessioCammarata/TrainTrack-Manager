@@ -574,21 +574,22 @@ def settings_window(locomotive_window,GUI):
 
             #Si controlla che almeno una delle due sia diversa
             if centralina != data.serial_ports[0] or rfid != data.serial_ports[1]:
-                # Creare un dizionario temporaneo con le chiavi modificate
-                temp_dict = {
-                    centralina: data.serial_port_info.pop(data.serial_ports[0]),
-                    rfid: data.serial_port_info.pop(data.serial_ports[1])
-                }
+                # # Creare un dizionario temporaneo con le chiavi modificate
+                # temp_dict = {
+                #     centralina: data.serial_port_info.pop(data.serial_ports[0]),
+                #     rfid: data.serial_port_info.pop(data.serial_ports[1])
+                # }
 
-                # Aggiornare il dizionario originale con le nuove chiavi
-                data.serial_port_info.update(temp_dict)
+                # # Aggiornare il dizionario originale con le nuove chiavi
+                # data.serial_port_info.update(temp_dict)
                 
-                # print(database.serial_port_info)
-                data.serial_ports[0] = centralina
-                data.serial_ports[1] = rfid
+                # # print(database.serial_port_info)
+                # data.serial_ports[0] = centralina
+                # data.serial_ports[1] = rfid
 
-                # print(data.serial_ports)
-                # print(data.SO)
+                # # print(data.serial_ports)
+                # # print(data.SO)
+                utilities.set_port_var(centralina,rfid)
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
             data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
@@ -727,6 +728,8 @@ def settings_window(locomotive_window,GUI):
                                 command=active_settings)
     settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
 
+    #Attiviamo la selezione del 1 che è la standard
+    appoint_selection(1)
 
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
