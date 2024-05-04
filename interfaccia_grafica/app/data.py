@@ -64,7 +64,6 @@ variabili_apertura = {
     "locomotive_control_var":  []
 }
 
-locomotive_window2 = ""
 #Salvo la pagina, mi serve per bloccare la pagina circuit
 locomotive_RFID_window = ""
 

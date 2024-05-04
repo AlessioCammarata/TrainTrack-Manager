@@ -704,7 +704,6 @@ def settings_window(locomotive_window,GUI):
 def RFID_window(locomotive_window,algo,circuit_window,GUI):
     
     # locomotive_window.info_window = None
-
     def show_page_info():
 
         locomotive_window1 = GUI.open_locomotive_window("info", data.Textlines[16], "600x400",locomotive_window)
@@ -737,9 +736,14 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
             close_button.pack(pady=10)
 
 #Funzione che fa il refresh della tabella
-    def refresh(can):
+    def refresh(creation):
+
+        if not tree.winfo_exists():
+            # Il widget non esiste più, non fare nulla
+            return
+        
         #Variabile che permette di eseguire una singola volta il refresh
-        if can or not data.locomotive_window2.winfo_exists():
+        if not creation or not locomotive_window2.winfo_exists():
             utilities.update_circuit_table(columns,tree)
     
     def enable_circuitWindow():
@@ -747,13 +751,15 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
         circuit_window.grab_set()
 
     def open_locomotive_creation_window():
+        global locomotive_window2
+
         locomotive_window2 = GUI.open_locomotive_window("creation", data.Textlines[12], "250x170",locomotive_window)
-        data.locomotive_window2 = locomotive_window2
+
         if locomotive_window2:
             creation_window(locomotive_window2,GUI)
-            locomotive_window2.bind("<Destroy>", lambda event: refresh(False))
+            locomotive_window2.bind("<Destroy>", lambda event: refresh(True))
+            
         
-
     def active_settings():
 
         id      = RFID_entry.get()
@@ -778,7 +784,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
                         algo.calibred_RFID(index_to_replace,message[1])
                         print("QUI")
                         data.sensor_response[0] = "_/_"
-                        refresh(True)
+                        refresh(False)
                     else:
                         utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",locomotive_window,GUI,"")
                 else:
@@ -807,6 +813,8 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     tag_label.config(state="disabled")
     data.label = tag_label
     
+    
+
     ADD_button = tk.Button(locomotive_window, text=data.Textlines[52], width=7,
                                 command=open_locomotive_creation_window)
     ADD_button.grid(row=0, column=0, pady=(10, 0), padx=(0,7),sticky=tk.E)
@@ -823,7 +831,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
     columns = (data.Textlines[96], data.Textlines[95], data.Textlines[80])
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings')
-    refresh(True)
+    refresh(False)
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[51], width=7,
                                 command=active_settings)
