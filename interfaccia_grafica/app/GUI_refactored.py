@@ -335,7 +335,7 @@ class GUI(tk.Frame):
 
         if self.locomotive_control_window[id_controllo] is None or not self.locomotive_control_window[id_controllo].winfo_exists():
             #Apri solo se il button è sullo stato normal, non si puo togliere il print(self.control_button['state']), 
-            # Equivale a questo : self.control_button['state'] == 'norma'
+            # Equivale a questo : self.control_button['state'] == 'normal'
             if self.on_button.cget("background") == "#00ff00":
                 #Creazione della finestra di controllo
                 data.variabili_apertura["locomotive_control_var"][id_controllo] = True
@@ -478,28 +478,27 @@ class GUI(tk.Frame):
         
         self.control_button["menu"] = self.control
         self.control.delete(0, "end")
-        i=0
-        #Forse si puo ottimizzare
-        for loco in self.locomotive_names:
-            # index   = utilities.CalcolaIDtreno('Nome',loco)
-            #id      = database.locomotives_data[i]['ID']
-            #Basta cosi, se riordino il dizionario locomotives_data
-            id = i+1
-            #Se il tasto non ha funzioni associati, entra - Forse si puo scrivere meglio
-            if not self.container.bind("<KeyPress-{}>".format(id)):
-                if id < 10:
-                    self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))
-                elif id < data.max_loco_standard:
-                    if not self.container.bind("<Control-KeyPress-{}>".format(id-10)):
-                        self.container.bind("<Control-KeyPress-{}>".format(id-10), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))
-                else:
-                    utilities.show_info(data.Textlines[23])
-            i+=1
+
+        #Riordinando il dizionario locomotives_data, ad ogni id assegna il tasto corrispondente
+        #Questo ciclo for itera su ogni elemento della lista self.locomotive_names. La funzione enumerate() ottiene una coppia di valori durante l'iterazione: l'indice dell'elemento e l'elemento stesso.
+        # start=1: Questo parametro opzionale specifica da quale indice iniziare la numerazione degli indici. L'indice inizia da 1 anziché da 0.
+        #Questo permette di eseguire operazioni sull'elemento e sull'indice contemporaneamente durante l'iterazione.
+        for id, loco in enumerate(self.locomotive_names, start=1):
+            # Costruisci il pattern del tasto da associare
+            key_pattern = "<KeyPress-{}>".format(id) if id < 10 else "<Control-KeyPress-{}>".format(id - 10)
+
+            # Controlla se il tasto non ha già una funzione associata
+            if not self.container.bind(key_pattern):
+                self.container.bind(key_pattern, lambda event, loco_id=id: (self.set_var_keypress_locomotive_control(loco_id), self.open_locomotive_control()))
+            
+            #Aggiorna il menubutton con le locomotive inserite
             self.control.add_radiobutton(
                 label=loco,
                 value=loco,
                 variable=self.var_locomotive,
                 command= self.open_locomotive_control)
+            
+        if len(self.locomotive_names) == data.max_loco_standard: utilities.show_info(data.Textlines[23])
             
     #Aiuta la gestione dei tasti per aprire la pagina di controllo relativa alla locomotiva
     def set_var_keypress_locomotive_control(self,id):
