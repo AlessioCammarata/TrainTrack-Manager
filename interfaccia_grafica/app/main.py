@@ -32,6 +32,8 @@ class App(tk.Tk):
 
 
 if __name__ == "__main__":
+    
+    #Ottengo il nome del sistema operativo
     sistema_operativo = platform.system()
     if sistema_operativo == "Darwin": sistema_operativo = "macOS"
     

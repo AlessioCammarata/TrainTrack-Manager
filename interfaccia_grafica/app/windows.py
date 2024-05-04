@@ -739,7 +739,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 #Funzione che fa il refresh della tabella
     def refresh(can):
         #Variabile che permette di eseguire una singola volta il refresh
-        if can or not data.save_button.winfo_exists():
+        if can or not data.locomotive_window2.winfo_exists():
             utilities.update_circuit_table(columns,tree)
     
     def enable_circuitWindow():
