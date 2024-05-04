@@ -14,7 +14,8 @@ class GUI(tk.Frame):
         self.container = container
         self.serial_port = data.serial_ports[0]
         self.locomotive_names = []
-        self.container.bind("<FocusIn>", lambda event: self.container.focus_set())
+        #self.container.bind("<FocusIn>", lambda event: self.container.focus_set())
+
         '''
                         ___    _   _    ___   
                 o O O  / __|  | | | |  |_ _|  
@@ -75,9 +76,8 @@ class GUI(tk.Frame):
         Enter -> Ferma o avvia il sistema senza togliere la corrente
         '''
 
-        #ROOT principale
-
         #FRAME dei bottoni e del menu
+
         self.pack(side="bottom", pady=10)
         self.configure(bg="#c0c0c0")
         
@@ -92,7 +92,7 @@ class GUI(tk.Frame):
 
         # Labels
         # Database Locomotive
-        self.locomotive_label = tk.Label(self.container, text="DATABASE LOCOMOTIVE", bg="#c0c0c0")
+        self.locomotive_label = tk.Label(self.container, text="DATABASE LOCOMOTIVE", bg="#c0c0c0", width=20)
         self.locomotive_label.pack(side="left",pady=(5,0), padx=(300,300))
         # self.locomotive_label.place(relx=0.5, rely=0.05, anchor="center")
 
@@ -104,7 +104,7 @@ class GUI(tk.Frame):
         self.flag = tk.Menu(self.flag_button, tearoff=0)
         self.flag_button.pack(side = "left")
 
-    #stile del bottone controlla locomotiva e del suo menu
+    #stile del bottone per cambiare lingua e del suo menu, Assegno un valore ad ogni menubutton, seguendo il vettore data.languages
         self.style1 = ttk.Style()
         self.flag_button.config(style='Custom.TMenubutton')
         self.style1.configure('Custom.TMenubutton', background="#c0c0c0")
@@ -124,7 +124,7 @@ class GUI(tk.Frame):
         self.image_info = utilities.process_image(self.image_info_path, 'resize', 45, 35)
         self.info_button = tk.Button(self.container, image= self.image_info, bg="#c0c0c0", borderwidth=0, 
                                        command=self.open_info_window)
-        self.info_button.pack(side="left", padx=(0,0),pady=(5,0))
+        self.info_button.pack(side="left",  padx=(0,0),pady=(5,0))
         self.container.bind("<i>", lambda event: self.open_info_window())
         self.locomotive_info_window = None
 
@@ -137,14 +137,14 @@ class GUI(tk.Frame):
 
         # Bottoni
         # Aggiungi locomotiva
-        self.add_button = tk.Button(self, text="AGGIUNGI LOCOMOTIVA", height=2, 
+        self.add_button = tk.Button(self, text="AGGIUNGI LOCOMOTIVA", height=2, width=20, 
                                     command=self.open_locomotive_creation_window)
         self.add_button.pack(side="left", padx=5)
         self.locomotive_creation_window = None
         self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())
 
         # Rimuovi locomotiva
-        self.remove_button = tk.Button(self, text="RIMUOVI LOCOMOTIVA", height=2, 
+        self.remove_button = tk.Button(self, text="RIMUOVI LOCOMOTIVA", height=2, width=20,
                                        command=self.open_locomotive_remove_window)
         self.remove_button.pack(side="left", padx=5)
         self.remove_button.config(state='disabled')
@@ -152,7 +152,7 @@ class GUI(tk.Frame):
         
 
         # Modifica locomotiva
-        self.modify_button = tk.Button(self, text="MODIFICA LOCOMOTIVA", height=2, 
+        self.modify_button = tk.Button(self, text="MODIFICA LOCOMOTIVA", height=2, width=22,
                                        command=self.open_locomotive_modify_window)
         self.modify_button.pack(side="left", padx=5)
         self.modify_button.config(state='disabled')
@@ -198,16 +198,13 @@ class GUI(tk.Frame):
                                     command=self.GENERAL_STOP_START)
         self.STOP_button.pack(side="left", padx=5)
         self.STOP_button.config(state='disabled')
-        
-
-        #self.on_offButton = buttons.Buttons()
 
         #Inserimento di max finestre nel locomotive control window in base al max_loco
         for i in range(data.max_loco):
             self.locomotive_control_window.append(None)
             data.variabili_apertura["locomotive_control_var"].append(False)
 
-        #Fa riferimento alla pagina creata nel circuit
+        #Fa riferimento alla pagina creata nel circuit, serve poiche quando chiamo la funzione dal circuit essa va a cercarla.
         self.locomotive_RFID_window = None
         
     '''
@@ -218,102 +215,129 @@ class GUI(tk.Frame):
          {======|_|"""""|_|"""""|_|"""""| 
         ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
     '''
-
+   #Funzione che gestisce e semplifica la creazione dei TopLevel dell'applicazione.
     def open_locomotive_window(self, window_type : str, window_title: str, window_size: str, root):
         att = f'locomotive_{window_type}_window'
         window_var = getattr(self, att)
         data.variabili_apertura[f'locomotive_{window_type}_var'] = False # utilities.set_variabilechiusura(window_type)
 
+        #Controllo per vedere se la finestra è gia aperta
         if window_var is None or not window_var.winfo_exists():
             window_var = tk.Toplevel(root)
+            #Nasconde la finestra
+            window_var.withdraw()
+            if window_type == 'info':
+                window_var.iconbitmap(utilities.asset_path("info", "ico"))
+            elif window_type in ['settings', 'RFID']:
+                window_var.iconbitmap(utilities.asset_path("controllo", "ico"))
+            else: window_var.iconbitmap(utilities.asset_path("icon_control", "ico"))
+
             data.variabili_apertura[f'locomotive_{window_type}_var'] = True
             #if necessario, la control è gestita tramite un vettore
-            if att == 'locomotive_control_window':
-                self.locomotive_control_window[window_type] = window_var
-            else:
-                setattr(self, att, window_var)
+            # if att == 'locomotive_control_window':
+            #     self.locomotive_control_window[window_type] = window_var
+            # else:
+            setattr(self, att, window_var)
             window_var.transient(root)
             window_var.protocol("WM_DELETE_WINDOW", lambda:utilities.on_close(window_var,window_type))
-
+            
             #Seleziona la pagina appena creata
             window_var.focus_set()
+            window_var.title(window_title)
+            
+            #Fissa le finestra in maniera relativa al padre
+            width = self.winfo_rootx()
+            height = self.winfo_rooty()
 
-            return windows.Windows(window_var, window_title, window_size)
+            window_var.tk.call('wm', 'geometry', window_var._w, f"{width}x{height}+{width-50}+{height-50}")
+            window_var.geometry(window_size)
+            window_var.update_idletasks()
+
+            window_var.resizable(False, False)
+            # window_var.transient(root)
+
+            #Rende la finestra visibile di nuovo
+            if not window_type == "circuit": window_var.deiconify()
+            
+            return window_var
 
         utilities.show_error_box(data.Textlines[20],window_var,self,"main")
 
+    #Apre la pagina delle impostazioni
     def open_settings_window(self):
         locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x200",self.container)
         if locomotive_window:
-            locomotive_window.settings_window(self)
+            windows.settings_window(locomotive_window,self)
 
+    #Apre la pagina della creazione locomotive
     def open_locomotive_creation_window(self):
         locomotive_window = self.open_locomotive_window("creation", data.Textlines[12], "250x170",self.container)
         if locomotive_window:
-            locomotive_window.creation_window(self)
-            
+            windows.creation_window(locomotive_window,self)
+
+    #Apre la pagina della rimozione locomotive      
     def open_locomotive_remove_window(self):
         locomotive_window = self.open_locomotive_window("remove", data.Textlines[13], "250x150",self.container)
         if locomotive_window:
-            locomotive_window.remove_window(self)
+            windows.remove_window(locomotive_window,self)
 
+    #Apre la pagina della modifica locomotive
     def open_locomotive_modify_window(self):
         locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x200",self.container)
         if locomotive_window:
-            locomotive_window.modify_window(self)
+            windows.modify_window(locomotive_window,self)
 
+    #Apre la pagina per controllare il circuito
     def open_control(self):
-        #global locomotive_circuit_window
+
+        open=True
+                    
+            
+        #Nel caso in cui la seriale non sia collegata, si chiede all'utente se vuole continuare
+        if not utilities.is_serial_port_available(self.serial_port):
+            open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41])
         
-        if self.locomotive_circuit_window is None or not self.locomotive_circuit_window.winfo_exists():
-            open=True
-            #Setto la variabile a False poiche serve per creare i deviatoi una volta sola, all'interno del codice la setto a True dopo la prima esecuzione
-            data.variabili_apertura["locomotive_circuit_var"] = False
+        if open :
+            #creazione di circuit per decidere il tipo di controllo del sistema
+            locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "",self.container)
             
-            #Nel caso in cui la seriale non sia collegata, si chiede all'utente se vuole continuare
-            if not utilities.is_serial_port_available(self.serial_port):
-                open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41])
-            
-            if open:
-                #creazione di circuit per decidere il tipo di controllo del sistema
-                self.locomotive_circuit_window = tk.Toplevel(self.container)
-                self.locomotive_circuit_window.bind("<Escape>", lambda event: (utilities.on_close(self.locomotive_circuit_window,"circuit"),
+            if locomotive_window:
+
+                #Impostazioni di pagina, al premere del tasto ESC e al premere della x rossa, chiude la finestra, ferma l'algoritmo, toglie l'opacita e rilascia la pagina padre
+
+                locomotive_window.bind("<Escape>", lambda event: (utilities.on_close(locomotive_window,"circuit"),
                                                                                 self.container.algo.stop_algo(),
-                                                                                self.container.attributes("-alpha", 1),
-                                                                                self.locomotive_circuit_window.grab_release(),
+                                                                                # self.container.attributes("-alpha", 1),
+                                                                                locomotive_window.grab_release(),
                                                                                 ))
                 #locomotive_circuit_window.transient(self.root)
-                self.locomotive_circuit_window.protocol("WM_DELETE_WINDOW", lambda:(utilities.on_close(self.locomotive_circuit_window,"circuit"),
+                locomotive_window.protocol("WM_DELETE_WINDOW", lambda:(utilities.on_close(locomotive_window,"circuit"),
                                                                                     self.container.algo.stop_algo(),
-                                                                                    self.container.attributes("-alpha", 1),
-                                                                                    self.locomotive_circuit_window.grab_release(),
+                                                                                    # self.container.attributes("-alpha", 1),
+                                                                                    locomotive_window.grab_release(),
                                                                                     ))
-                #Seleziona la pagina appena creata
-                self.locomotive_circuit_window.focus_set()
-
-                locomotive_circuit_window1 = windows.circuit_window(self.locomotive_circuit_window,data.Textlines[15],len(data.Turnouts),self.container,self)
+    
+                locomotive_circuit_window1 = windows.circuit_window(locomotive_window,len(data.Turnouts),self.container,self)
+                #Il parametro indica se è automatico o no
                 locomotive_circuit_window1.open_circuit_window(False)
 
-        else: 
-            utilities.show_error_box(data.Textlines[20],self.locomotive_circuit_window,self,"main")
-    
+    #Apre la pagina per controllare locomotive    
     def open_locomotive_control(self):
-        #global locomotive_control_window
 
         locomotiva      = self.var_locomotive.get()
         id_controllo    = utilities.CalcolaIDtreno('Nome',locomotiva)
 
+        #Nel caso in cui la funzione viene chiamata da tastiera, l'impostazione dell'id avviene dalla funzione set_var_keypress_locomotive_control
         if id_controllo is None:
             id_controllo = data.var_supporto
             locomotiva   = data.locomotives_data[id_controllo]['Nome'] 
 
 
-        
-
         if self.locomotive_control_window[id_controllo] is None or not self.locomotive_control_window[id_controllo].winfo_exists():
-            #Apri solo se il button è sullo stato normal, non si puo togliere il print
-            print(self.control_button['state'])
-            if self.control_button['state'] == 'normal':
+            #Apri solo se il button è sullo stato normal, non si puo togliere il print(self.control_button['state']), 
+            # Equivale a questo : self.control_button['state'] == 'normal'
+            if self.on_button.cget("background") == "#00ff00":
+                #Creazione della finestra di controllo
                 data.variabili_apertura["locomotive_control_var"][id_controllo] = True
                 self.locomotive_control_window[id_controllo] = tk.Toplevel(self.container)
                 self.locomotive_control_window[id_controllo].transient(self.container)
@@ -322,34 +346,58 @@ class GUI(tk.Frame):
 
                 #Seleziona la pagina appena creata
                 self.locomotive_control_window[id_controllo].focus_set()
+                self.locomotive_control_window[id_controllo].title(locomotiva)
+                self.locomotive_control_window[id_controllo].geometry("300x250")
+                self.locomotive_control_window[id_controllo].resizable(False, False)
 
-                locomotive_control_window1 = windows.Windows(self.locomotive_control_window[id_controllo],locomotiva,"300x250")
-                locomotive_control_window1.control_window(self,locomotiva,id_controllo)
+
+                windows.control_window(self.locomotive_control_window[id_controllo],self,locomotiva,id_controllo)
 
         else:
             utilities.show_error_box(data.Textlines[20],self.locomotive_control_window[id_controllo],self,"main")
 
     def open_info_window(self):
-        if self.locomotive_info_window is None or not self.locomotive_info_window .winfo_exists():
-            info_text = data.Textlines[60] + "\n" + data.Textlines[61] + "\n"+ data.Textlines[62] +"\n"+ data.Textlines[63]
-            self.locomotive_info_window = tk.Toplevel(self.container)
-            #Seleziona la pagina appena creata
-            self.locomotive_info_window.focus_set()
-            self.locomotive_info_window.title(data.Textlines[16])
-            self.locomotive_info_window.geometry("275x150")
-            self.locomotive_info_window.transient(self)
 
-            self.locomotive_info_window.protocol("WM_DELETE_WINDOW", lambda: self.locomotive_info_window.destroy())
-            self.locomotive_info_window.bind('<Return>', lambda event: self.locomotive_info_window.destroy())
-            self.locomotive_info_window.bind("<Escape>", lambda event: self.locomotive_info_window.destroy())
+        #Creazione della finestra per le informazioni
+        locomotive_window = self.open_locomotive_window("info", data.Textlines[16], "600x400",self.container)
+        if locomotive_window:
 
-            label = tk.Label(self.locomotive_info_window, text=info_text)
-            label.pack(padx=5, pady=10)
+            #Serie di informazioni sull'applicazione
+            info_text = (
+                    data.Textlines[100] +     "\n\n\n"
+                    "1. "+data.Textlines[101]+"\n\n"
+                    " - "+data.Textlines[102]+"\n\n"
+                    " - "+data.Textlines[103]+"\n\n\n"
+                    "2. "+data.Textlines[104]+"\n\n"
+                    " - "+data.Textlines[105]+"\n\n"
+                    " - "+data.Textlines[106]+"\n\n"
+                    " - "+data.Textlines[107]+"\n\n"
+                    " - "+data.Textlines[108]+"\n\n"
+                    " - "+data.Textlines[109]+"\n\n"
+                    " - "+data.Textlines[110]+"\n\n"
+                    " - "+data.Textlines[111]+"\n\n"
+                    " - "+data.Textlines[112]+"\n\n"
+                    " - "+data.Textlines[113]
+                )
+            
+            label_title = tk.Label(locomotive_window, text=data.Textlines[114], font=('Helvetica', 14, 'bold'))
+            label_title.pack(pady=10)
+            
+            text = tk.Text(locomotive_window, wrap='word', width=60, height=20)
+            text.insert(tk.END, info_text)
+            text.config(state='disabled')
+            text.pack(padx=10, pady=5)
+            
+            locomotive_window.transient(self.container)
 
-            close_button = tk.Button(self.locomotive_info_window, text=data.Textlines[43], command=self.locomotive_info_window.destroy)
+            #Comandi da tastiera e x rossa
+            locomotive_window.protocol("WM_DELETE_WINDOW", lambda: locomotive_window.destroy())
+            locomotive_window.bind('<Return>', lambda event: locomotive_window.destroy())
+            locomotive_window.bind("<Escape>", lambda event: locomotive_window.destroy())
+
+            close_button = tk.Button(locomotive_window, text=data.Textlines[43], command=locomotive_window.destroy)
             close_button.pack(pady=10)
-        else:
-            utilities.show_error_box(data.Textlines[20],self.locomotive_info_window,self,"main")
+        
     #funzione che serve per la gestione del bottone ON/OFF della corrente
     def on_off(self):
         current_color = self.on_button.cget("background")
@@ -375,7 +423,7 @@ class GUI(tk.Frame):
         else:
             utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,self.container,"main")
         
-
+    #Funzione che gestisce lo stato dei bottoni nella pagina principale
     def check_control_button_state(self):
         if data.locomotives_data:
             self.remove_button.config(state='normal')
@@ -403,6 +451,7 @@ class GUI(tk.Frame):
         
     #funzione per aggioranre la tabella - all'interno c'è anche la funzione che gestisce il menu a tendina del controllo
     def update_table(self):
+        
         # Pulizia della tabella
         for row in self.tree.get_children():
             self.tree.delete(row)
@@ -412,9 +461,11 @@ class GUI(tk.Frame):
             self.tree.insert('', tk.END, values=(
                 locomotive['ID'],
                 locomotive['LocoID'],
-                locomotive['Colore'],
+                data.colors[locomotive['Colore']],
                 locomotive['Nome']
             ),tags=('color'))
+            if locomotive['RFIDtag'] == "":
+                data.calibred = False
 
         self.tree.tag_configure('color', background='#EDEDED')
 
@@ -427,52 +478,53 @@ class GUI(tk.Frame):
         
         self.control_button["menu"] = self.control
         self.control.delete(0, "end")
-        i=0
-        #Forse si puo ottimizzare
-        for loco in self.locomotive_names:
-            # index   = utilities.CalcolaIDtreno('Nome',loco)
-            #id      = database.locomotives_data[i]['ID']
-            #Basta cosi, se riordino il dizionario locomotives_data
-            id = i+1
-            #Se il tasto non ha funzioni associati, entra - Forse si puo scrivere meglio
-            if not self.container.bind("<KeyPress-{}>".format(id)):
-                if id < 10:
-                    self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))
-                elif id < 20:
-                    if not self.container.bind("<Control-KeyPress-{}>".format(id-10)):
-                        self.container.bind("<Control-KeyPress-{}>".format(id-10), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))
-                else:
-                    utilities.show_error_box(data.Textlines[23],self,self.container,"main")
-            i+=1
+
+        #Riordinando il dizionario locomotives_data, ad ogni id assegna il tasto corrispondente
+        #Questo ciclo for itera su ogni elemento della lista self.locomotive_names. La funzione enumerate() ottiene una coppia di valori durante l'iterazione: l'indice dell'elemento e l'elemento stesso.
+        # start=1: Questo parametro opzionale specifica da quale indice iniziare la numerazione degli indici. L'indice inizia da 1 anziché da 0.
+        #Questo permette di eseguire operazioni sull'elemento e sull'indice contemporaneamente durante l'iterazione.
+        for id, loco in enumerate(self.locomotive_names, start=1):
+            # Costruisci il pattern del tasto da associare
+            key_pattern = "<KeyPress-{}>".format(id) if id < 10 else "<Control-KeyPress-{}>".format(id - 10)
+
+            # Controlla se il tasto non ha già una funzione associata
+            if not self.container.bind(key_pattern):
+                self.container.bind(key_pattern, lambda event, loco_id=id: (self.set_var_keypress_locomotive_control(loco_id), self.open_locomotive_control()))
+            
+            #Aggiorna il menubutton con le locomotive inserite
             self.control.add_radiobutton(
                 label=loco,
                 value=loco,
                 variable=self.var_locomotive,
                 command= self.open_locomotive_control)
-
+            
+        if len(self.locomotive_names) == data.max_loco_standard: utilities.show_info(data.Textlines[23])
+            
     #Aiuta la gestione dei tasti per aprire la pagina di controllo relativa alla locomotiva
     def set_var_keypress_locomotive_control(self,id):
         id_controllo = utilities.CalcolaIDtreno('ID',id)
         data.var_supporto = id_controllo
         print(id)
 
+    #Funzione che permette di tradurre tutti i testi visibili all'interno dell'app
     def change_language(self):
         language      = self.var_language.get()
-        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[74]):
-            #utilities.translate(language)
-            #self.container.on_close_root()
+        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[66]):
             # Identifica l'indice della stringa nel vettore
             index = data.languages.index(language)
             # Rimuovi la stringa dal suo attuale indice
             data.languages.pop(index)
             # Inserisci la stringa nella prima posizione del vettore
             data.languages.insert(0, language)
+            #Traduce il file inserito nella prima posizione
             utilities.translate()
-            print(data.languages)
-            #self.after(20,self.container.reopen_window())
+
+            #Aggiorna la pagina con la nuova lingua inserita
             self.container.refresh()
             self.refresh()
+            self.update_table()
 
+    #Funzione che serve per aggiornare la lingua della pagina principale
     def refresh(self):
         #Prendo tutti i widget della pagina
         children = self.container.winfo_children()
@@ -484,7 +536,16 @@ class GUI(tk.Frame):
 
         #Cambio il nome dei label nella lingua giusta, anche il link dell'immagine
         self.locomotive_label.configure(text=data.Textlines[2])
-        self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[6])
+        
+        #cambio il nome delle colonne della tabella
+        self.columns = (data.Textlines[3], data.Textlines[4], data.Textlines[5], data.Textlines[80])
+        self.tree['columns'] = self.columns
+
+        for col in self.columns:
+            self.tree.heading(col, text=col)
+            self.tree.column(col, anchor='center')
+
+        #Aggiornamento dei labels
         self.add_button.configure(text=data.Textlines[7])
         self.remove_button.configure(text=data.Textlines[8])
         self.modify_button.configure(text=data.Textlines[9])

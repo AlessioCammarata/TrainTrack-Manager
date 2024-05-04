@@ -8,37 +8,45 @@
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
 
 '''
-SO = {
-    'windows': True,
-    'linux' :  False
-}
+#Var amministratore
+root = False
+
+#Sistema Operativo attuale e architettura
+SO = ""
+architecture = ""
+
+#In questa var viene memorizzata la path assoluta del programma che viene calcolata durante l'avvio
+path = ""
 
 #Tiene a mente tutte le stringhe del programma
 Textlines = []
 languages = ['IT','EN','FR','SP']
 
 locomotives_data =      []           # Lista per salvare i dati delle locomo
-#locomotive_names =      []           # Lista per i nomi delle locomotive
-max_loco_standard =     11           # Numero max di locomotive che il sistema puo gestire
+max_loco_standard =     11           # Numero max di locomotive che il sistema puo gestire --- Solo 11 colori disponibili
 max_loco         =      11           # Numero max di locomotive che il sistema lavora
 max_length_name  =      20           # Numero max di caratteri che il nome puo avere
 max_size_loco_id =   10293           # Numero max dell'indirizzo che si puo dare ad una locomotiva
 K_velocita       = 126/100           # Costante basata sulla velocita massima possibile di una locomotiva (0-126)
+max_velocita     =     100
 
 var_velocita_tastiera = 0           #Var che aiuta l'implementazione della tastioera nella finestra dei comandi
 var_supporto = None                 #Var che aiuta l'apertura della gestione locomotiva da tastiera
+
 # impostazioni connessione seriale, 
 # serial_port è quella che fa riferimento alla centralina dcc, 
 # serial_port1 è quella che fa riferimento ai sensori RFID
-serial_port     = 6
-serial_port1    = 5
+serial_port     = "–"
+serial_port1    = "-"
 
 serial_ports = [serial_port,serial_port1]
 
+#Numero di porte che vengono controllate
+port_range = 10
 #dizionario che controlla se il collegamento seriale per l'algoritmo è stato inizializzato o no e se la porta è abilitata o disabilitata dall'utente
 # Serial_port_info[serial_ports[0]][0] = Inizialized, Serial_port_info[serial_ports[0]][1] = Enabled
 serial_port_info = {
-    serial_ports[0]: [False,True], 
+    serial_ports[0]: [False,False], 
     serial_ports[1]: [False,False]
 }
 # Variabile che serve a controllare se c'è stato un errore
@@ -52,14 +60,34 @@ variabili_apertura = {
     "locomotive_remove_var":   False,
     "locomotive_modify_var":   False,
     "locomotive_circuit_var":  False,
+    "locomotive_info_var":     False,
     "locomotive_control_var":  []
 }
 
 #Salvo la pagina, mi serve per bloccare la pagina circuit
 locomotive_RFID_window = ""
 
-color_available = ["Red", "Green", "lightblue", "Yellow", "Fuchsia", "Orange", "Pink", "Brown", "Gray", "Cyan","lightgray","Default"]
+color_available = ["Red", "Green", "Lightblue", "Yellow", "Fuchsia", "Orange", "Pink", "Brown", "Gray", "Cyan","Lightgray","Default"]
 
+# Traduzione dei colori - In questo dizionario vengono inserite le traduzioni per ogni elemento
+# colors = {
+#     "Red":         "",
+#     "Green":       "",
+#     "Lightblue":   "",
+#     "Yellow":      "",
+#     "Fuchsia":     "",
+#     "Orange":      "",
+#     "Pink":        "",
+#     "Brown":       "",
+#     "Gray":        "",
+#     "Cyan":        "",
+#     "Lightgray":   "",
+#     "Default":     ""
+# }
+colors = {}
+for color in color_available:
+    colors[color] = ""
+    
 #Creazione in memoria dei deviatoi
 # Turnout["Cambio1"] = [Stato Turnout, ID turnout, canvasdef, canvas]
 Turnouts = {                   
@@ -70,7 +98,7 @@ Turnouts = {
     "Cambio 5":   [False,"","",""],
     "Cambio 6":   [False,"","",""],
     "Cambio 7":   [False,"","",""],
-    "Cambio 8":   [True,"","",""]
+    "Cambio 8":   [False,"","",""]
 }
 
 #Non lo sto usando per ora
@@ -102,6 +130,8 @@ Sensors = {
     "Sensore 7":   ["","","","","black"],
     "Sensore 8":   ["","","","","red"]
 }
+#La label è quella della pagina rfid
+label = ""
 
 #array dei canvas
 canvas_array = [""]
@@ -111,6 +141,7 @@ calibred = False
 
 #Qui viene inserita la varibile del sensore per la calibrazione
 sensor_response = ["_/_"]
+
 '''
 Se partono da 7 viaggiano verso sinistra e cominciano alla stazione
 
@@ -126,6 +157,7 @@ Se partono da 7 viaggiano verso sinistra e cominciano alla stazione
  8-ABEDCB     -> Schiva F,G,H         -> Ricomincia da B, BEDCB
  9-ABEDCGHFE  -> Non schiva niente    -> Ricomincia Da E, EDCGHF
 '''
+#Test di algo
 #Per ora senza ripetizioni
 LRoutes = {
 1: [7,3,4,5,6,8],
@@ -141,6 +173,7 @@ RRoutes = {
 8: [1,2,5,4,3,2],
 9: [1,2,5,4,3,7,8,6]
 }
+
 
 percorsi_assegnati = []
 criticita = []

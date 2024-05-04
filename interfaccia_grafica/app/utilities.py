@@ -35,12 +35,11 @@ indicatoron = [('Menubutton.border',
 
 #Funzione che riassume il path relativo
 def asset_path(asset_name: str, extenction: str) -> str:
-    if data.SO['windows']:
-        return "interfaccia_grafica\\assets\\" + asset_name + "." + extenction
-    elif data.SO['linux']:
-        return "interfaccia_grafica/assets/" + asset_name + "." + extenction
+        
+                    # Per sistemi Windows                                                Per sistemi Unix-like (Linux, macOS)
+    return data.path + "\\assets\\" + asset_name + "." + extenction if data.SO == 'Windows' else data.path + "/assets/" + asset_name + "." + extenction
 
-# Funzione che riassume i resize e i rotate
+# Funzione che riassume i resize e i rotate, viene utilizzata per preparare le immagini a essere posizionate nel canvas
 def process_image(image_path, operation, *args):
     img = Image.open(image_path)
 
@@ -54,16 +53,6 @@ def process_image(image_path, operation, *args):
             processed_img = rotated_img.resize((args[1], args[2]), Image.BILINEAR)
             return ImageTk.PhotoImage(processed_img)
         
-        #Test, non serve ora come ora
-        case 'opacity':
-            # Imposta l'opacità desiderata (0 per trasparente, 1 per opaco)
-            opacity = args[0]  # Opacità al 50%
-            image = img.convert("RGBA")
-            alpha = int(255 * opacity)
-            image.putalpha(alpha)
-
-            # Converte l'immagine in un oggetto PhotoImage di Tkinter
-            return ImageTk.PhotoImage(image)
     return img
             
 #Funzione per impostare la var di chiusura, quando si chiude la finestra
@@ -86,7 +75,7 @@ def show_error_box(descrizione,finestra,finestra_padre,importance):
 
 #Funzione per WARNING
 def are_you_sure(descrizione):
-    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[73], icon='warning')
+    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[65], icon='warning')
     return risposta
 
 #Funzione per INFO
@@ -106,25 +95,25 @@ def on_close(finestra,window_type):
         data.variabili_apertura[f'locomotive_control_var'][int(window_type)] = False
     finestra.destroy()
     finestra = None
-    #se la funzione on_close è chiamata dallo show_error_box, non è necessario chiudere la finestra
 
 #Controlla il SO, e scrive il path a seconda del SO
 def find_port_path(function_port):
-    if data.SO['linux']:
-        port_path = f"/dev/{function_port}"  # Per sistemi Unix-like (Linux, macOS)
-    elif data.SO['windows']:
-        port_path = f"COM{function_port}"  # Per sistemi Windows
-    else:
-        show_error_box("Non ho il tuo SO bro","_/_","")
-    return port_path
+
+            # Per sistemi Windows                       Per sistemi Unix-like (Linux, macOS)
+    return f"COM{function_port}" if data.SO == 'Windows' else f"/dev/{function_port}"  
+    
 
 #Funzione che controlla se la porta seriale chiamata è collegata o meno e se è stata inizializzata - in caso non sia stata inizializzata, la inizializza
 def is_serial_port_available(function_port):
+    if data.root:
+        # show_info("ROOT")
+        return True
     if data.serial_port_info[function_port][1]:
         # Costruisci il percorso del dispositivo della porta seriale
         port_path = find_port_path(function_port)  
         exist = os.path.exists(port_path)
 
+        #Nel caso in cui la porta non sia stata inizializzzìata, la inizializza.
         if exist and not data.serial_port_info[function_port][0]:
             data.serial_port_info[function_port][0] = True
             serial.Serial(port_path,baudrate=115200,timeout=1)
@@ -132,7 +121,8 @@ def is_serial_port_available(function_port):
 
         exist_inizialized = exist and data.serial_port_info[function_port][0]
         return exist_inizialized
-    else: return False
+    # else: 
+    return False
     
 #Funzione che controlla solo che sia collegata una porta al pc
 def port_exist(function_port):
@@ -140,8 +130,55 @@ def port_exist(function_port):
     port_path = find_port_path(function_port)  
     exist = os.path.exists(port_path)
     print(f"port exist:{port_path} e {exist}")
-    print(data.serial_ports)
+    # print(data.serial_ports)
     return exist
+
+#Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
+def set_port_var(*args):
+    ports_available = ["",""]
+    port1_enable = True
+    port2_enable = True
+
+    if not args:
+        
+        #Controlla le prime 10 porte se sono libere - si puo cambiare
+        flag = 0
+        for i in range(data.port_range):
+            if port_exist(i) and flag<len(data.serial_ports):
+               ports_available[flag] = i
+               flag+=1 
+            i+=1
+
+        #Reimposta i valori standard nel caso in cui sia stato modificato qualcosa - Esce nel caso in cui non ci sia nessuna porta collegata
+        if flag < 2: 
+            ports_available[1] = data.serial_ports[1]
+            port2_enable = False
+            if flag < 1: 
+                ports_available[0] = data.serial_ports[0]
+                return 0
+    else:
+        ports_available[0]  = args[0]
+        ports_available[1]  = args[1]
+
+    #Dizionario temporale che aggiorna le chiavi
+    temp_dict = {
+                    ports_available[0]: data.serial_port_info.pop(data.serial_ports[0]),
+                    ports_available[1]: data.serial_port_info.pop(data.serial_ports[1])
+                }
+    
+    #assegnazione delle porte nel vettore
+    data.serial_ports[0] = ports_available[0]
+    data.serial_ports[1] = ports_available[1]
+
+    # Aggiornare il dizionario originale con le nuove chiavi
+    data.serial_port_info.update(temp_dict)
+
+    if not args:
+        #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        data.serial_port_info[data.serial_ports[0]][1]      = port1_enable
+        data.serial_port_info[data.serial_ports[1]][1]      = port2_enable
+
+    return data.serial_ports
 
 #Funzione che permette di aggiornare la tabella delle calibrazioni RFID
 def update_circuit_table(columns,tree):
@@ -173,8 +210,16 @@ def translate():
     print(data.languages[0])
     data.Textlines = []
     # Apro il file in modalità lettura
-    with open("interfaccia_grafica\\languages\\file{}.txt".format(data.languages[0]), 'r',encoding='utf-8') as file:
+    relative_path = "\\languages\\file{}.txt".format(data.languages[0]) if data.SO == 'Windows' else "/languages/file{}.txt".format(data.languages[0])
+    with open(data.path + relative_path , 'r',encoding='utf-8') as file:
         # Leggo ogni riga del file
         for line in file:
             # Aggiungo la riga alla lista
             data.Textlines.append(line.strip())
+    color_update()
+
+def color_update():
+    i=0
+    for colors in data.colors:
+        data.colors[colors] = data.Textlines[140+i]
+        i += 1

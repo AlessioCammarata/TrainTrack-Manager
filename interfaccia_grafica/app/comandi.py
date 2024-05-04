@@ -4,8 +4,8 @@ With these command you could be able to control both the system and all the loco
 '''
 
 import data
-import os
 import time
+import subprocess
 
 '''
 
@@ -26,8 +26,8 @@ def name_serial_port():
 #<1> o <0>
 
 def open_current(on):
-    os.system('echo "<{}>" > {}'.format(on,name_serial_port()))
-
+    comando = ('echo "<{}>" > {}'.format(on,name_serial_port()))
+    subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
 
 #funzione per dare il comando di velocita alla locomotiva
 #<t REGISTER CAB SPEED DIRECTION>
@@ -39,12 +39,14 @@ def open_current(on):
 
 def throttle(memoria,ID, SPEED, DIR):
     print(memoria, ID, SPEED, DIR)
-    os.system('echo "<t {} {} {} {}>" > {}'.format(memoria, ID, SPEED, DIR,name_serial_port())) 
+    comando =('echo "<t {} {} {} {}>" > {}'.format(memoria, ID, SPEED, DIR,name_serial_port())) 
+    subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
 
 #funzione per lo stop di una singola locomotiva dato l'ID
 
 def STOP(memoria,ID):
-    os.system('echo "<t {} {} 0 1>" > {}'.format(memoria,ID,name_serial_port()))
+    comando = ('echo "<t {} {} 0 1>" > {}'.format(memoria,ID,name_serial_port()))
+    subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
 
 #funzione per cambiare indirizzo al controller della locomotiva
 #<w [CAB] 1 5> -->
@@ -54,7 +56,8 @@ def STOP(memoria,ID):
 # - 1 è il CV dove è localizzato l'ID della locomotiva
 
 def change_id(current_ID,new_ID):
-    os.system('echo "<w {} 1 {}>" > {}'.format(current_ID,new_ID,name_serial_port()))
+    comando = ('echo "<w {} 1 {}>" > {}'.format(current_ID,new_ID,name_serial_port()))
+    subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
 
 # Controllo Uscite - <Z>:
 # Esempio: <Z ID ACTIVATE>
@@ -72,15 +75,17 @@ def change_id(current_ID,new_ID):
 #id = numero casuale della memoria -- address porta a cui abbinare il deviatoio
 def crea_deviatoio(Turnout_ID,pin):
     #1 poiche deve essere attivo purche i rele stiano fermi
-    os.system('echo "<Z {} {} 1>" > {}'.format(Turnout_ID,pin,name_serial_port()))
+    comando = ('echo "<Z {} {} 1>" > {}'.format(Turnout_ID,pin,name_serial_port()))
+    subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
     print(Turnout_ID,pin)
 
 def cambia_deviatoio(Turnout_ID):
     #1 significa low, per attivare i rele
-    os.system('echo "<Z {} 1>" > {}'.format(Turnout_ID,name_serial_port()))
+    comando = ('echo "<Z {} 1>" > {}'.format(Turnout_ID,name_serial_port()))
+    subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
     time.sleep(0.2)
 
     #0 significa high, per disattivare i rele
-    os.system('echo "<Z {} 0>" > {}'.format(Turnout_ID,name_serial_port()))
-
+    comando = ('echo "<Z {} 0>" > {}'.format(Turnout_ID,name_serial_port()))
+    subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
     #print(Turnout_ID)

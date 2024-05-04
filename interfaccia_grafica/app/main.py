@@ -3,6 +3,8 @@ import GUI_refactored
 import utilities
 import data
 from algorithm import Algorithm
+import os
+import platform
 
 # @singleton
 class App(tk.Tk):
@@ -13,6 +15,7 @@ class App(tk.Tk):
         self.title("Gestione Locomotive")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.on_close_root)
+        self.geometry("900x335")
 
         self.iconbitmap(utilities.asset_path("window_logo", "ico"))
         self.configure(bg="#c0c0c0")
@@ -29,7 +32,29 @@ class App(tk.Tk):
 
 
 if __name__ == "__main__":
+    
+    #Ottengo il nome del sistema operativo
+    sistema_operativo = platform.system()
+    if sistema_operativo == "Darwin": sistema_operativo = "macOS"
+    
+    data.SO = sistema_operativo
+    data.architecture = platform.machine()
+    
+    print(sistema_operativo)
+    #cerco la dir attuale e Salvo la parent dir attuale in data - MISERVERUNPEZZOINPIUPERILTESTING
+    folder_path = os.path.abspath(os.path.join(os.getcwd(),'interfaccia_grafica'))
+    
+    # SOLO DURANTE IL FILE ESECUTIVO
+    # parent_directory = os.path.dirname(os.path.dirname(folder_path))
+    # data.path = parent_directory
+    data.path = folder_path
+
+    #Aggiorno la lingua, con quella standard+.
     utilities.translate()
+
+    #Aggiorno le porte collegate nel caso in cui ci siano
+    print(utilities.set_port_var())
+
     app = App()
     gui = GUI_refactored.GUI(app)
     app.mainloop()

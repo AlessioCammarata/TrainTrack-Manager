@@ -16,6 +16,15 @@ import random
     si trova in quel pezzo di circuito.
 '''
 
+'''
+                ___      _      __ _                     _      _      _              
+        o O O  /   \    | |    / _` |   ___      _ _    (_)    | |_   | |_     _ __   
+       o       | - |    | |    \__, |  / _ \    | '_|   | |    |  _|  | ' \   | '  \  
+      TS__[O]  |_|_|   _|_|_   |___/   \___/   _|_|_   _|_|_   _\__|  |_||_|  |_|_|_| 
+     {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
+    ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
+'''
+        
 class Algorithm:
 
     def __init__(self):
@@ -57,11 +66,19 @@ class Algorithm:
 
                         #tengo in memoria la risposta per la registrazione delle locomotive
                         data.sensor_response[0] = response
+
+                        if data.variabili_apertura["locomotive_RFID_var"]:
+                            message = response.split("/")
+                            data.label.configure(text=message[1])
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
-                    if data.calibred and self.flag:
+                    if data.calibred and self.flag and len(data.locomotives_data) >= 2:
                         # self.GUI.on_off()
+                        
+                        # circuit_window.RFID_button.config(state='disabled')
+                        utilities.show_info(data.Textlines[60])
+                        circuit_window.RFID_button.config(state='normal')
+                        
                         #creo il thread e lo metto in memoria
-                        utilities.show_info(data.Textlines[64])
                         process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
                         self.threads[1] = process_messages_thread
                         #pulisco la queue - avvio il thread - setto la flag
@@ -75,17 +92,16 @@ class Algorithm:
                     print(data.Textlines[40])
                 time.sleep(0.1)
         except serial.SerialException as e:
-            print(data.Textlines[41]+f" {e}, \n"+data.Textlines[42])
+            print(data.Textlines[21]+ str(data.serial_ports[1])+" "+data.Textlines[41]+f"\n{e}")
 
     '''
-                    ___      _      __ _                     _      _      _              
-            o O O  /   \    | |    / _` |   ___      _ _    (_)    | |_   | |_     _ __   
-           o       | - |    | |    \__, |  / _ \    | '_|   | |    |  _|  | ' \   | '  \  
-          TS__[O]  |_|_|   _|_|_   |___/   \___/   _|_|_   _|_|_   _\__|  |_||_|  |_|_|_| 
-         {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
-        ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
+                    ___      _      __ _         
+            o O O  /   \    | |    / _` |   ___  
+           o       | - |    | |    \__, |  / _ \ 
+          TS__[O]  |_|_|   _|_|_   |___/   \___/ 
+         {======|_|"""""|_|"""""|_|"""""|_|"""""|
+        ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
     '''
-        
 
     def calibred_RFID(self,ID_treno : int,RFIDtag : str):
         data.locomotives_data[ID_treno]["RFIDtag"] = RFIDtag
@@ -107,7 +123,7 @@ class Algorithm:
              
     def stop_algo(self):
         #Controlla che la funzione sia stata chiamata
-        if self.called:
+        if self.called and not data.root:
             data.terminate = True
             # Attendi che i thread terminino
             if self.threads[0].is_alive() or self.threads[1].is_alive():
@@ -167,6 +183,7 @@ class Algorithm:
     #in questo momento la locomotivaq 1 e la 2 partono a velocita stabilita
     def start_throttle(self,circuit_window):
         if utilities.is_serial_port_available(data.serial_ports[0]):
+            comandi.open_current(1)
             for i in range(2):
                 #Impostiamo un percorso e la direzione da prendere
                 data.locomotives_data[i]['Direzione'] = i
@@ -177,6 +194,7 @@ class Algorithm:
                 self.gestione_velocita(circuit_window,i,velocita)
 
                 print(data.criticita)
+            
             #Per ora non funzione
             # for item in data.criticita:
             #     semaphore = traffic_light.Semaphore(circuit_window,item)
