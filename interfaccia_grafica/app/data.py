@@ -133,6 +133,9 @@ Sensors = {
 #La label è quella della pagina rfid
 label = ""
 
+#La label è quella della pagina circuit_window
+label2 = ""
+
 #array dei canvas
 canvas_array = [""]
 

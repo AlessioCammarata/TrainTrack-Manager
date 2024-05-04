@@ -67,9 +67,12 @@ class Algorithm:
                         #tengo in memoria la risposta per la registrazione delle locomotive
                         data.sensor_response[0] = response
 
+                        message = response.split("/")
                         if data.variabili_apertura["locomotive_RFID_var"]:
-                            message = response.split("/")
                             data.label.configure(text=message[1])
+                        circuit_window.tag_label.configure(background=data.Sensors["Sensore {}".format(message[0])][4])
+                        circuit_window.tag_label.after(1000, lambda: circuit_window.tag_label.configure(text=message[1],background="SystemButtonFace"))
+
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
                     if data.calibred and self.flag and len(data.locomotives_data) >= 2:
                         # self.GUI.on_off()

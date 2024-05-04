@@ -1001,26 +1001,26 @@ class circuit_window:
                 self.camera.cattura_webcam("chiudi")
 
     #funzione che gestisce il cambio da manuale a automatico
-        def change_window(text,root):
+        # def change_window(text,root):
 
-            #controllo per effettuare correttamente il cap.release
-            if text==data.Textlines[56] and self.camera.impostazioni[0]!="": 
-                self.camera.cattura_webcam("chiudi")
+        #     #controllo per effettuare correttamente il cap.release
+        #     if text==data.Textlines[56] and self.camera.impostazioni[0]!="": 
+        #         self.camera.cattura_webcam("chiudi")
             
-            #Controlla se la porta dei sensori è abilitata
-            if data.serial_port_info[data.serial_ports[1]][1]:
+        #     #Controlla se la porta dei sensori è abilitata
+        #     if data.serial_port_info[data.serial_ports[1]][1]:
                 
-                #Distrugge tutti i widget presenti nella pagina corrente
-                for widget in root.winfo_children():
-                    widget.destroy()
-                #avvia la pagina selezionata
-                if text == data.Textlines[56]:
-                    self.algo.stop_algo()
-                    self.open_circuit_window(False)
-                else: 
-                    self.open_circuit_window(True)
+        #         #Distrugge tutti i widget presenti nella pagina corrente
+        #         for widget in root.winfo_children():
+        #             widget.destroy()
+        #         #avvia la pagina selezionata
+        #         if text == data.Textlines[56]:
+        #             self.algo.stop_algo()
+        #             self.open_circuit_window(False)
+        #         else: 
+        #             self.open_circuit_window(True)
 
-            else: utilities.show_error_box(data.Textlines[37],self.locomotive_window,self.GUI,"main")
+        #     else: utilities.show_error_box(data.Textlines[37],self.locomotive_window,self.GUI,"main")
 
     # Funzione per creare un label con un checkbutton
         def create_label_with_button(canvas, x, y, text):
@@ -1039,6 +1039,7 @@ class circuit_window:
             canvas.create_window(x + 55, y + 0, window=button, anchor=tk.W)  # Crea il bottone vicino al testo sul canvas
             return label, button
 
+
     #Funzione che da inizio se possibile all'algoritmo, essa avvia i sensori
         def START():
             #gestione grafica degllo start dell'Auto version
@@ -1050,6 +1051,7 @@ class circuit_window:
                     lenght = len(data.locomotives_data)
                     if lenght < 2: 
                         utilities.show_info(data.Textlines[67])
+                        root.focus_set()
                         self.RFID_button.config(state='normal')
                     elif not data.calibred: self.RFID_button.config(state='normal')
 
@@ -1060,19 +1062,30 @@ class circuit_window:
                     root.bind("<s>", lambda event: (self.open_RFID_window(),
                                                     # root.attributes("-alpha", 0.5)
                                                     ))
+                    check_control_button_state(True)
                 else: 
                     new_color = "red"
                     self.algo.stop_algo()
                     self.RFID_button.config(state='disabled')
                     #Disfuznione del tasto
                     root.unbind("<s>")
+                    check_control_button_state(False)
                 start_button.config(background=new_color)
       
             else:
                 utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,self.GUI,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False
 
-        
+        def check_control_button_state(auto):
+            if auto:
+                self.locomotive_label.configure(text=data.Textlines[93])
+                self.locomotive_window.grab_set()
+                #Tolgo i bottoni che non posso schiacciare
+                # for i in data.Turnouts:
+                #     root.unbind("<KeyPress-{}>".format(i[-1]))
+            else:
+                self.locomotive_label.configure(text=data.Textlines[94])
+                self.locomotive_window.grab_release()
         #---------CREAZIONE DELLA PAGINA---------
         
         root = self.locomotive_window
@@ -1088,80 +1101,67 @@ class circuit_window:
 
         #tengo in memoria il canvas
         data.canvas_array[0] = canvas
-        root.bind("<c>", lambda event: change_window(text,root))
 
-        if automatico:
-            text = data.Textlines[56]
-            feature_button = tk.Button(frame, text=text, height = 2, 
-                                       command=lambda:change_window(text,root))
-            feature_button.pack(side=tk.LEFT)
+        image_RFID_path = utilities.asset_path('controllo','png')
+        image_RFID = utilities.process_image(image_RFID_path, 'resize', 40, 40)
+        self.RFID_button = tk.Button(frame, image= image_RFID, borderwidth=0, 
+                                        command=lambda:(self.open_RFID_window(),
+                                                    #    root.attributes("-alpha", 0.5)
+                                                        ))
+        self.RFID_button.pack(side="left", padx=(10,5),pady=(5,0))
+        self.RFID_button.config(state='disabled')
 
-            image_RFID_path = utilities.asset_path('controllo','png')
-            image_RFID = utilities.process_image(image_RFID_path, 'resize', 40, 40)
-            self.RFID_button = tk.Button(frame, image= image_RFID, borderwidth=0, 
-                                           command=lambda:(self.open_RFID_window(),
-                                                        #    root.attributes("-alpha", 0.5)
-                                                           ))
-            self.RFID_button.pack(side="left", padx=(10,5),pady=(5,0))
-            self.RFID_button.config(state='disabled')
+        image_power_path = utilities.asset_path('power_icon','png')
+        image_power = utilities.process_image(image_power_path,'resize',35,35)
+        start_button = tk.Button(frame, image=image_power,bg="red", 
+                                    command=START)
+        start_button.pack(padx=(10,5),side=tk.LEFT)
+        root.bind("<o>", lambda event: START())
 
-            image_power_path = utilities.asset_path('power_icon','png')
-            image_power = utilities.process_image(image_power_path,'resize',35,35)
-            start_button = tk.Button(frame, image=image_power,bg="red", 
-                                     command=START)
-            start_button.pack(padx=(10,5),side=tk.LEFT)
-            root.bind("<o>", lambda event: START())
+        # tabella che fa vedere cio che vedono i sensori
+        self.tag_label = tk.Label(frame, text="", relief = tk.SUNKEN, width=10, height=2, background=None)
+        self.tag_label.pack(side="left", padx=5)
+        self.tag_label.config(state="disabled")
+        # data.label2 = tag_label
+    
 
-            #tabella che fa vedere cio che vedono i sensori
-            # manage = tk.Button(self, text="Gestisci sensori", height=2, 
-            #                             command=super().manage_sensors)
-            # manage.pack(side="left", padx=5)
+        webcam = tk.Button(frame, text=data.Textlines[53], height=2,bg="blue" ,
+                            command=lambda: change_color_webcam())
+        webcam.pack(padx=5,side=tk.LEFT)
+        root.bind("<v>", lambda event: change_color_webcam())
 
-            webcam = tk.Button(frame, text=data.Textlines[53], height=2,bg="blue" ,
-                               command=lambda: change_color_webcam())
-            webcam.pack(padx=5,side=tk.LEFT)
-            root.bind("<v>", lambda event: change_color_webcam())
-
-            locomotive_label = tk.Label(frame, text=data.Textlines[93])
-            locomotive_label.pack(padx=(280,0),pady=10,side=tk.LEFT)
-            
-            canvas.create_text(10, 400, text="|3|", anchor=tk.W) 
-            canvas.create_text(50, 400, text="|2|", anchor=tk.W) 
-            canvas.create_text(870,370, text="|1|", anchor=tk.W) 
-
-            #Tolgo i bottoni che non posso schiacciare
-            for i in data.Turnouts:
-                root.unbind("<KeyPress-{}>".format(i[-1]))
-
-            # self.container.attributes("-alpha", 0.5)
-            self.locomotive_window.grab_set()
-        else:
-            text = data.Textlines[55]
-            feature_button = tk.Button(frame, text=text, height = 2, 
-                                       command=lambda:change_window(text,root))
-            feature_button.pack(side=tk.LEFT)
-
-            locomotive_label = tk.Label(frame, text=data.Textlines[94])
-            locomotive_label.pack(padx=462,pady=10,side=tk.LEFT, anchor=tk.NW)
-
-        #creazione dei bottoni per i deviatoi
-            cambio1, button1 = create_label_with_button(canvas, 10, 60, "Cambio 1")
-            cambio2, button2 = create_label_with_button(canvas, 200, canvas_height-630, "Cambio 2")
-            cambio3, button3 = create_label_with_button(canvas, 375, canvas_height-20, "Cambio 3")
-            cambio4, button4 = create_label_with_button(canvas, 675, canvas_height-20, "Cambio 4")
-            cambio5, button5 = create_label_with_button(canvas, 1050, canvas_height-450, "Cambio 5")
-            cambio6, button6 = create_label_with_button(canvas, 875, 60, "Cambio 6")
-            cambio7, button7 = create_label_with_button(canvas, 150, canvas_height-500, "Cambio 7")
-            cambio8, button8 = create_label_with_button(canvas, 415, canvas_height-150, "Cambio 8")
-
-            #Tolgo i bottoni che non posso schiacciare dalle shortcuts
-            root.unbind("<o>")
-            root.unbind("<s>")
-            root.unbind("<v>")
+        self.locomotive_label = tk.Label(frame, text=data.Textlines[93])
+        self.locomotive_label.pack(padx=(280,0),pady=10,side=tk.LEFT)
         
-            # self.container.attributes("-alpha", 1)
-            self.locomotive_window.grab_release()
-  
+        canvas.create_text(10, 400, text="|3|", anchor=tk.W) 
+        canvas.create_text(50, 400, text="|2|", anchor=tk.W) 
+        canvas.create_text(870,370, text="|1|", anchor=tk.W) 
+
+       
+        # self.container.attributes("-alpha", 0.5)
+        
+    
+        # text = data.Textlines[55]
+        # feature_button = tk.Button(frame, text=text, height = 2, 
+        #                             command=lambda:change_window(text,root))
+        # feature_button.pack(side=tk.LEFT)
+
+        # locomotive_label = tk.Label(frame, text=data.Textlines[94])
+        # locomotive_label.pack(padx=462,pady=10,side=tk.LEFT, anchor=tk.NW)
+
+    #creazione dei bottoni per i deviatoi
+        cambio1, button1 = create_label_with_button(canvas, 10, 60, "Cambio 1")
+        cambio2, button2 = create_label_with_button(canvas, 200, canvas_height-630, "Cambio 2")
+        cambio3, button3 = create_label_with_button(canvas, 375, canvas_height-20, "Cambio 3")
+        cambio4, button4 = create_label_with_button(canvas, 675, canvas_height-20, "Cambio 4")
+        cambio5, button5 = create_label_with_button(canvas, 1050, canvas_height-450, "Cambio 5")
+        cambio6, button6 = create_label_with_button(canvas, 875, 60, "Cambio 6")
+        cambio7, button7 = create_label_with_button(canvas, 150, canvas_height-500, "Cambio 7")
+        cambio8, button8 = create_label_with_button(canvas, 415, canvas_height-150, "Cambio 8")
+        
+        # self.container.attributes("-alpha", 1)
+       
+        check_control_button_state(automatico)
         #----DISEGNO CIRCUITO---- link docs: https://www.pythontutorial.net/tkinter/tkinter-canvas/
 
         # Percorso dell'immagine originale
