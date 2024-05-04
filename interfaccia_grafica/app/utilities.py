@@ -130,7 +130,7 @@ def port_exist(function_port):
     port_path = find_port_path(function_port)  
     exist = os.path.exists(port_path)
     print(f"port exist:{port_path} e {exist}")
-    print(data.serial_ports)
+    # print(data.serial_ports)
     return exist
 
 #Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
@@ -141,10 +141,10 @@ def set_port_var(*args):
 
     if not args:
         
-        #Controlla le prime 10 porte se sono libere
+        #Controlla le prime 10 porte se sono libere - si puo cambiare
         flag = 0
-        for i in range(10):
-            if port_exist(i) and flag<2:
+        for i in range(data.port_range):
+            if port_exist(i) and flag<len(data.serial_ports):
                ports_available[flag] = i
                flag+=1 
             i+=1

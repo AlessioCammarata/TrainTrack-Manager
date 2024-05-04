@@ -245,7 +245,7 @@ class GUI(tk.Frame):
             window_var.focus_set()
             window_var.title(window_title)
             
-
+            #Fissa le finestra in maniera relativa al padre
             width = self.winfo_rootx()
             height = self.winfo_rooty()
 

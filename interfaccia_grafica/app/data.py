@@ -28,9 +28,11 @@ max_loco         =      11           # Numero max di locomotive che il sistema l
 max_length_name  =      20           # Numero max di caratteri che il nome puo avere
 max_size_loco_id =   10293           # Numero max dell'indirizzo che si puo dare ad una locomotiva
 K_velocita       = 126/100           # Costante basata sulla velocita massima possibile di una locomotiva (0-126)
+max_velocita     =     100
 
 var_velocita_tastiera = 0           #Var che aiuta l'implementazione della tastioera nella finestra dei comandi
 var_supporto = None                 #Var che aiuta l'apertura della gestione locomotiva da tastiera
+
 # impostazioni connessione seriale, 
 # serial_port è quella che fa riferimento alla centralina dcc, 
 # serial_port1 è quella che fa riferimento ai sensori RFID
@@ -39,6 +41,8 @@ serial_port1    = "-"
 
 serial_ports = [serial_port,serial_port1]
 
+#Numero di porte che vengono controllate
+port_range = 10
 #dizionario che controlla se il collegamento seriale per l'algoritmo è stato inizializzato o no e se la porta è abilitata o disabilitata dall'utente
 # Serial_port_info[serial_ports[0]][0] = Inizialized, Serial_port_info[serial_ports[0]][1] = Enabled
 serial_port_info = {
@@ -60,6 +64,7 @@ variabili_apertura = {
     "locomotive_control_var":  []
 }
 
+locomotive_window2 = ""
 #Salvo la pagina, mi serve per bloccare la pagina circuit
 locomotive_RFID_window = ""
 
@@ -137,6 +142,7 @@ calibred = False
 
 #Qui viene inserita la varibile del sensore per la calibrazione
 sensor_response = ["_/_"]
+
 '''
 Se partono da 7 viaggiano verso sinistra e cominciano alla stazione
 

@@ -166,6 +166,7 @@ def creation_window(locomotive_window,GUI):
     save_button = tk.Button(locomotive_window, text=data.Textlines[44], command=save_locomotive)
     save_button.pack(pady=(10,0))
     
+
     name_entry.focus_set()
     #permette di avviare la funzione con il tasto invio
     locomotive_window.bind('<Return>', lambda event: save_locomotive())
@@ -491,7 +492,7 @@ def control_window(locomotive_window,GUI,locomotiva,id_controllo):
             locomotive_window.after(1000, set_slider)
         
         var = str(data.var_velocita_tastiera) + str(numero)
-        if int(var) > 100: var = 100
+        if int(var) > data.max_velocita: var = data.max_velocita
         data.var_velocita_tastiera = int(var)
     
     #Imposta lo slider alla velocita inserita da tastiera e azzera la var di tastiera
@@ -528,22 +529,14 @@ def settings_window(locomotive_window,GUI):
         centralina    = var_port0.get()
         rfid          = var_port1.get()
         max_loco      = max_loco_entry.get()
-        # SO            = var_SO.get()
         port0_enabled = port0_checkbox_var.get()
         port1_enabled = port1_checkbox_var.get()
 
-        print(port1_enabled)
         #Assegnazione di default
         if max_loco == '' : max_loco = str(data.max_loco)
         
         #Amministratore
-
         data.root = True if int(max_loco) == 2005 and not data.root else False
-
-        #Distruttivo ma non so come scriverlo in meno righe
-        # for item in data.SO:
-        #     data.SO[item] = False
-        # data.SO[SO] = True
         
         #controlli sugli input, non so bene che sistemare
         if rfid == centralina:
@@ -574,22 +567,13 @@ def settings_window(locomotive_window,GUI):
 
             #Si controlla che almeno una delle due sia diversa
             if centralina != data.serial_ports[0] or rfid != data.serial_ports[1]:
-                # # Creare un dizionario temporaneo con le chiavi modificate
-                # temp_dict = {
-                #     centralina: data.serial_port_info.pop(data.serial_ports[0]),
-                #     rfid: data.serial_port_info.pop(data.serial_ports[1])
-                # }
 
-                # # Aggiornare il dizionario originale con le nuove chiavi
-                # data.serial_port_info.update(temp_dict)
-                
-                # # print(database.serial_port_info)
-                # data.serial_ports[0] = centralina
-                # data.serial_ports[1] = rfid
-
-                # # print(data.serial_ports)
-                # # print(data.SO)
+                #Cambiamo i rispettivi centralina e rfid
                 utilities.set_port_var(centralina,rfid)
+
+                print(data.serial_ports)
+                print(data.SO)
+                
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
             data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
@@ -624,7 +608,7 @@ def settings_window(locomotive_window,GUI):
         
     #Controlla le prime 10 porte se sono libere
     ports_available = []
-    for i in range(10):
+    for i in range(data.port_range):
         if utilities.port_exist(i):
             ports_available.append(i)
         i+=1
@@ -697,15 +681,9 @@ def settings_window(locomotive_window,GUI):
     max_loco_entry = tk.Entry(locomotive_window,width=10,validate="key", validatecommand=(validate_input, '%P'))
     max_loco_entry.grid(row=2, column=1, padx=5, pady=5, sticky=tk.E)  # Posiziona a destra
 
+    #Mostro il sistema operativo attuale, per far capire i path utilizzati
     SO_label = tk.Label(locomotive_window, text=data.Textlines[91])
     SO_label.grid(row=3, column=0, sticky=tk.W,padx=5)
-    
-    #Calcoliamo il SO attuale
-    # SO_used = data.SO.keys()
-    # for SO in SO_used:
-    #     if data.SO[SO]:
-    #         aSO = SO
-
     actual_SO_label = tk.Label(locomotive_window, text=data.SO + " " + data.architecture)
     actual_SO_label.grid(row=3, column=1, padx=5, pady=5, sticky=tk.E)
     
@@ -720,7 +698,7 @@ def settings_window(locomotive_window,GUI):
 
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
-    locomotive_window.bind("<FocusIn>",   lambda event: max_loco_entry.focus_set())
+    locomotive_window.bind("<FocusIn>",lambda event: max_loco_entry.focus_set())
 
 #Logica della finestra delle impostazioni della pagina dei tag RFID
 def RFID_window(locomotive_window,algo,circuit_window,GUI):
@@ -758,20 +736,22 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
             close_button = tk.Button(locomotive_window1, text=data.Textlines[43], command=locomotive_window1.destroy)
             close_button.pack(pady=10)
 
-
 #Funzione che fa il refresh della tabella
-    def refresh(event):
-        utilities.update_circuit_table(columns,tree)
+    def refresh(can):
+        #Variabile che permette di eseguire una singola volta il refresh
+        if can or not data.save_button.winfo_exists():
+            utilities.update_circuit_table(columns,tree)
     
     def enable_circuitWindow():
         # circuit_window.attributes("-alpha", 1)
         circuit_window.grab_set()
 
     def open_locomotive_creation_window():
-        locomotive_window1 = GUI.open_locomotive_window("creation", data.Textlines[12], "250x170",locomotive_window)
-        if locomotive_window1:
-            creation_window(locomotive_window1,GUI)
-            locomotive_window1.bind("<Destroy>", refresh)
+        locomotive_window2 = GUI.open_locomotive_window("creation", data.Textlines[12], "250x170",locomotive_window)
+        data.locomotive_window2 = locomotive_window2
+        if locomotive_window2:
+            creation_window(locomotive_window2,GUI)
+            locomotive_window2.bind("<Destroy>", lambda event: refresh(False))
         
 
     def active_settings():
@@ -798,7 +778,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
                         algo.calibred_RFID(index_to_replace,message[1])
                         print("QUI")
                         data.sensor_response[0] = "_/_"
-                        refresh("")
+                        refresh(True)
                     else:
                         utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",locomotive_window,GUI,"")
                 else:
@@ -843,7 +823,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
     columns = (data.Textlines[96], data.Textlines[95], data.Textlines[80])
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings')
-    refresh("")
+    refresh(True)
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[51], width=7,
                                 command=active_settings)
