@@ -60,27 +60,29 @@ def set_variabilechiusura(window_type):
     data.variabili_apertura[f'locomotive_{window_type}_var'] = False
 
 #funzione per gli errori
-def show_error_box(descrizione,finestra,finestra_padre,importance):
+def show_error_box(descrizione,finestra_padre,importance):
 
     #Ci sono degli errori che non devono attivare la var
     if importance != "main":
         data.control_var_errore = True
-    #divisione del messaggio dalla modalita
+
     finestra_padre.grab_set()
-    #matcha il tipo di modalita
-    messagebox.showerror("ERRORE", descrizione)
+    messagebox.showerror("ERRORE", descrizione,  parent = finestra_padre)
     finestra_padre.grab_release()
 
-    finestra.focus_set()
-
-#Funzione per WARNING
-def are_you_sure(descrizione):
-    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[65], icon='warning')
+#Funzione per WARNING - Grab del padre
+def are_you_sure(descrizione,finestra_padre):
+    finestra_padre.grab_set()
+    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[65], icon='warning', parent = finestra_padre)
+    finestra_padre.grab_release()
     return risposta
 
-#Funzione per INFO
-def show_info(descrizione):
-    return messagebox.showinfo("AVVISO", descrizione)
+#Funzione per INFO - Grab del padre
+def show_info(descrizione,finestra_padre):
+    finestra_padre.grab_set()
+    messagebox.showinfo("AVVISO", descrizione, parent = finestra_padre)
+    finestra_padre.grab_release()
+    
 
 #Calcola l'ID del treno dalle info - Elemento, stringa che dice che elemento si analizza - info, informazione da cui si vuole partire
 def CalcolaIDtreno(elemento,info):

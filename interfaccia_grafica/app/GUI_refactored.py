@@ -261,7 +261,7 @@ class GUI(tk.Frame):
             
             return window_var
 
-        utilities.show_error_box(data.Textlines[20],window_var,self,"main")
+        utilities.show_error_box(data.Textlines[20],window_var,"main")
 
     #Apre la pagina delle impostazioni
     def open_settings_window(self):
@@ -295,7 +295,7 @@ class GUI(tk.Frame):
             
         #Nel caso in cui la seriale non sia collegata, si chiede all'utente se vuole continuare
         if not utilities.is_serial_port_available(self.serial_port):
-            open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41])
+            open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41],self)
         
         if open :
             #creazione di circuit per decidere il tipo di controllo del sistema
@@ -354,7 +354,7 @@ class GUI(tk.Frame):
                 windows.control_window(self.locomotive_control_window[id_controllo],self,locomotiva,id_controllo)
 
         else:
-            utilities.show_error_box(data.Textlines[20],self.locomotive_control_window[id_controllo],self,"main")
+            utilities.show_error_box(data.Textlines[20],self.locomotive_control_window[id_controllo],"main")
 
     def open_info_window(self):
 
@@ -408,7 +408,7 @@ class GUI(tk.Frame):
             on_offButton.on_off(self)
 
         else:
-            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,self.container,"main")
+            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,"main")
 
 
     #funzione che serve per la gesetione dell'avvio e dell'arresto del sistema senza togliere la corrente
@@ -421,7 +421,7 @@ class GUI(tk.Frame):
             STOP_button.GENERAL_STOP_START_button(self)
            
         else:
-            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,self.container,"main")
+            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,"main")
         
     #Funzione che gestisce lo stato dei bottoni nella pagina principale
     def check_control_button_state(self):
@@ -498,7 +498,7 @@ class GUI(tk.Frame):
                 variable=self.var_locomotive,
                 command= self.open_locomotive_control)
             
-        if len(self.locomotive_names) == data.max_loco_standard: utilities.show_info(data.Textlines[23])
+        if len(self.locomotive_names) == data.max_loco_standard: utilities.show_info(data.Textlines[23],self)
             
     #Aiuta la gestione dei tasti per aprire la pagina di controllo relativa alla locomotiva
     def set_var_keypress_locomotive_control(self,id):
@@ -509,7 +509,7 @@ class GUI(tk.Frame):
     #Funzione che permette di tradurre tutti i testi visibili all'interno dell'app
     def change_language(self):
         language      = self.var_language.get()
-        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[66]):
+        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[66],self):
             # Identifica l'indice della stringa nel vettore
             index = data.languages.index(language)
             # Rimuovi la stringa dal suo attuale indice

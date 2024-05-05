@@ -43,11 +43,11 @@ def creation_window(locomotive_window,GUI):
         controllo_loco  = len(data.locomotives_data)<data.max_loco #Controllo per vedere che il numero delle locomotive non sia al limite
 
         #controllo sugli input
-        if name == "" or int(loco_id)==0 or not loco_id.isdigit():
-            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+        if name == "" or not loco_id.isdigit() or int(loco_id)==0 :
+            utilities.show_error_box(data.Textlines[24],locomotive_window,"")
 
         elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
-            utilities.show_error_box(data.Textlines[25],locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[25],locomotive_window,"")
 
         else:
             #controllo se esistono dei buchi tra gli ID
@@ -111,7 +111,7 @@ def creation_window(locomotive_window,GUI):
                 #setto la variabile relativa alla calibrazione dell RFID a False
                 data.calibred = False
             else: 
-                utilities.show_error_box(data.Textlines[26]+ f" {data.max_loco} " + data.Textlines[27],locomotive_window,GUI,"")
+                utilities.show_error_box(data.Textlines[26]+ f" {data.max_loco} " + data.Textlines[27],locomotive_window,"")
 
         #Controllo se la finestra ha avuto degli errori (reset) o no (chiude)
         if data.control_var_errore:
@@ -181,7 +181,7 @@ def remove_window(locomotive_window,GUI):
 
         #controllo sugli input
         if name == "" or not id.isdigit():
-            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[24],locomotive_window,"")
 
         else:
             id = int(id)
@@ -217,10 +217,10 @@ def remove_window(locomotive_window,GUI):
 
                     GUI.update_table()
                 else: 
-                    utilities.show_error_box(data.Textlines[28],locomotive_window,GUI,"")
+                    utilities.show_error_box(data.Textlines[28],locomotive_window,"")
 
             else:
-                utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
+                utilities.show_error_box(data.Textlines[29],locomotive_window,"")
 
 
         #Controllo se la finestra ha avuto degli errori (reset) o no (chiude)
@@ -269,11 +269,11 @@ def modify_window(locomotive_window,GUI):
         if loco_id == "": loco_id = "404"
 
         #controlli sugli input
-        if int(loco_id)==0 or int(id)==0 or not id.isdigit():
-            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+        if int(loco_id)==0 or not id.isdigit() or int(id)==0 :
+            utilities.show_error_box(data.Textlines[24],locomotive_window,"")
 
         elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
-            utilities.show_error_box(data.Textlines[25],locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[25],locomotive_window,"")
 
         else:
             id          = int(id)
@@ -324,7 +324,7 @@ def modify_window(locomotive_window,GUI):
 
                     #Sostituisci il dizionario all'indice trovato con il nuovo dizionario
                     if data.locomotives_data[index_to_replace]['LocoID'] != loco_id:
-                        if utilities.are_you_sure(data.Textlines[61]):
+                        if utilities.are_you_sure(data.Textlines[61],locomotive_window):
                             if color != "Default":
                                 #prima di sostituire la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
                                 data.color_available.insert(0,data.locomotives_data[index_to_replace]['Colore'])
@@ -367,9 +367,9 @@ def modify_window(locomotive_window,GUI):
                     GUI.update_table()
                 
                 else:
-                    utilities.show_error_box(data.Textlines[30],locomotive_window,GUI,"")
+                    utilities.show_error_box(data.Textlines[30],locomotive_window,"")
             else:
-                utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
+                utilities.show_error_box(data.Textlines[29],locomotive_window,"")
 
         #Controllo se la finestra ha avuto degli errori (reset) o no (chiude) 
         if data.control_var_errore:
@@ -469,7 +469,7 @@ def control_window(locomotive_window,GUI,locomotiva,id_controllo):
         if utilities.is_serial_port_available(data.serial_ports[0]):
             #mando il comando di throttle
             comandi.throttle(memoria,ID,round(velocita_effettiva),direzione)
-        else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],locomotive_window,GUI,"main")
+        else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],locomotive_window,"main")
 
     #funzione per arrestare la locomotiva - setta lo slider a 0
     def stop_command():
@@ -483,7 +483,7 @@ def control_window(locomotive_window,GUI,locomotiva,id_controllo):
         if utilities.is_serial_port_available(data.serial_ports[0]):
             comandi.STOP(memoria,ID)
             speed_slider.set(0)
-        else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],locomotive_window,GUI,"main")
+        else: utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],locomotive_window,"main")
     
     #permette di selezionare il numero da tastiera
     def add_speed(numero):
@@ -539,16 +539,17 @@ def settings_window(locomotive_window,GUI):
         data.root = True if int(max_loco) == 2005 and not data.root else False
         
         #controlli sugli input, non so bene che sistemare
-        if rfid == centralina:
-            utilities.show_error_box(data.Textlines[24],locomotive_window,GUI,"")
+        if rfid == centralina or int(max_loco) == 0:
+            utilities.show_error_box(data.Textlines[24],locomotive_window,"")
         elif int(max_loco) > data.max_loco_standard:
-            utilities.show_error_box(data.Textlines[31] + " {} ".format(data.max_loco_standard) + data.Textlines[123],locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[31] + " {} ".format(data.max_loco_standard) + data.Textlines[123],locomotive_window,"")
         elif not utilities.port_exist(centralina) and port0_enabled:
-            utilities.show_error_box(data.Textlines[32],locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[32],locomotive_window,"")
         elif not utilities.port_exist(rfid) and port1_enabled:
-            utilities.show_error_box(data.Textlines[33],locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[33],locomotive_window,"")
         else:
 
+            #Assegnazione e cast del valore in int
             if not centralina == "–": centralina = int(centralina)
             if not rfid == "-": rfid = int(rfid)
             max_loco = int(max_loco)
@@ -556,7 +557,7 @@ def settings_window(locomotive_window,GUI):
             #Controlla che il max loco non sia uguale a quello gia presente, nel caso in cui sia minore al numero di locomotive inserite,le cancella tutte
             if max_loco != data.max_loco:
                 if data.locomotives_data and max_loco < len(data.locomotives_data):
-                    if utilities.are_you_sure( data.Textlines[68] +"\n"+ data.Textlines[69] +"\n"):
+                    if utilities.are_you_sure( data.Textlines[68] +"\n"+ data.Textlines[69] +"\n",locomotive_window):
                         #Rimuove tutte le locomotive, fino a che non si arriva al limite stabilito
                         for i in range(len(data.locomotives_data)-max_loco):
                             data.locomotives_data.remove(data.locomotives_data[-1])
@@ -581,7 +582,7 @@ def settings_window(locomotive_window,GUI):
         
         if data.root:
             #Amministratore
-            utilities.show_info("ROOT BOSS alexein")
+            utilities.show_info("ROOT BOSS alexein",locomotive_window)
             for i in data.serial_port_info:
                 data.serial_port_info[i][1] = True
             locomotive_window.focus_set()
@@ -764,7 +765,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
         id      = RFID_entry.get()
 
-        #Assegnazione di default
+        #Assegnazione di default - id = 0 non esiste percio dara errore
         if id == "": id = 0
 
         # Controllo che locmotives data non sia vuoto
@@ -786,14 +787,14 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
                         data.sensor_response[0] = "_/_"
                         refresh(False)
                     else:
-                        utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",locomotive_window,GUI,"")
+                        utilities.show_error_box(data.Textlines[34]+f" {LocotagRFID + 1}: {message[1]}",locomotive_window,"")
                 else:
-                    utilities.show_info(data.Textlines[62]+"\n"+ data.Textlines[63]+"\n"+data.Textlines[64])
+                    utilities.show_info(data.Textlines[62]+"\n"+ data.Textlines[63]+"\n"+data.Textlines[64],locomotive_window)
             else:
-                utilities.show_error_box(data.Textlines[29],locomotive_window,GUI,"")
+                utilities.show_error_box(data.Textlines[29],locomotive_window,"")
         else:
             # Potrei mettere l'altra finestra
-            utilities.show_error_box(data.Textlines[35],locomotive_window,GUI,"")
+            utilities.show_error_box(data.Textlines[35],locomotive_window,"")
         
         RFID_entry.focus_set()
         if data.control_var_errore:
@@ -995,7 +996,7 @@ class circuit_window:
                     webcam.config(background=new_color,text=new_text)
                     self.camera.cattura_webcam("")
                 else:
-                    utilities.show_error_box(data.Textlines[36],self.locomotive_window,self.GUI,"main")
+                    utilities.show_error_box(data.Textlines[36],self.locomotive_window,"main")
             else:
                 webcam.config(background=new_color,text=new_text)
                 self.camera.cattura_webcam("chiudi")
@@ -1051,8 +1052,8 @@ class circuit_window:
                 if current_color == "red":
                     lenght = len(data.locomotives_data)
                     #Se ci sono meno di due locomotive, manda un messaggio e avvisa che il processo non parte
-                    if lenght < 2: 
-                        utilities.show_info(data.Textlines[67])
+                    if lenght not in [2,3]: 
+                        utilities.show_info(data.Textlines[67],self.locomotive_window)
                         root.focus_set()
                         # self.RFID_button.config(state='normal')
                         #Abilita il tasto
@@ -1073,10 +1074,11 @@ class circuit_window:
                     #Disfuznione del tasto
                     root.unbind("<s>")
                     check_control_button_state(False)
+
                 start_button.config(background=new_color)
       
             else:
-                utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,self.GUI,"main")
+                utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False
 
         def check_control_button_state(auto):

@@ -74,12 +74,12 @@ class Algorithm:
                         circuit_window.tag_label.after(1000, lambda: circuit_window.tag_label.configure(text=message[1],background="SystemButtonFace"))
 
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
-                    if data.calibred and self.flag and len(data.locomotives_data) >= 2:
+                    if data.calibred and self.flag and len(data.locomotives_data) in [2,3]:
                         # self.GUI.on_off()
-                        
+                        parent = data.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
                         # circuit_window.RFID_button.config(state='disabled')
-                        utilities.show_info(data.Textlines[60])
-                        circuit_window.RFID_button.config(state='normal')
+                        utilities.show_info(data.Textlines[60],parent)
+                        # circuit_window.RFID_button.config(state='normal')
                         
                         #creo il thread e lo metto in memoria
                         process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
@@ -135,6 +135,9 @@ class Algorithm:
                     self.threads[1].join(timeout=5)
                 print("Threads terminati correttamente.")
             self.called = False
+
+            #Set dei percorsi a []
+            data.percorsi_assegnati = []
         else:
             print("l'ho fermato io ;)")
 
@@ -154,7 +157,7 @@ class Algorithm:
             comandi.throttle(memoria,ID,round(velocita_effettiva),direzione)
 
         else: 
-            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window,circuit_window,"main")
+            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window.locomotive_window,"main")
 
 
     #Ritorna un vettore che contiene i percorsi liberi in quel momento
@@ -172,6 +175,7 @@ class Algorithm:
 
     #Dato un treno sceglie il percorso, inserisce il vettore contenente le criticita nel caso sia il secondo
     def scegli_percorso(self, id): 
+        print(data.percorsi_assegnati)
         percorsi_liberi = self.show_percorsi_liberi(id)
         percorso_scelto = random.choice(percorsi_liberi)
         print(percorso_scelto)
@@ -203,7 +207,7 @@ class Algorithm:
             #     semaphore = traffic_light.Semaphore(circuit_window,item)
             #     self.semaphore.append(semaphore.thread)
         else: 
-            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window,circuit_window,"main")
+            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window.locomotive_window,"main")
 
 #   Questa funzione controlla che i percorsi adiacenti a quelli toccati dal treno, nella direzione in cui sta andando siano liberi
     def control(self,Turnout,direzione,natural_link):
