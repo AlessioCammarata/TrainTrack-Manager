@@ -1,7 +1,8 @@
 import cv2
 import tkinter as tk
 from PIL import Image, ImageTk
-import numpy as np
+# import numpy as np
+import utilities
 
 '''
 
@@ -15,19 +16,37 @@ import numpy as np
 '''
 
 class Camera:
-    def __init__(self,root):
-        self.root = root
-        self.impostazioni = ["",""]
-        self.tk_img = None
-        self.width = 400
-        self.height = 300
+    def __init__(self,circuit_window):
+        self.circuit_window = circuit_window
+        self.root           = circuit_window.locomotive_window
+        self.cap            = ""
+        self.tk_img         = None
+        self.width          = 400
+        self.height         = 300
+    
+    def esiste(self):
+        self.cap = cv2.VideoCapture(0)
+        #controllo sulla presenza di una cam
+        if not self.cap.isOpened():
+            return False
+        else:
+            self.cap.release()
+            return True
+        
+    def chiudi_finestra_webcam(self):
+        self.cap.release()
+        self.video_window.destroy()
+        self.circuit_window.webcam.config(background="blue",text="VIDEO OFF")
+        # self.cap = ""
+        print("VIDEO destroyed")
 
-    def cattura_webcam(self,open):
+
+    def cattura_webcam(self):
 
         def mostra_frame():
 
             # Leggi il frame dalla webcam
-            ret, frame = cap.read()
+            ret, frame = self.cap.read()
             # Converti il frame da BGR a RGB
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             # hsv = cv2.cvtColor(rgb_frame, cv2.COLOR_RGB2HSV)
@@ -74,34 +93,36 @@ class Camera:
             # Richiama questa funzione ogni 10 millisecondi
             canvas.after(10, mostra_frame)
 
-        def chiudi_finestra_webcam(cap,canvas):
-            cap.release()
-            canvas.destroy()
-            print("CANVA destroyed")
+
+        #Rende responsive la videocamera
+        def on_resize(event):
+            self.width = event.width
+            self.height = event.height
+            canvas.configure(width=self.width, height=self.height)
 
         self.tk_img = None
 
-        if open == "chiudi":
-            chiudi_finestra_webcam(self.impostazioni[1],self.impostazioni[0])
-            self.impostazioni = ["",""]
-        else:
-            cap = cv2.VideoCapture(0)
-            self.impostazioni[1] = cap
-            #controllo sulla presenza di una cam
-            if not self.impostazioni[1].isOpened():
-                return False
-            else:
-                if open == "esiste":
-                    self.impostazioni[1].release()
-                    return True
-                
-                canvas = tk.Canvas(self.root, width=self.width, height=self.height)
-                canvas.pack(anchor=tk.NW)
-                self.impostazioni[0] = canvas
-                # Chiama la funzione per mostrare il frame
-                mostra_frame()
-                # Esegui la finestra Tkinter
-                self.root.mainloop()
-                # Rilascia il dispositivo di acquisizione video quando la finestra Tkinter è chiusa
-                cap.release()
+        self.cap = cv2.VideoCapture(0)
+  
+        self.video_window = tk.Toplevel(self.root)
+        # Fissa la finestra in primo piano
+        self.video_window.attributes("-topmost", True)
+        self.video_window.geometry(f"{self.width}x{self.height}")
+        # self.video_window.resizable(False, False)
+        self.video_window.iconbitmap(utilities.asset_path("video", "ico"))
+        self.video_window.bind("<Escape>", lambda event: self.chiudi_finestra_webcam())
+        # locomotive_circuit_window.transient(self.root)
+        self.video_window.protocol("WM_DELETE_WINDOW", self.chiudi_finestra_webcam)
+
+        self.video_window.bind("<Configure>", on_resize)
+        self.video_window.focus_set()
+
+        canvas = tk.Canvas(self.video_window, width=self.width, height=self.height)
+        canvas.pack(anchor=tk.NW)
+        # Chiama la funzione per mostrare il frame
+        mostra_frame()
+        # Esegui la finestra Tkinter
+        self.video_window.mainloop()
+        # Rilascia il dispositivo di acquisizione video quando la finestra Tkinter è chiusa
+        self.cap.release()
 

@@ -34,8 +34,7 @@ indicatoron = [('Menubutton.border',
 #     return ImageTk.PhotoImage(img)
 
 #Funzione che riassume il path relativo
-def asset_path(asset_name: str, extenction: str) -> str:
-        
+def asset_path(asset_name: str, extenction: str) -> str:  
                     # Per sistemi Windows                                                Per sistemi Unix-like (Linux, macOS)
     return data.path + "\\assets\\" + asset_name + "." + extenction if data.SO == 'Windows' else data.path + "/assets/" + asset_name + "." + extenction
 
@@ -53,7 +52,6 @@ def process_image(image_path, operation, *args):
             processed_img = rotated_img.resize((args[1], args[2]), Image.BILINEAR)
             return ImageTk.PhotoImage(processed_img)
         
-    return img
             
 #Funzione per impostare la var di chiusura, quando si chiude la finestra
 def set_variabilechiusura(window_type):

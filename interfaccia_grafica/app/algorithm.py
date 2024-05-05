@@ -54,8 +54,6 @@ class Algorithm:
 
         try:
             ser = serial.Serial(port_path, baudrate=115200, timeout=0)
-            #if utilities.is_serial_port_available(port_path):
-                
 
             while not data.terminate:
                 try:
@@ -80,9 +78,8 @@ class Algorithm:
                     if data.calibred and self.flag and len(data.locomotives_data) in [2,3]:
                         # self.GUI.on_off()
                         parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
-                        # circuit_window.RFID_button.config(state='disabled')
+
                         utilities.show_info(data.Textlines[60],parent)
-                        # circuit_window.RFID_button.config(state='normal')
                         
                         #creo il thread e lo metto in memoria
                         process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
@@ -238,9 +235,9 @@ class Algorithm:
             #Controlla che la finestra della calibrazione sia aperta
             if data.variabili_apertura["locomotive_RFID_var"]:
                #aspetta che venga chiusa e pulisce la queue
-            #    data.locomotive_RFID_window.wait_window()
                circuit_window.GUI.locomotive_RFID_window.wait_window()
                self.message_queue.queue.clear()
+
             try:
                 # Attendi con un timeout di 0.1 secondi
                 message = self.message_queue.get(timeout=0.1)

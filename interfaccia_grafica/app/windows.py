@@ -523,6 +523,9 @@ def control_window(locomotive_window,GUI,locomotiva,id_controllo):
     for i in range(10):
         locomotive_window.bind('<KeyPress-{}>'.format(i), lambda event, i=i: add_speed(i))
     
+    #Fissa la finestra in primo piano
+    locomotive_window.attributes("-topmost", True)
+
 #Logica della finestra delle impostazioni della pagina principale
 def settings_window(locomotive_window,GUI):
 
@@ -847,7 +850,6 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     locomotive_window.bind("<FocusIn>",   lambda event: RFID_entry.focus_set())
 
     #Salvo la pagina, mi serve per bloccare la pagina circuit
-    # data.locomotive_RFID_window = locomotive_window
     GUI.locomotive_RFID_window = locomotive_window
 
     #Non permette altre azioni finche non chiudi la finestra, quando chiudi riabilita la circuit_window
@@ -903,6 +905,7 @@ class circuit_window:
  
     def __init__(self,locomotive_window,nscambi,container,GUI):
         self.locomotive_window = locomotive_window
+    
         self.nscambi = nscambi
         #self.serial_port = data.serial_ports[0] -- Non permette dinamicità
         self.GUI = GUI
@@ -910,10 +913,9 @@ class circuit_window:
         #richiamo del'oggetto algo
         self.algo = self.container.algo
         #creazione dell'oggetto camera
-        self.camera = cam.Camera(self.locomotive_window)
+        self.camera = cam.Camera(self)
         #Flag che si utilizza per creare una sola volta i deviatoi
         self.flag = False
-
 
     #Funzione che permette di cambiare il colore del sensore quando passa un treno
     def change_Sensors(self,text,RFIDtag):
@@ -988,21 +990,21 @@ class circuit_window:
  
     #funzione che gestisce il bottone che attiva la webcam
         def change_color_webcam():
-            current_color = webcam.cget("background")
+            current_color = self.webcam.cget("background")
             new_color = "green" if current_color == "blue" else "blue"
             new_text = data.Textlines[54] if current_color == "blue" else data.Textlines[53]
             
             if current_color == "blue" :
-                controlloCam = self.camera.cattura_webcam("esiste")
+                controlloCam = self.camera.esiste()
                 #Controlla che la cam sia aperta ed esista
                 if controlloCam:
-                    webcam.config(background=new_color,text=new_text)
-                    self.camera.cattura_webcam("")
+                    self.webcam.config(background=new_color,text=new_text)
+                    self.camera.cattura_webcam()
                 else:
                     utilities.show_error_box(data.Textlines[36],self.locomotive_window,"main")
             else:
-                webcam.config(background=new_color,text=new_text)
-                self.camera.cattura_webcam("chiudi")
+                self.webcam.config(background=new_color,text=new_text)
+                self.camera.chiudi_finestra_webcam()
 
     #funzione che gestisce il cambio da manuale a automatico
         # def change_window(text,root):
@@ -1079,7 +1081,7 @@ class circuit_window:
                         #Disfuznione del tasto
                         root.unbind("<s>")
                         check_control_button_state(False)
-
+    
                     start_button.config(background=new_color)
                 else:
                     utilities.show_error_box(data.Textlines[67],self.locomotive_window,"main")
@@ -1096,13 +1098,16 @@ class circuit_window:
                 #     root.unbind("<KeyPress-{}>".format(i[-1]))
             else:
                 self.locomotive_label.configure(text=data.Textlines[94])
+                self.tag_label.configure(text="")
+                self.tag_color.configure(background="SystemButtonFace")
                 self.locomotive_window.grab_release()
+
         #---------CREAZIONE DELLA PAGINA---------
-        
+
         root = self.locomotive_window
 
-        canvas_width = 1200
-        canvas_height = 708
+        canvas_width = root.winfo_width()
+        canvas_height = root.winfo_height()-50
 
         frame = tk.Frame(root)
         frame.pack(anchor=tk.NW)
@@ -1110,6 +1115,7 @@ class circuit_window:
         canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, bg="white")
         canvas.pack(side=tk.LEFT, expand=True)
 
+        
         #tengo in memoria il canvas
         data.canvas_array[0] = canvas
 
@@ -1139,9 +1145,9 @@ class circuit_window:
         self.tag_color.pack(side="left",padx=(0,5))
         self.tag_color.config(state="disabled")
 
-        webcam = tk.Button(frame, text=data.Textlines[53], height=2,bg="blue" ,
+        self.webcam = tk.Button(frame, text=data.Textlines[53], height=2,bg="blue" ,
                             command=lambda: change_color_webcam())
-        webcam.pack(padx=5,side=tk.LEFT)
+        self.webcam.pack(padx=5,side=tk.LEFT)
         root.bind("<v>", lambda event: change_color_webcam())
 
         self.locomotive_label = tk.Label(frame, text=data.Textlines[93])

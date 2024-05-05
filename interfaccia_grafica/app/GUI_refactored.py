@@ -299,7 +299,7 @@ class GUI(tk.Frame):
         
         if open :
             #creazione di circuit per decidere il tipo di controllo del sistema
-            locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "",self.container)
+            locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "1200x758",self.container)
             
             if locomotive_window:
 

@@ -66,9 +66,6 @@ variabili_apertura = {
     "locomotive_control_var":  []
 }
 
-
-# locomotive_RFID_window = ""  #Salvo la pagina RFID, mi serve per bloccare la pagina circuit
-
 # Traduzione dei colori - In questo dizionario vengono inserite le traduzioni per ogni elemento
 # colors = {
 #     "Red":         "",
