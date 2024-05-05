@@ -1045,25 +1045,28 @@ class circuit_window:
             #gestione grafica degllo start dell'Auto version
             current_color = start_button.cget("background")            
 
+            #Controllo sulla porta dei sensori
             if utilities.is_serial_port_available(data.serial_ports[1]):
-                
+                #Caso in cui deve accendersi
                 if current_color == "red":
                     lenght = len(data.locomotives_data)
+                    #Se ci sono meno di due locomotive, manda un messaggio e avvisa che il processo non parte
                     if lenght < 2: 
                         utilities.show_info(data.Textlines[67])
                         root.focus_set()
-                        self.RFID_button.config(state='normal')
-                    elif not data.calibred: self.RFID_button.config(state='normal')
+                        # self.RFID_button.config(state='normal')
+                        #Abilita il tasto
+                    # elif not data.calibred: self.RFID_button.config(state='normal')
 
                     new_color = "#00ff00"
                     self.algo.start_algo(self)
-                    # self.RFID_button.config(state='normal')
+                    self.RFID_button.config(state='normal')
                     #Assegnazione del tasto
                     root.bind("<s>", lambda event: (self.open_RFID_window(),
                                                     # root.attributes("-alpha", 0.5)
                                                     ))
                     check_control_button_state(True)
-                else: 
+                else: #Caso in cui deve spegnersi
                     new_color = "red"
                     self.algo.stop_algo()
                     self.RFID_button.config(state='disabled')
