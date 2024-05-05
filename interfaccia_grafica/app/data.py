@@ -29,6 +29,7 @@ max_length_name  =      20           # Numero max di caratteri che il nome puo a
 max_size_loco_id =   10293           # Numero max dell'indirizzo che si puo dare ad una locomotiva
 K_velocita       = 126/100           # Costante basata sulla velocita massima possibile di una locomotiva (0-126)
 max_velocita     =     100
+max_loco_auto    =       3
 
 var_velocita_tastiera = 0           #Var che aiuta l'implementazione della tastioera nella finestra dei comandi
 var_supporto = None                 #Var che aiuta l'apertura della gestione locomotiva da tastiera

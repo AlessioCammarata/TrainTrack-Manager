@@ -48,7 +48,8 @@ def creation_window(locomotive_window,GUI):
 
         elif len(name)>data.max_length_name or int(loco_id)>data.max_size_loco_id:
             utilities.show_error_box(data.Textlines[25],locomotive_window,"")
-
+        elif data.variabili_apertura["locomotive_RFID_var"] and len(data.locomotives_data) == data.max_loco_auto:
+            utilities.show_error_box(data.Textlines[67],locomotive_window,"")
         else:
             #controllo se esistono dei buchi tra gli ID
             if len(data.locomotives_data) == 0:
@@ -1048,35 +1049,38 @@ class circuit_window:
 
             #Controllo sulla porta dei sensori
             if utilities.is_serial_port_available(data.serial_ports[1]):
-                #Caso in cui deve accendersi
-                if current_color == "red":
-                    lenght = len(data.locomotives_data)
-                    #Se ci sono meno di due locomotive, manda un messaggio e avvisa che il processo non parte
-                    if lenght not in [2,3]: 
-                        utilities.show_info(data.Textlines[67],self.locomotive_window)
-                        root.focus_set()
-                        # self.RFID_button.config(state='normal')
-                        #Abilita il tasto
-                    # elif not data.calibred: self.RFID_button.config(state='normal')
+                lenght = len(data.locomotives_data)
+                if not lenght > 3: 
+                    #Caso in cui deve accendersi
+                    if current_color == "red":
+                        #Se ci sono meno di due locomotive, manda un messaggio e avvisa che il processo non parte
+                        if lenght not in [2,3]:
+                            utilities.show_info(data.Textlines[67],self.locomotive_window)
+                            root.focus_set()
+                            # self.RFID_button.config(state='normal')
+                            #Abilita il tasto
+                        # elif not data.calibred: self.RFID_button.config(state='normal')
 
-                    new_color = "#00ff00"
-                    self.algo.start_algo(self)
-                    self.RFID_button.config(state='normal')
-                    #Assegnazione del tasto
-                    root.bind("<s>", lambda event: (self.open_RFID_window(),
-                                                    # root.attributes("-alpha", 0.5)
-                                                    ))
-                    check_control_button_state(True)
-                else: #Caso in cui deve spegnersi
-                    new_color = "red"
-                    self.algo.stop_algo()
-                    self.RFID_button.config(state='disabled')
-                    #Disfuznione del tasto
-                    root.unbind("<s>")
-                    check_control_button_state(False)
+                        new_color = "#00ff00"
+                        self.algo.start_algo(self)
+                        self.RFID_button.config(state='normal')
+                        #Assegnazione del tasto
+                        root.bind("<s>", lambda event: (self.open_RFID_window(),
+                                                        # root.attributes("-alpha", 0.5)
+                                                        ))
+                        check_control_button_state(True)
+                    
+                    else: #Caso in cui deve spegnersi
+                        new_color = "red"
+                        self.algo.stop_algo()
+                        self.RFID_button.config(state='disabled')
+                        #Disfuznione del tasto
+                        root.unbind("<s>")
+                        check_control_button_state(False)
 
-                start_button.config(background=new_color)
-      
+                    start_button.config(background=new_color)
+                else:
+                    utilities.show_error_box(data.Textlines[67],self.locomotive_window,"main")
             else:
                 utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False
