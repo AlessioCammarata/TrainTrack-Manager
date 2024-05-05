@@ -69,8 +69,6 @@ variabili_apertura = {
 
 # locomotive_RFID_window = ""  #Salvo la pagina RFID, mi serve per bloccare la pagina circuit
 
-
-
 # Traduzione dei colori - In questo dizionario vengono inserite le traduzioni per ogni elemento
 # colors = {
 #     "Red":         "",
@@ -132,20 +130,11 @@ Sensors = {
     "Sensore 7":   ["","","","","black"],
     "Sensore 8":   ["","","","","red"]
 }
-#La label è quella della pagina rfid
-label = ""
 
-#La label è quella della pagina circuit_window
-label2 = ""
-
-#array dei canvas
-canvas_array = [""]
-
-#Variabile per controllare se tutti i treni in tabella sono stati calibrati
-calibred = False
-
-#Qui viene inserita la varibile del sensore per la calibrazione
-sensor_response = ["_/_"]
+label = ""                  #La label è quella della pagina rfid, non riesco ad accederci da fuori poiche si trova all'interno di una funzione
+canvas_array = [""]         #array dei canvas
+calibred = False            #Variabile per controllare se tutti i treni in tabella sono stati calibrati
+sensor_response = ["_/_"]   #Qui viene inserita la varibile del sensore per la calibrazione
 
 '''
 Se partono da 7 viaggiano verso sinistra e cominciano alla stazione
