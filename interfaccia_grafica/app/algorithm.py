@@ -70,13 +70,16 @@ class Algorithm:
                         message = response.split("/")
                         if data.variabili_apertura["locomotive_RFID_var"]:
                             data.label.configure(text=message[1])
-                        circuit_window.tag_label.configure(background=data.Sensors["Sensore {}".format(message[0])][4])
-                        circuit_window.tag_label.after(1000, lambda: circuit_window.tag_label.configure(text=message[1],background="SystemButtonFace"))
-
+                        circuit_window.tag_label.configure(text=message[1])
+                            # background=data.Sensors["Sensore {}".format(message[0])][4])
+                        # circuit_window.tag_label.after(1000, lambda: circuit_window.tag_label.configure(text=message[1]))
+                        circuit_window.tag_color.configure(background=data.Sensors["Sensore {}".format(message[0])][4])
+                        # circuit_window.tag_color.after(1000, lambda: circuit_window.tag_label.configure(text=message[1],background="SystemButtonFace"))
+                    
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
                     if data.calibred and self.flag and len(data.locomotives_data) in [2,3]:
                         # self.GUI.on_off()
-                        parent = data.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
+                        parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
                         # circuit_window.RFID_button.config(state='disabled')
                         utilities.show_info(data.Textlines[60],parent)
                         # circuit_window.RFID_button.config(state='normal')
@@ -125,7 +128,7 @@ class Algorithm:
         
              
     def stop_algo(self):
-        #Controlla che la funzione sia stata chiamata
+        #Controlla che la funzione sia stata chiamata e che non sia amministratore
         if self.called and not data.root:
             data.terminate = True
             # Attendi che i thread terminino
@@ -164,21 +167,22 @@ class Algorithm:
     def show_percorsi_liberi(self,id):
         direzione       = data.locomotives_data[id]['Direzione']
 
+        #A seconda delle direzione ci sono dei percorsi diversi
         if direzione == 0:
             return list(set(data.LRoutes.keys()) - set(data.percorsi_assegnati))
         else:
             return list(set(data.RRoutes.keys()) - set(data.percorsi_assegnati))
 
-    #Ritorna l'intersezione tra i percorsi assegnati, in modo da
+    #Ritorna l'intersezione tra i percorsi assegnati, in modo da trovare i punti in cui si incrociano i percorsi
     def trova_criticita(self):
         return set(data.LRoutes[data.percorsi_assegnati[0]]) & set(data.RRoutes[data.percorsi_assegnati[-1]])
 
     #Dato un treno sceglie il percorso, inserisce il vettore contenente le criticita nel caso sia il secondo
     def scegli_percorso(self, id): 
-        print(data.percorsi_assegnati)
+        print("i percorsi assegnati sono: " +str(data.percorsi_assegnati))
         percorsi_liberi = self.show_percorsi_liberi(id)
         percorso_scelto = random.choice(percorsi_liberi)
-        print(percorso_scelto)
+        print("il percorso scelto è: " +str(percorso_scelto))
         data.percorsi_assegnati.append(percorso_scelto)
 
         data.locomotives_data[id]['Percorso'] = percorso_scelto
@@ -200,7 +204,7 @@ class Algorithm:
                 velocita  = 20
                 self.gestione_velocita(circuit_window,i,velocita)
 
-                print(data.criticita)
+                print("le criticità sono: " +str(data.criticita))
             
             #Per ora non funzione
             # for item in data.criticita:
@@ -234,7 +238,8 @@ class Algorithm:
             #Controlla che la finestra della calibrazione sia aperta
             if data.variabili_apertura["locomotive_RFID_var"]:
                #aspetta che venga chiusa e pulisce la queue
-               data.locomotive_RFID_window.wait_window()
+            #    data.locomotive_RFID_window.wait_window()
+               circuit_window.GUI.locomotive_RFID_window.wait_window()
                self.message_queue.queue.clear()
             try:
                 # Attendi con un timeout di 0.1 secondi

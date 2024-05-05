@@ -847,7 +847,8 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     locomotive_window.bind("<FocusIn>",   lambda event: RFID_entry.focus_set())
 
     #Salvo la pagina, mi serve per bloccare la pagina circuit
-    data.locomotive_RFID_window = locomotive_window
+    # data.locomotive_RFID_window = locomotive_window
+    GUI.locomotive_RFID_window = locomotive_window
 
     #Non permette altre azioni finche non chiudi la finestra, quando chiudi riabilita la circuit_window
     locomotive_window.protocol("WM_DELETE_WINDOW", lambda: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
@@ -912,6 +913,7 @@ class circuit_window:
         self.camera = cam.Camera(self.locomotive_window)
         #Flag che si utilizza per creare una sola volta i deviatoi
         self.flag = False
+
 
     #Funzione che permette di cambiare il colore del sensore quando passa un treno
     def change_Sensors(self,text,RFIDtag):
@@ -1128,11 +1130,14 @@ class circuit_window:
         root.bind("<o>", lambda event: START())
 
         # tabella che fa vedere cio che vedono i sensori
-        self.tag_label = tk.Label(frame, text="", relief = tk.SUNKEN, width=10, height=2, background=None)
-        self.tag_label.pack(side="left", padx=5)
+        self.tag_label = tk.Label(frame, text="", relief = tk.SUNKEN, width=10, height=2)
+        self.tag_label.pack(side="left", padx=(5,0))
         self.tag_label.config(state="disabled")
         # data.label2 = tag_label
-    
+        
+        self.tag_color = tk.Label(frame, text="", relief = tk.SUNKEN, width=2, height=2)
+        self.tag_color.pack(side="left",padx=(0,5))
+        self.tag_color.config(state="disabled")
 
         webcam = tk.Button(frame, text=data.Textlines[53], height=2,bg="blue" ,
                             command=lambda: change_color_webcam())
@@ -1146,7 +1151,6 @@ class circuit_window:
         canvas.create_text(50, 400, text="|2|", anchor=tk.W) 
         canvas.create_text(870,370, text="|1|", anchor=tk.W) 
 
-       
         # self.container.attributes("-alpha", 0.5)
         
     
