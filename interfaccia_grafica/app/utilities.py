@@ -206,6 +206,7 @@ def update_circuit_table(columns,tree):
     for col in columns:
         tree.column(col, anchor='center', width=100)  # Imposta l'allineamento al centro per tutte le colonne
 
+#Funzione che aggiorna il textlines con la nuova lingua selezionata
 def translate():
     print(data.languages[0])
     data.Textlines = []
@@ -218,6 +219,7 @@ def translate():
             data.Textlines.append(line.strip())
     color_update()
 
+#Funzione che aggiorna la traduzione dei colori
 def color_update():
     i=0
     for colors in data.colors:

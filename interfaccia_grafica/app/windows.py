@@ -1010,28 +1010,6 @@ class circuit_window:
                 self.webcam.config(background=new_color,text=new_text)
                 self.camera.chiudi_finestra_webcam()
 
-    #funzione che gestisce il cambio da manuale a automatico
-        # def change_window(text,root):
-
-        #     #controllo per effettuare correttamente il cap.release
-        #     if text==data.Textlines[56] and self.camera.impostazioni[0]!="": 
-        #         self.camera.cattura_webcam("chiudi")
-            
-        #     #Controlla se la porta dei sensori è abilitata
-        #     if data.serial_port_info[data.serial_ports[1]][1]:
-                
-        #         #Distrugge tutti i widget presenti nella pagina corrente
-        #         for widget in root.winfo_children():
-        #             widget.destroy()
-        #         #avvia la pagina selezionata
-        #         if text == data.Textlines[56]:
-        #             self.algo.stop_algo()
-        #             self.open_circuit_window(False)
-        #         else: 
-        #             self.open_circuit_window(True)
-
-        #     else: utilities.show_error_box(data.Textlines[37],self.locomotive_window,self.GUI,"main")
-
     # Funzione per creare un label con un checkbutton
         def create_label_with_button(canvas, x, y, text):
             label = canvas.create_text(x, y, text=data.Textlines[97] +" "+ text[-1], anchor=tk.W)  # Crea il testo sul canvas
@@ -1068,14 +1046,14 @@ class circuit_window:
                             # self.RFID_button.config(state='normal')
                             #Abilita il tasto
                         # elif not data.calibred: self.RFID_button.config(state='normal')
-
+                        
+                        if self.GUI.on_button.cget("background") != "red":
+                            self.GUI.on_off()
                         new_color = "#00ff00"
                         self.algo.start_algo(self)
                         self.RFID_button.config(state='normal')
                         #Assegnazione del tasto
-                        root.bind("<s>", lambda event: (self.open_RFID_window(),
-                                                        # root.attributes("-alpha", 0.5)
-                                                        ))
+                        root.bind("<s>", lambda event: self.open_RFID_window())
                         check_control_button_state(True)
                     
                     else: #Caso in cui deve spegnersi
@@ -1090,7 +1068,7 @@ class circuit_window:
                 else:
                     utilities.show_error_box(data.Textlines[67],self.locomotive_window,"main")
             else:
-                utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22],self.locomotive_window,"main")
+                utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22] + ".\n"+ data.Textlines[37],self.locomotive_window,"main")
                 data.serial_port_info[data.serial_ports[1]][0] = False
 
         def check_control_button_state(auto):
@@ -1126,9 +1104,7 @@ class circuit_window:
         image_RFID_path = utilities.asset_path('controllo','png')
         image_RFID = utilities.process_image(image_RFID_path, 'resize', 40, 40)
         self.RFID_button = tk.Button(frame, image= image_RFID, borderwidth=0, 
-                                        command=lambda:(self.open_RFID_window(),
-                                                    #    root.attributes("-alpha", 0.5)
-                                                        ))
+                                        command=lambda:self.open_RFID_window())
         self.RFID_button.pack(side="left", padx=(10,5),pady=(5,0))
         self.RFID_button.config(state='disabled')
 
@@ -1160,17 +1136,6 @@ class circuit_window:
         canvas.create_text(10, 400, text="|3|", anchor=tk.W) 
         canvas.create_text(50, 400, text="|2|", anchor=tk.W) 
         canvas.create_text(870,370, text="|1|", anchor=tk.W) 
-
-        # self.container.attributes("-alpha", 0.5)
-        
-    
-        # text = data.Textlines[55]
-        # feature_button = tk.Button(frame, text=text, height = 2, 
-        #                             command=lambda:change_window(text,root))
-        # feature_button.pack(side=tk.LEFT)
-
-        # locomotive_label = tk.Label(frame, text=data.Textlines[94])
-        # locomotive_label.pack(padx=462,pady=10,side=tk.LEFT, anchor=tk.NW)
 
     #creazione dei bottoni per i deviatoi
         cambio1, button1 = create_label_with_button(canvas, 10, 60, "Cambio 1")
@@ -1494,8 +1459,11 @@ class circuit_window:
                         comandi.crea_deviatoio(i,i+40) # vanno nel loro pin corrispondente + 40 
                     
                     data.Turnouts[str][1] = i
+        
+        #Rende la finestra visibile quando ha finito di crearsi
         if not self.flag: 
             self.locomotive_window.deiconify()
             self.flag = True
+            
         # Eseguire il loop principale
         root.mainloop()

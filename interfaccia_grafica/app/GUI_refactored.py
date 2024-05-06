@@ -233,10 +233,8 @@ class GUI(tk.Frame):
             else: window_var.iconbitmap(utilities.asset_path("icon_control", "ico"))
 
             data.variabili_apertura[f'locomotive_{window_type}_var'] = True
-            #if necessario, la control è gestita tramite un vettore
-            # if att == 'locomotive_control_window':
-            #     self.locomotive_control_window[window_type] = window_var
-            # else:
+
+            #Si setta l'attributo a window_var
             setattr(self, att, window_var)
             window_var.transient(root)
             window_var.protocol("WM_DELETE_WINDOW", lambda:utilities.on_close(window_var,window_type))
