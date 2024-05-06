@@ -23,21 +23,23 @@ class Camera:
         self.tk_img         = None
         self.width          = 400
         self.height         = 300
-    
+        self.cam_exist      = False
+
     def esiste(self):
         self.cap = cv2.VideoCapture(0)
+        print("Exist")
         #controllo sulla presenza di una cam
         if not self.cap.isOpened():
-            return False
+            self.cam_exist = False
         else:
             self.cap.release()
-            return True
+            self.cam_exist = True
         
     def chiudi_finestra_webcam(self):
         self.cap.release()
         self.video_window.destroy()
         self.circuit_window.webcam.config(background="blue",text="VIDEO OFF")
-        # self.cap = ""
+        # print(self.cap)
         print("VIDEO destroyed")
 
 

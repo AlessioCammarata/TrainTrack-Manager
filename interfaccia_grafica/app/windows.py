@@ -995,9 +995,13 @@ class circuit_window:
             new_text = data.Textlines[54] if current_color == "blue" else data.Textlines[53]
             
             if current_color == "blue" :
-                controlloCam = self.camera.esiste()
+                
+                #Controlla che la cam sia aperta ed esista, in caso contrario va a controllare
+                if not self.camera.cam_exist:
+                    self.camera.esiste()
+
                 #Controlla che la cam sia aperta ed esista
-                if controlloCam:
+                if self.camera.cam_exist:
                     self.webcam.config(background=new_color,text=new_text)
                     self.camera.cattura_webcam()
                 else:
