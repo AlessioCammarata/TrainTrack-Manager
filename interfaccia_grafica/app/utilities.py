@@ -155,7 +155,7 @@ def set_port_var(*args):
             port2_enable = False
             if flag < 1: 
                 ports_available[0] = data.serial_ports[0]
-                return 0
+                return data.Textlines[32] + "\n" + data.Textlines[33]
     else:
         ports_available[0]  = args[0]
         ports_available[1]  = args[1]
