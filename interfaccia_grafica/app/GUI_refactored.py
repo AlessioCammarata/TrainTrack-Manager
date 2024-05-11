@@ -281,7 +281,7 @@ class GUI(tk.Frame):
 
     #Apre la pagina della modifica locomotive
     def open_locomotive_modify_window(self):
-        locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x200",self.container)
+        locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x210",self.container)
         if locomotive_window:
             windows.modify_window(locomotive_window,self)
 

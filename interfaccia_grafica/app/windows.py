@@ -251,7 +251,7 @@ def remove_window(locomotive_window,GUI):
     ID_entry.pack()
 
     remove_button = tk.Button(locomotive_window, text=data.Textlines[48], command=remove_locomotive)
-    remove_button.pack()
+    remove_button.pack(pady=(10,0))
 
     name_entry.focus_set()
     #permette di avviare la funzione con il tasto invio
