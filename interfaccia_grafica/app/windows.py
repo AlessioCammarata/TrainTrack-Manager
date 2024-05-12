@@ -622,14 +622,14 @@ def settings_window(locomotive_window,GUI):
     
         # Riempimento della tabella con i dati delle porte seriali
         i=0
-        for port in data.serial_port_info:
-            i += 1
-
+        for port in ports_available:
+            
             tree.insert('', tk.END, values=(
                 port,
-                data.serial_port_info[port][2]
-            ),tags=(i))
-    
+                ports_name[port]
+            ))
+            i += 1
+            
         for col in columns:
             width = 10 if col == "porta" else 150 
             tree.column(col, anchor='center', width=width)
@@ -640,7 +640,9 @@ def settings_window(locomotive_window,GUI):
     for i in range(data.port_range):
         if utilities.port_exist(i):
             ports_available.append(i)
+            
         i+=1
+    
 
     style = ttk.Style()
     style.configure('UniqueCustom.TMenubutton',padding=(),background="white") 
@@ -722,6 +724,7 @@ def settings_window(locomotive_window,GUI):
     columns = ("porta","Dispositivo")
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings', height= 2)
     tree.grid(row=4, column=0, pady=(10, 0), padx=(10,0), sticky="nsew")
+    ports_name      = utilities.get_name_arduino(ports_available)
     refresh()
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
@@ -731,6 +734,9 @@ def settings_window(locomotive_window,GUI):
     #Attiviamo la selezione del 0 che è la standard
     appoint_selection(0)
     
+    #Rende di nuovo visibile la finestra
+    locomotive_window.deiconify()
+
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
     locomotive_window.bind("<FocusIn>",lambda event: max_loco_entry.focus_set())

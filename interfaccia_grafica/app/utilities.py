@@ -4,6 +4,7 @@ from tkinter import messagebox
 import data
 import os
 import serial
+import threading
 
 '''
 
@@ -133,31 +134,39 @@ def port_exist(function_port):
     # print(data.serial_ports)
     return exist
 
-#Funzione che serve ad otternere il nome dell'Arduino
-def get_name_arduino(port):
+import time
 
-    port = str(port)
-
-    if not port.isdigit():
-        return 
-    else:
-        command = f'get_name\n'
-
-        # Apri la connessione seriale
-        ser = serial.Serial(find_port_path(port), 115200, timeout=1)  # Modifica i parametri in base alla tua configurazione
-
+# #Funzione che serve ad otternere il nome dell'Arduino
+def read_serial(port, result):
+    print(data.serial_port_info.keys())
+    if port not in data.serial_port_info.keys() or data.serial_port_info[port][2] == "":
+        command = 'get_name\n'
+        ser = serial.Serial(find_port_path(port), 115200, timeout=1)
         try:
-            # Scrivi il comando sulla porta seriale
             ser.write(command.encode())
-
-            # Leggi la risposta dalla porta seriale
-            response = ser.readline().decode().strip()
-            if response == "": response = "Sconosciuto"
-            return response
-
+            response = ser.readline().decode().strip() if ser.isOpen() else ''
+            if response == '':
+                response = 'Sconosciuto'
+            result[port] = response
         finally:
-            # Chiudi la connessione seriale
             ser.close()
+    else:
+        result[port] = data.serial_port_info[port][2]
+
+def get_name_arduino(ports):
+    results = {}
+    threads = []
+    start_time = time.time()
+    for port in ports:
+        thread = threading.Thread(target=read_serial, args=(port, results))
+        thread.start()
+        threads.append(thread)
+    for thread in threads:
+        thread.join()
+    end_time = time.time()
+    duration = end_time - start_time
+    print("Durata dell'esecuzione:", duration, "secondi")
+    return results
 
 
 #Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
@@ -203,11 +212,9 @@ def set_port_var(*args):
 
 
     #Assegnazione del nome del dispositivo sulla porta
-    if data.serial_port_info[data.serial_ports[0]][2] == "":
-        data.serial_port_info[data.serial_ports[0]][2]      = get_name_arduino(data.serial_ports[0])
-
-    if data.serial_port_info[data.serial_ports[1]][2] == "":
-        data.serial_port_info[data.serial_ports[1]][2]      = get_name_arduino(data.serial_ports[1])
+    ports_name = get_name_arduino(data.serial_ports)
+    data.serial_port_info[data.serial_ports[0]][2]      = ports_name[data.serial_ports[0]]
+    data.serial_port_info[data.serial_ports[1]][2]      = ports_name[data.serial_ports[1]]
 
     if not args:
         #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base

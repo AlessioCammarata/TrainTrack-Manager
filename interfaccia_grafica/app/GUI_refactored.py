@@ -255,7 +255,8 @@ class GUI(tk.Frame):
             # window_var.transient(root)
 
             #Rende la finestra visibile di nuovo
-            if not window_type == "circuit": window_var.deiconify()
+            if not window_type in ["circuit","settings"]: 
+                window_var.deiconify()
             
             return window_var
 
