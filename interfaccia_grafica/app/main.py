@@ -51,7 +51,8 @@ if __name__ == "__main__":
 
     #Aggiorno la lingua, con quella standard+.
     utilities.translate()
-
+    # utilities.get_name_arduino("COM7")
+    
     #Aggiorno le porte collegate nel caso in cui ci siano
     print(utilities.set_port_var())
 

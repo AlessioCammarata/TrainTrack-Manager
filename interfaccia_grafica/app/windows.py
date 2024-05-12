@@ -610,7 +610,31 @@ def settings_window(locomotive_window,GUI):
                 checkbox0.config(state='disabled')
             else:
                 checkbox0.config(state='normal')
-        
+    
+    def refresh():
+
+        print("Refresh")
+        for col in columns:
+            tree.heading(col, text=col)
+            
+        for row in tree.get_children():
+            tree.delete(row)
+    
+        # Riempimento della tabella con i dati delle porte seriali
+        i=0
+        for port in data.serial_port_info:
+            i += 1
+
+            tree.insert('', tk.END, values=(
+                port,
+                data.serial_port_info[port][2]
+            ),tags=(i))
+    
+        for col in columns:
+            width = 10 if col == "porta" else 150 
+            tree.column(col, anchor='center', width=width)
+        # tree.update()
+
     #Controlla le prime 10 porte se sono libere
     ports_available = []
     for i in range(data.port_range):
@@ -673,7 +697,7 @@ def settings_window(locomotive_window,GUI):
 
     port1_checkbox_var = tk.BooleanVar()
     port1_checkbox_var.set(data.serial_port_info[data.serial_ports[1]][1])
-    print(data.serial_port_info[data.serial_ports[1]][1])
+    # print(data.serial_port_info[data.serial_ports[1]][1])
     # Creazione della casella di controllo
     checkbox1 = tk.Checkbutton(locomotive_window,text=data.Textlines[57], variable=port1_checkbox_var, command = lambda: appoint_selection(1))
     checkbox1.grid(row=1, column=2, padx=5, sticky=tk.W)
@@ -694,13 +718,19 @@ def settings_window(locomotive_window,GUI):
     
     port1_button.config(style='UniqueCustom.TMenubutton')
 
+    #Creazione della tabella con le porte e i nomi dei device
+    columns = ("porta","Dispositivo")
+    tree = ttk.Treeview(locomotive_window, columns=columns, show='headings', height= 2)
+    tree.grid(row=4, column=0, pady=(10, 0), padx=(10,0), sticky="nsew")
+    refresh()
+
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
                                 command=active_settings)
-    settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
+    settings_button.grid(row=5, column=0, pady=(20, 0), padx=(180,0), sticky="nsew")
 
     #Attiviamo la selezione del 0 che è la standard
     appoint_selection(0)
-
+    
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
     locomotive_window.bind("<FocusIn>",lambda event: max_loco_entry.focus_set())
@@ -817,7 +847,6 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     tag_label.grid(row=0, column=0, pady=(10, 0), padx=(60,0),sticky=tk.W)
     tag_label.config(state="disabled")
     data.label = tag_label
-    
     
 
     ADD_button = tk.Button(locomotive_window, text=data.Textlines[52], width=7,

@@ -133,6 +133,33 @@ def port_exist(function_port):
     # print(data.serial_ports)
     return exist
 
+#Funzione che serve ad otternere il nome dell'Arduino
+def get_name_arduino(port):
+
+    port = str(port)
+
+    if not port.isdigit():
+        return 
+    else:
+        command = f'get_name\n'
+
+        # Apri la connessione seriale
+        ser = serial.Serial(find_port_path(port), 115200, timeout=1)  # Modifica i parametri in base alla tua configurazione
+
+        try:
+            # Scrivi il comando sulla porta seriale
+            ser.write(command.encode())
+
+            # Leggi la risposta dalla porta seriale
+            response = ser.readline().decode().strip()
+            if response == "": response = "Sconosciuto"
+            return response
+
+        finally:
+            # Chiudi la connessione seriale
+            ser.close()
+
+
 #Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
 def set_port_var(*args):
     ports_available = ["",""]
@@ -160,6 +187,7 @@ def set_port_var(*args):
         ports_available[0]  = args[0]
         ports_available[1]  = args[1]
 
+
     #Dizionario temporale che aggiorna le chiavi
     temp_dict = {
                     ports_available[0]: data.serial_port_info.pop(data.serial_ports[0]),
@@ -172,6 +200,14 @@ def set_port_var(*args):
 
     # Aggiornare il dizionario originale con le nuove chiavi
     data.serial_port_info.update(temp_dict)
+
+
+    #Assegnazione del nome del dispositivo sulla porta
+    if data.serial_port_info[data.serial_ports[0]][2] == "":
+        data.serial_port_info[data.serial_ports[0]][2]      = get_name_arduino(data.serial_ports[0])
+
+    if data.serial_port_info[data.serial_ports[1]][2] == "":
+        data.serial_port_info[data.serial_ports[1]][2]      = get_name_arduino(data.serial_ports[1])
 
     if not args:
         #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
@@ -225,3 +261,5 @@ def color_update():
     for colors in data.colors:
         data.colors[colors] = data.Textlines[140+i]
         i += 1
+
+
