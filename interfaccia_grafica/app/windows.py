@@ -14,7 +14,8 @@ import utilities
       TS__[O]  \_/\_/  _|_|_  |_||_|  \__,_|   \___/   \_/\_/  /__/_  
      {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
-
+'''
+"""
      
     SHORTCUTS 
     
@@ -30,7 +31,7 @@ import utilities
 
         self.locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
         
-'''
+"""
 #Funzione che gestisce la logica della pagine di creazione locomotive
 def creation_window(locomotive_window,GUI):
 
@@ -576,14 +577,18 @@ def settings_window(locomotive_window,GUI):
                 #Cambiamo i rispettivi centralina e rfid
                 utilities.set_port_var(centralina,rfid)
 
-                print(data.serial_ports)
-                print(data.SO)
+                # print(data.serial_ports)
+                # print(data.SO)
+                for port in ports_available:
+                    if ports_name[port] != 'Sconosciuto':
+                        data.serial_port_info[port][2] = ports_name[port]
+                        print(ports_name[port])
                 
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
             data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
             data.serial_port_info[data.serial_ports[1]][1]      = port1_enabled
-        
+
         if data.root:
             #Amministratore
             utilities.show_info("ROOT BOSS alexein",locomotive_window)
@@ -621,14 +626,14 @@ def settings_window(locomotive_window,GUI):
             tree.delete(row)
     
         # Riempimento della tabella con i dati delle porte seriali
-        i=0
         for port in ports_available:
-            
+            name = ports_name[port] if port not in data.serial_ports else data.serial_port_info[port][2]
+            print(ports_name[port])
             tree.insert('', tk.END, values=(
                 port,
-                ports_name[port]
+                name
             ))
-            i += 1
+
             
         for col in columns:
             width = 10 if col == "porta" else 150 
@@ -727,6 +732,7 @@ def settings_window(locomotive_window,GUI):
 
     #Ottengo il nome delle porte
     ports_name      = utilities.get_name_arduino(ports_available)
+
     print("I nomi dispnibiel")
     print(ports_available)
     print("I nomi sono")
@@ -904,7 +910,8 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
       TS__[O]  \___|   _|_|_   _|_|_   \__|_   \_,_|   _|_|_   _\__|   |___|   \_/\_/  _|_|_  |_||_|  \__,_|   \___/   \_/\_/  
      {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|  
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'  
-
+'''
+"""
     SHORTCUTS
 
     Il tasto {esc} gestisce la chiusura della pagina che dovra anche controllare la chiusura dei thread dell'algoritmo, 
@@ -941,7 +948,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
         root.bind("<v>", lambda event: change_color_webcam())
         v -> Permette di avviare la videocamera selezionata come predefinita dal pc
-'''
+"""
 
 class circuit_window:
  

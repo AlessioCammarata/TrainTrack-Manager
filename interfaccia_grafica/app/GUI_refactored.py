@@ -23,7 +23,8 @@ class GUI(tk.Frame):
               TS__[O]  \___|   \___/   |___|  
              {======|_|"""""|_|"""""|_|"""""| 
             ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
-    
+        '''
+        """
     SHORTCUTS
         
         self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) 
@@ -74,7 +75,7 @@ class GUI(tk.Frame):
 
         self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())
         Enter -> Ferma o avvia il sistema senza togliere la corrente
-        '''
+        """
 
         #FRAME dei bottoni e del menu
 

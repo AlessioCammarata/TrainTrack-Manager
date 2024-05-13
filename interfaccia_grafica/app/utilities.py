@@ -136,10 +136,9 @@ def port_exist(function_port):
 
 import time
 
-# #Funzione che serve ad otternere il nome dell'Arduino
+# #Funzione che legge dalla seriale il nome dell'arduino
 def read_serial(port, result):
-    # print(data.serial_port_info.keys())
-    # if port not in data.serial_port_info.keys() or data.serial_port_info[port][2] == "":
+    print(port)
     if str(port).isdigit():
         #Se la porta è nel vettore delle porte
         if port in data.serial_ports:
@@ -150,7 +149,7 @@ def read_serial(port, result):
                 try:
                     ser.write(command.encode())
                     response = ser.readline().decode().strip() if ser.isOpen() else ''
-                    print(response)
+
                     if response == '' :
                         response = 'Sconosciuto'
 
@@ -162,23 +161,31 @@ def read_serial(port, result):
             print(f"Porta {port} non presente in {data.serial_ports}")
             response = 'Sconosciuto'
         result[port] = response
-        print(response)
-    else: #Forse non serve
+    else: #Assegnazione standard
         result[port] = data.serial_port_info[port][2]
 
+# #Funzione che serve ad otternere il nome dell'Arduino
 def get_name_arduino(ports):
     results = {}
     threads = []
-    start_time = time.time()
+    # start_time = time.time()
     for port in ports:
         thread = threading.Thread(target=read_serial, args=(port, results))
         thread.start()
         threads.append(thread)
+
     for thread in threads:
         thread.join()
-    end_time = time.time()
-    duration = end_time - start_time
-    print("Durata dell'esecuzione:", duration, "secondi")
+    # end_time = time.time()
+    # duration = end_time - start_time
+    # print("Durata dell'esecuzione:", duration, "secondi")
+
+    #Serve a impostare il nome dopo che tutti i thread sono terminati
+    for port in ports:
+        if port in data.serial_ports:
+            print(results[port])
+            data.serial_port_info[port][2] = results[port]
+
     return results
 
 
@@ -209,47 +216,46 @@ def set_port_var(*args):
         for i in range (2):
             ports_available[i]  = args[i]
 
-    #Ciclo che controlla se le porte sono state cambiate
-    # keys = data.serial_port_info.keys()
-    # for i in range (2):
-    #     if ports_available[i] not in keys:
-    #         print(f"la chiave non è nel dizionario? True. {data.serial_port_info[data.serial_ports[i]][2]}")
-    #         data.serial_port_info[data.serial_ports[i]][2] = "Sconosciuto"
-    print(f"Dizionario : {data.serial_port_info}")
-    act_dict = {}
-    act_dict.update(data.serial_port_info)
+
+    #Seleziono il nome attuale e la key in modo da poterlo inserire se si scambiano le seriali
+    act_name  = data.serial_port_info[data.serial_ports[0]][2]
+    act_key   = data.serial_ports[0]
+
+    act_name1 = data.serial_port_info[data.serial_ports[1]][2]
+    act_key1   = data.serial_ports[1]
 
     #Dizionario temporale che aggiorna le chiavi
     temp_dict = {
                     ports_available[0]: data.serial_port_info.pop(data.serial_ports[0]),
                     ports_available[1]: data.serial_port_info.pop(data.serial_ports[1])
                 }
-    print(f"ACT {act_dict}")
-    for i in range(2):
-        print(f"Prova {i}")
-        print(act_dict[data.serial_ports[i]][2])
-        temp_dict[ports_available[i]][2] = act_dict[data.serial_ports[i]][2]
 
-    print(f"Dizionario temp: {temp_dict}")
     #assegnazione delle porte nel vettore
     data.serial_ports[0] = ports_available[0]
     data.serial_ports[1] = ports_available[1]
 
+    #Si controlla che la chiave sia tra le porte disponibili e poi si sostituisce il nome con quello che aveva prima
+    if act_key in ports_available:
+        temp_dict[act_key][2] = act_name
+    
+    if act_key1 in ports_available:
+        temp_dict[act_key1][2] = act_name1 
+
     # Aggiornare il dizionario originale con le nuove chiavi
     data.serial_port_info.update(temp_dict)
 
-    #Assegnazione del nome del dispositivo sulla porta
-    print(data.serial_ports)
-    ports_name = get_name_arduino(data.serial_ports)
-    print(ports_name)
-    data.serial_port_info[data.serial_ports[0]][2]      = ports_name[data.serial_ports[0]]
-    data.serial_port_info[data.serial_ports[1]][2]      = ports_name[data.serial_ports[1]]
-
     if not args:
-        #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        #Assegnazione del nome del dispositivo sulla porta
+        ports_name = get_name_arduino(data.serial_ports)
+        # print(f"i nomi delle porte sono: {ports_name}")
+        data.serial_port_info[data.serial_ports[0]][2]      = ports_name[data.serial_ports[0]]
+        data.serial_port_info[data.serial_ports[1]][2]      = ports_name[data.serial_ports[1]]
+        """
+        Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        """
         data.serial_port_info[data.serial_ports[0]][1]      = port1_enable
         data.serial_port_info[data.serial_ports[1]][1]      = port2_enable
-    print(f"Dizionario finale: {data.serial_port_info}")
+    # print(f"Dizionario finale: {data.serial_port_info}")
     return data.serial_ports
 
 #Funzione che permette di aggiornare la tabella delle calibrazioni RFID

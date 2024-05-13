@@ -1,7 +1,7 @@
-'''
+"""
 The purpose of this file is to comunicate with arduino directly by the serial port.
 With these command you could be able to control both the system and all the locomotives.
-'''
+"""
 
 import data
 import time
