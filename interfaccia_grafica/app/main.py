@@ -30,9 +30,7 @@ class App(tk.Tk):
     def refresh(self):
         self.title(data.Textlines[1])
 
-
-if __name__ == "__main__":
-    
+def setup():
     #Ottengo il nome del sistema operativo
     sistema_operativo = platform.system()
     if sistema_operativo == "Darwin": sistema_operativo = "macOS"
@@ -55,6 +53,10 @@ if __name__ == "__main__":
     
     #Aggiorno le porte collegate nel caso in cui ci siano
     print(utilities.set_port_var())
+
+    return True
+
+if __name__ == "__main__" and setup():
 
     app = App()
     gui = GUI_refactored.GUI(app)

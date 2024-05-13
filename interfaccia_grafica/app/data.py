@@ -39,10 +39,10 @@ var_supporto = None                       #Var che aiuta l'apertura della gestio
 # Impostazioni connessione seriale:
 
 serial_port     = "–"   # serial_port è quella che fa riferimento alla centralina dcc,
-name            = ""
+name            = "Sconosciuto"
 
 serial_port1    = "-"   # serial_port1 è quella che fa riferimento ai sensori RFID
-name1           = ""
+name1           = "Sconosciuto"
 
 serial_ports    = [serial_port,serial_port1]
 

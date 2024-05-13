@@ -724,7 +724,13 @@ def settings_window(locomotive_window,GUI):
     columns = ("porta","Dispositivo")
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings', height= 2)
     tree.grid(row=4, column=0, pady=(10, 0), padx=(10,0), sticky="nsew")
+
+    #Ottengo il nome delle porte
     ports_name      = utilities.get_name_arduino(ports_available)
+    print("I nomi dispnibiel")
+    print(ports_available)
+    print("I nomi sono")
+    print(ports_name)
     refresh()
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
@@ -736,6 +742,7 @@ def settings_window(locomotive_window,GUI):
     
     #Rende di nuovo visibile la finestra
     locomotive_window.deiconify()
+    locomotive_window.grab_set()
 
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
