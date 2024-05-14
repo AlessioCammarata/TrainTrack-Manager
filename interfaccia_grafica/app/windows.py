@@ -579,10 +579,13 @@ def settings_window(locomotive_window,GUI):
 
                 # print(data.serial_ports)
                 # print(data.SO)
-                for port in ports_available:
-                    if ports_name[port] != 'Sconosciuto' and port in data.serial_ports:
-                        data.serial_port_info[port][2] = ports_name[port]
-                        print(f"Sto attivando: {ports_name[port]} sulla porta {port}")
+                '''
+                Dovrebbe gia essere stato fatto a sto punto
+                '''
+                # for port in ports_available:
+                #     if ports_name[port] != 'Sconosciuto' and port in data.serial_ports:
+                #         data.serial_port_names[port] = ports_name[port]
+                #         print(f"Sto attivando: {ports_name[port]} sulla porta {port}")
                 
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
@@ -616,9 +619,9 @@ def settings_window(locomotive_window,GUI):
             else:
                 checkbox0.config(state='normal')
     
+    #Refresh della tabelle dei nomi delle porte
     def refresh():
 
-        print("Refresh")
         for col in columns:
             tree.heading(col, text=col)
             
@@ -627,18 +630,15 @@ def settings_window(locomotive_window,GUI):
     
         # Riempimento della tabella con i dati delle porte seriali
         for port in ports_available:
-            print(f"Ports_name = {ports_name}")
-            name = ports_name[port] if port not in data.serial_ports else data.serial_port_info[port][2]
             
             tree.insert('', tk.END, values=(
                 port,
-                name
+                data.serial_port_names[port]
             ))
             
         for col in columns:
             width = 10 if col == "porta" else 150 
             tree.column(col, anchor='center', width=width)
-        # tree.update()
 
     #Controlla le prime 10 porte se sono libere
     ports_available = []
@@ -730,21 +730,18 @@ def settings_window(locomotive_window,GUI):
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings', height= 2)
     tree.grid(row=4, column=0, pady=(10, 0), padx=(10,0), sticky="nsew")
 
-    #Ottengo il nome delle porte
-    ports_name      = utilities.get_name_arduino(ports_available)
-
-    print("I nomi dispnibiel")
-    print(ports_available)
-    print("I nomi sono")
-    print(ports_name)
+    #Ottengo il nome delle porte nel caso in cui non li abbia gia
+    if set(ports_available) != set(data.serial_port_names.keys()):
+        print(f"{set(ports_available)} è diverso da {set(data.serial_port_names.keys())}")
+        utilities.get_name_arduino(ports_available)
     refresh()
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
                                 command=active_settings)
     settings_button.grid(row=5, column=0, pady=(20, 0), padx=(180,0), sticky="nsew")
 
-    #Attiviamo la selezione del 0 che è la standard
-    appoint_selection(0)
+    #Attiviamo la selezione del 1 che è la standard
+    appoint_selection(1)
     
     #Rende di nuovo visibile la finestra
     locomotive_window.deiconify()
