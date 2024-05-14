@@ -146,6 +146,8 @@ def read_serial(port, result):
             if data.serial_port_info[port][2] == 'Sconosciuto' :
                 command = 'get_name\n'
                 ser = serial.Serial(find_port_path(port), 115200, timeout=1)
+                #Il timer serve perche senno non parte arduino
+                time.sleep(1.6)
                 try:
                     ser.write(command.encode())
                     response = ser.readline().decode().strip() if ser.isOpen() else ''
@@ -160,7 +162,7 @@ def read_serial(port, result):
         else:
             print(f"Porta {port} non presente in {data.serial_ports}")
             response = 'Sconosciuto'
-        result[port] = response
+            result[port] = response
     else: #Assegnazione standard
         result[port] = data.serial_port_info[port][2]
 
@@ -182,8 +184,8 @@ def get_name_arduino(ports):
 
     #Serve a impostare il nome dopo che tutti i thread sono terminati
     for port in ports:
-        if port in data.serial_ports:
-            print(results[port])
+        if port in data.serial_ports :
+            print(f"{results[port]} della porta {port} tra le porte {ports}")
             data.serial_port_info[port][2] = results[port]
 
     return results
@@ -230,16 +232,22 @@ def set_port_var(*args):
                     ports_available[1]: data.serial_port_info.pop(data.serial_ports[1])
                 }
 
-    #assegnazione delle porte nel vettore
-    data.serial_ports[0] = ports_available[0]
-    data.serial_ports[1] = ports_available[1]
+
 
     #Si controlla che la chiave sia tra le porte disponibili e poi si sostituisce il nome con quello che aveva prima
     if act_key in ports_available:
         temp_dict[act_key][2] = act_name
-    
+    """
+    ERI QUA
+    """
+    print(f"\nQuesta è la chiave di prima: {act_key1}")
     if act_key1 in ports_available:
         temp_dict[act_key1][2] = act_name1 
+        print(f"Questa è il nome della chiave: {temp_dict[act_key1][2]}\n")
+
+    #assegnazione delle porte nel vettore
+    data.serial_ports[0] = ports_available[0]
+    data.serial_ports[1] = ports_available[1]
 
     # Aggiornare il dizionario originale con le nuove chiavi
     data.serial_port_info.update(temp_dict)

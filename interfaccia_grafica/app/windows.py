@@ -580,9 +580,9 @@ def settings_window(locomotive_window,GUI):
                 # print(data.serial_ports)
                 # print(data.SO)
                 for port in ports_available:
-                    if ports_name[port] != 'Sconosciuto':
+                    if ports_name[port] != 'Sconosciuto' and port in data.serial_ports:
                         data.serial_port_info[port][2] = ports_name[port]
-                        print(ports_name[port])
+                        print(f"Sto attivando: {ports_name[port]} sulla porta {port}")
                 
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
@@ -627,13 +627,13 @@ def settings_window(locomotive_window,GUI):
     
         # Riempimento della tabella con i dati delle porte seriali
         for port in ports_available:
+            print(f"Ports_name = {ports_name}")
             name = ports_name[port] if port not in data.serial_ports else data.serial_port_info[port][2]
-            print(ports_name[port])
+            
             tree.insert('', tk.END, values=(
                 port,
                 name
             ))
-
             
         for col in columns:
             width = 10 if col == "porta" else 150 
