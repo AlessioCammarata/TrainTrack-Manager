@@ -619,6 +619,13 @@ def settings_window(locomotive_window,GUI):
             else:
                 checkbox0.config(state='normal')
     
+    def onclick(event):
+        #ottiene l'iid dell'elemento basato sulla coordinata y del click. aiuta a garantire che l'elemento venga selezionato correttamente al primo click.
+        item_iid = tree.identify_row(event.y)  # Ottieni l'iid dell'elemento cliccato
+        if item_iid: # Verifica se un elemento è stato selezionato correttamente
+            item = tree.item(item_iid)
+            print(f"CLICK di porta {item['values'][0]} con id: {item_iid}")
+
     #Refresh della tabelle dei nomi delle porte
     def refresh():
 
@@ -634,11 +641,12 @@ def settings_window(locomotive_window,GUI):
             tree.insert('', tk.END, values=(
                 port,
                 data.serial_port_names[port]
-            ))
+            ),tags = port)
             
         for col in columns:
             width = 10 if col == "porta" else 150 
             tree.column(col, anchor='center', width=width)
+        tree.bind("<Button-1>", onclick)
 
     #Controlla le prime 10 porte se sono libere
     ports_available = []
