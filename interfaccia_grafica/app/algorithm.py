@@ -7,14 +7,6 @@ import data
 import utilities
 import comandi
 import random
-#import traffic_light
-
-'''
-    Mi serve lo stato degli scambi, le info delle locomotive(velocita,direzione), e l'otuptut dei sensori
-    Quando una locomotiva incontra uno scambio il sensore mi dira che lo ha incontrato, io so a quale fa riferimento, prendo i dati dallo scambio e vedo se è aperto o chiuso,
-    a seconda di questo e della direzione della locomotiva, decido se aprirlo o lasciarlo come è - inoltre potro dire che il treno finche non ricevo un altro messaggio dai sensori,        
-    si trova in quel pezzo di circuito.
-'''
 
 '''
                 ___      _      __ _                     _      _      _              

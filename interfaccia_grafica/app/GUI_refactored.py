@@ -23,7 +23,8 @@ class GUI(tk.Frame):
               TS__[O]  \___|   \___/   |___|  
              {======|_|"""""|_|"""""|_|"""""| 
             ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
-    
+        '''
+        """
     SHORTCUTS
         
         self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) 
@@ -74,7 +75,7 @@ class GUI(tk.Frame):
 
         self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())
         Enter -> Ferma o avvia il sistema senza togliere la corrente
-        '''
+        """
 
         #FRAME dei bottoni e del menu
 
@@ -255,7 +256,8 @@ class GUI(tk.Frame):
             # window_var.transient(root)
 
             #Rende la finestra visibile di nuovo
-            if not window_type == "circuit": window_var.deiconify()
+            if not window_type in ["circuit","settings"]: 
+                window_var.deiconify()
             
             return window_var
 
@@ -263,7 +265,7 @@ class GUI(tk.Frame):
 
     #Apre la pagina delle impostazioni
     def open_settings_window(self):
-        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x200",self.container)
+        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x280",self.container)
         if locomotive_window:
             windows.settings_window(locomotive_window,self)
 
@@ -281,7 +283,7 @@ class GUI(tk.Frame):
 
     #Apre la pagina della modifica locomotive
     def open_locomotive_modify_window(self):
-        locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x200",self.container)
+        locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x210",self.container)
         if locomotive_window:
             windows.modify_window(locomotive_window,self)
 

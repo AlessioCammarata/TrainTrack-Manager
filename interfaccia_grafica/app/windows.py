@@ -14,7 +14,8 @@ import utilities
       TS__[O]  \_/\_/  _|_|_  |_||_|  \__,_|   \___/   \_/\_/  /__/_  
      {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
-
+'''
+"""
      
     SHORTCUTS 
     
@@ -30,7 +31,7 @@ import utilities
 
         self.locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
         
-'''
+"""
 #Funzione che gestisce la logica della pagine di creazione locomotive
 def creation_window(locomotive_window,GUI):
 
@@ -251,7 +252,7 @@ def remove_window(locomotive_window,GUI):
     ID_entry.pack()
 
     remove_button = tk.Button(locomotive_window, text=data.Textlines[48], command=remove_locomotive)
-    remove_button.pack()
+    remove_button.pack(pady=(10,0))
 
     name_entry.focus_set()
     #permette di avviare la funzione con il tasto invio
@@ -576,14 +577,18 @@ def settings_window(locomotive_window,GUI):
                 #Cambiamo i rispettivi centralina e rfid
                 utilities.set_port_var(centralina,rfid)
 
-                print(data.serial_ports)
-                print(data.SO)
+                # print(data.serial_ports)
+                # print(data.SO)
+                for port in ports_available:
+                    if ports_name[port] != 'Sconosciuto' and port in data.serial_ports:
+                        data.serial_port_info[port][2] = ports_name[port]
+                        print(f"Sto attivando: {ports_name[port]} sulla porta {port}")
                 
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
             data.serial_port_info[data.serial_ports[0]][1]      = port0_enabled
             data.serial_port_info[data.serial_ports[1]][1]      = port1_enabled
-        
+
         if data.root:
             #Amministratore
             utilities.show_info("ROOT BOSS alexein",locomotive_window)
@@ -610,13 +615,39 @@ def settings_window(locomotive_window,GUI):
                 checkbox0.config(state='disabled')
             else:
                 checkbox0.config(state='normal')
-        
+    
+    def refresh():
+
+        print("Refresh")
+        for col in columns:
+            tree.heading(col, text=col)
+            
+        for row in tree.get_children():
+            tree.delete(row)
+    
+        # Riempimento della tabella con i dati delle porte seriali
+        for port in ports_available:
+            print(f"Ports_name = {ports_name}")
+            name = ports_name[port] if port not in data.serial_ports else data.serial_port_info[port][2]
+            
+            tree.insert('', tk.END, values=(
+                port,
+                name
+            ))
+            
+        for col in columns:
+            width = 10 if col == "porta" else 150 
+            tree.column(col, anchor='center', width=width)
+        # tree.update()
+
     #Controlla le prime 10 porte se sono libere
     ports_available = []
     for i in range(data.port_range):
         if utilities.port_exist(i):
             ports_available.append(i)
+            
         i+=1
+    
 
     style = ttk.Style()
     style.configure('UniqueCustom.TMenubutton',padding=(),background="white") 
@@ -673,7 +704,7 @@ def settings_window(locomotive_window,GUI):
 
     port1_checkbox_var = tk.BooleanVar()
     port1_checkbox_var.set(data.serial_port_info[data.serial_ports[1]][1])
-    print(data.serial_port_info[data.serial_ports[1]][1])
+    # print(data.serial_port_info[data.serial_ports[1]][1])
     # Creazione della casella di controllo
     checkbox1 = tk.Checkbutton(locomotive_window,text=data.Textlines[57], variable=port1_checkbox_var, command = lambda: appoint_selection(1))
     checkbox1.grid(row=1, column=2, padx=5, sticky=tk.W)
@@ -694,12 +725,30 @@ def settings_window(locomotive_window,GUI):
     
     port1_button.config(style='UniqueCustom.TMenubutton')
 
+    #Creazione della tabella con le porte e i nomi dei device
+    columns = ("porta","Dispositivo")
+    tree = ttk.Treeview(locomotive_window, columns=columns, show='headings', height= 2)
+    tree.grid(row=4, column=0, pady=(10, 0), padx=(10,0), sticky="nsew")
+
+    #Ottengo il nome delle porte
+    ports_name      = utilities.get_name_arduino(ports_available)
+
+    print("I nomi dispnibiel")
+    print(ports_available)
+    print("I nomi sono")
+    print(ports_name)
+    refresh()
+
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
                                 command=active_settings)
-    settings_button.grid(row=4, column=0, pady=(10, 0), padx=(180,0), sticky="nsew")
+    settings_button.grid(row=5, column=0, pady=(20, 0), padx=(180,0), sticky="nsew")
 
     #Attiviamo la selezione del 0 che è la standard
     appoint_selection(0)
+    
+    #Rende di nuovo visibile la finestra
+    locomotive_window.deiconify()
+    locomotive_window.grab_set()
 
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
@@ -818,7 +867,6 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     tag_label.config(state="disabled")
     data.label = tag_label
     
-    
 
     ADD_button = tk.Button(locomotive_window, text=data.Textlines[52], width=7,
                                 command=open_locomotive_creation_window)
@@ -862,7 +910,8 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
       TS__[O]  \___|   _|_|_   _|_|_   \__|_   \_,_|   _|_|_   _\__|   |___|   \_/\_/  _|_|_  |_||_|  \__,_|   \___/   \_/\_/  
      {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|  
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'  
-
+'''
+"""
     SHORTCUTS
 
     Il tasto {esc} gestisce la chiusura della pagina che dovra anche controllare la chiusura dei thread dell'algoritmo, 
@@ -899,7 +948,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
 
         root.bind("<v>", lambda event: change_color_webcam())
         v -> Permette di avviare la videocamera selezionata come predefinita dal pc
-'''
+"""
 
 class circuit_window:
  

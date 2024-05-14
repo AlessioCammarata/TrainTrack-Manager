@@ -4,6 +4,7 @@ from tkinter import messagebox
 import data
 import os
 import serial
+import threading
 
 '''
 
@@ -129,9 +130,66 @@ def port_exist(function_port):
     # Costruisci il percorso del dispositivo della porta seriale
     port_path = find_port_path(function_port)  
     exist = os.path.exists(port_path)
-    print(f"port exist:{port_path} e {exist}")
+    # print(f"port exist:{port_path} e {exist}")
     # print(data.serial_ports)
     return exist
+
+import time
+
+# #Funzione che legge dalla seriale il nome dell'arduino
+def read_serial(port, result):
+    print(port)
+    if str(port).isdigit():
+        #Se la porta è nel vettore delle porte
+        if port in data.serial_ports:
+            #Nel caso in cui sia sconosciuto controlla
+            if data.serial_port_info[port][2] == 'Sconosciuto' :
+                command = 'get_name\n'
+                ser = serial.Serial(find_port_path(port), 115200, timeout=1)
+                #Il timer serve perche senno non parte arduino
+                time.sleep(1.6)
+                try:
+                    ser.write(command.encode())
+                    response = ser.readline().decode().strip() if ser.isOpen() else ''
+
+                    if response == '' :
+                        response = 'Sconosciuto'
+
+                finally:
+                    ser.close()
+            else:#in questo caso assegna il valore corrispondente
+                response = data.serial_port_info[port][2]
+        else:
+            print(f"Porta {port} non presente in {data.serial_ports}")
+            response = 'Sconosciuto'
+            result[port] = response
+    else: #Assegnazione standard
+        result[port] = data.serial_port_info[port][2]
+
+# #Funzione che serve ad otternere il nome dell'Arduino
+def get_name_arduino(ports):
+    results = {}
+    threads = []
+    # start_time = time.time()
+    for port in ports:
+        thread = threading.Thread(target=read_serial, args=(port, results))
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
+    # end_time = time.time()
+    # duration = end_time - start_time
+    # print("Durata dell'esecuzione:", duration, "secondi")
+
+    #Serve a impostare il nome dopo che tutti i thread sono terminati
+    for port in ports:
+        if port in data.serial_ports :
+            print(f"{results[port]} della porta {port} tra le porte {ports}")
+            data.serial_port_info[port][2] = results[port]
+
+    return results
+
 
 #Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
 def set_port_var(*args):
@@ -155,17 +213,38 @@ def set_port_var(*args):
             port2_enable = False
             if flag < 1: 
                 ports_available[0] = data.serial_ports[0]
-                return 0
+                return data.Textlines[32] + "\n" + data.Textlines[33]
     else:
-        ports_available[0]  = args[0]
-        ports_available[1]  = args[1]
+        for i in range (2):
+            ports_available[i]  = args[i]
+
+
+    #Seleziono il nome attuale e la key in modo da poterlo inserire se si scambiano le seriali
+    act_name  = data.serial_port_info[data.serial_ports[0]][2]
+    act_key   = data.serial_ports[0]
+
+    act_name1 = data.serial_port_info[data.serial_ports[1]][2]
+    act_key1   = data.serial_ports[1]
 
     #Dizionario temporale che aggiorna le chiavi
     temp_dict = {
                     ports_available[0]: data.serial_port_info.pop(data.serial_ports[0]),
                     ports_available[1]: data.serial_port_info.pop(data.serial_ports[1])
                 }
-    
+
+
+
+    #Si controlla che la chiave sia tra le porte disponibili e poi si sostituisce il nome con quello che aveva prima
+    if act_key in ports_available:
+        temp_dict[act_key][2] = act_name
+    """
+    ERI QUA
+    """
+    print(f"\nQuesta è la chiave di prima: {act_key1}")
+    if act_key1 in ports_available:
+        temp_dict[act_key1][2] = act_name1 
+        print(f"Questa è il nome della chiave: {temp_dict[act_key1][2]}\n")
+
     #assegnazione delle porte nel vettore
     data.serial_ports[0] = ports_available[0]
     data.serial_ports[1] = ports_available[1]
@@ -174,10 +253,17 @@ def set_port_var(*args):
     data.serial_port_info.update(temp_dict)
 
     if not args:
-        #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        #Assegnazione del nome del dispositivo sulla porta
+        ports_name = get_name_arduino(data.serial_ports)
+        # print(f"i nomi delle porte sono: {ports_name}")
+        data.serial_port_info[data.serial_ports[0]][2]      = ports_name[data.serial_ports[0]]
+        data.serial_port_info[data.serial_ports[1]][2]      = ports_name[data.serial_ports[1]]
+        """
+        Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        """
         data.serial_port_info[data.serial_ports[0]][1]      = port1_enable
         data.serial_port_info[data.serial_ports[1]][1]      = port2_enable
-
+    # print(f"Dizionario finale: {data.serial_port_info}")
     return data.serial_ports
 
 #Funzione che permette di aggiornare la tabella delle calibrazioni RFID
@@ -225,3 +311,5 @@ def color_update():
     for colors in data.colors:
         data.colors[colors] = data.Textlines[140+i]
         i += 1
+
+

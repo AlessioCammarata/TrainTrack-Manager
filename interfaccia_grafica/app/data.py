@@ -38,18 +38,21 @@ var_supporto = None                       #Var che aiuta l'apertura della gestio
 
 # Impostazioni connessione seriale:
 
-serial_port     = "–"   # serial_port è quella che fa riferimento alla centralina dcc, 
-serial_port1    = "-"   # serial_port1 è quella che fa riferimento ai sensori RFID
+serial_port     = "–"   # serial_port è quella che fa riferimento alla centralina dcc,
+name            = "Sconosciuto"
 
-serial_ports = [serial_port,serial_port1]
+serial_port1    = "-"   # serial_port1 è quella che fa riferimento ai sensori RFID
+name1           = "Sconosciuto"
+
+serial_ports    = [serial_port,serial_port1]
 
 port_range = 10         #Numero di porte che vengono controllate
 
 #dizionario che controlla se il collegamento seriale per l'algoritmo è stato inizializzato o no e se la porta è abilitata o disabilitata dall'utente
-# Serial_port_info[serial_ports[0]][0] = Inizialized, Serial_port_info[serial_ports[0]][1] = Enabled
+# Serial_port_info[serial_ports[0]][0] = Inizialized, Serial_port_info[serial_ports[0]][1] = Enabled, Serial_port_info[serial_ports[0]][2] = Cosa c'è collegato, "Arduino Uno"
 serial_port_info = {
-    serial_ports[0]: [False,False], 
-    serial_ports[1]: [False,False]
+    serial_ports[0]: [False,False,name], 
+    serial_ports[1]: [False,False,name1]
 }
 
 control_var_errore = False # Variabile che serve a controllare se c'è stato un errore
