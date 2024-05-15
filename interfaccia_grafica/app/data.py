@@ -1,5 +1,5 @@
 '''
-.. code-block:: txt
+.. code-block:: 
 
                 ___             _            
         o O O  |   \   __ _    | |_    __ _  

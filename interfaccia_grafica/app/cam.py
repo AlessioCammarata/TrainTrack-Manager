@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 import app.utilities as utilities
 
 '''
-.. code-block:: txt
+.. code-block:: 
 
                 ___                   
         o O O  / __|   __ _    _ __   

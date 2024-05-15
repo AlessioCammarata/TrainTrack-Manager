@@ -8,7 +8,7 @@ import time
 import subprocess
 
 '''
-.. code-block:: txt
+.. code-block:: 
 
                 ___                                       _      _    
         o O O  / __|    ___    _ __    __ _    _ _     __| |    (_)   

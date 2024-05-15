@@ -17,7 +17,7 @@ class GUI(tk.Frame):
         #self.container.bind("<FocusIn>", lambda event: self.container.focus_set())
 
         '''
-        .. code-block:: txt
+        .. code-block::
 
                         ___    _   _    ___   
                 o O O  / __|  | | | |  |_ _|  

@@ -6,7 +6,7 @@ import os
 import serial
 
 '''
-.. code-block:: txt
+.. code-block:: 
 
                _   _    _        _       _       _      _        _                    
         o O O | | | |  | |_     (_)     | |     (_)    | |_     (_)     ___     ___   
