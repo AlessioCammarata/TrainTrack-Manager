@@ -1,0 +1,787 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="" lang="" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
+    <link rel="icon" type="image/x-icon" href="../../_static/window_logo.ico">
+
+  
+  <title>app.GUI_refactored &mdash; TrainTrack Manager 1.2.1 documentation</title>
+  
+
+  
+
+  
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+
+
+  <link rel="stylesheet" href="../../_static/css/img.css" type="text/css"/>
+  
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/pdj.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/darker.css" type="text/css" media="(prefers-color-scheme: dark)"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TrainTrack Manager 1.2.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="module" src="https://googlechromelabs.github.io/dark-mode-toggle/src/dark-mode-toggle.mjs"></script>
+
+  </head>
+
+  <body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+	
+        <a href="../../index.html" class="fa fa-home"> TrainTrack Manager </a>
+	
+	
+	<div id="logo-container">
+	  <a href="../../index.html">
+	    <img src="../../_static/window_logo.ico"
+		 style="
+		 width:200px;
+		 height:150px;
+		"
+		 />
+
+	  </a>
+	</div>
+	
+        <div role="search">
+	  
+	  <form id ="rtd-search-form" class="wy-form"
+		action="../../search.html" method="get">
+	    <input type="text" name="q" placeholder="Search docs" />
+	    <input type="hidden" name="check_keywords" value="yes" />
+	    <input type="hidden" name="area" value="default" />
+	  </form>
+	  
+	</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	
+          
+          
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+          
+        
+
+      </div>
+      &nbsp;
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">TrainTrack Manager </a>
+      </nav>
+
+      <div class="wy-nav-content">
+	<div class="fundo-claro">
+	</div>
+	<div class="fundo-escuro">
+	</div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+	    
+	    <!-- <ul class="wy-breadcrumbs"> -->
+	    <!--   <li><a href="#">Docs</a> &raquo;</li> -->
+
+	    <!--   <li>Features</li> -->
+	    <!--   <li class="wy-breadcrumbs-aside"> -->
+
+	    <!-- 	<a href="_sources/index.txt" rel="nofollow"> View page source</a> -->
+
+	    <!--   </li> -->
+	    <!-- </ul> -->
+	    <!-- <hr/> -->
+	  </div>
+          <div role="main" class="">
+
+	    <div id="content" class="hfeed entry-container hentry">
+      	<div id="dark-mode-toggle-container">
+	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
+	  </dark-mode-toggle>
+	</div>
+  <h1>Source code for app.GUI_refactored</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
+<span class="kn">import</span> <span class="nn">app.windows</span> <span class="k">as</span> <span class="nn">windows</span>
+<span class="kn">import</span> <span class="nn">app.buttons</span> <span class="k">as</span> <span class="nn">buttons</span>
+<span class="kn">import</span> <span class="nn">app.utilities</span> <span class="k">as</span> <span class="nn">utilities</span>
+<span class="kn">import</span> <span class="nn">app.data</span> <span class="k">as</span> <span class="nn">data</span>
+
+<span class="c1">#from tkfontawesome import icon_to_image</span>
+
+<div class="viewcode-block" id="GUI">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI">[docs]</a>
+<span class="k">class</span> <span class="nc">GUI</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1">#self.container.bind(&quot;&lt;FocusIn&gt;&quot;, lambda event: self.container.focus_set())</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        .. code-block:: txt</span>
+
+<span class="sd">                        ___    _   _    ___   </span>
+<span class="sd">                o O O  / __|  | | | |  |_ _|  </span>
+<span class="sd">               o      | (_ |  | |_| |   | |   </span>
+<span class="sd">              TS__[O]  \___|   \___/   |___|  </span>
+<span class="sd">             {======|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;| </span>
+<span class="sd">            ./o--000&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39; </span>
+<span class="sd">    </span>
+<span class="sd">            </span>
+<span class="sd">        SHORTCUTS</span>
+<span class="sd">        </span>
+<span class="sd">            self.container.bind(&quot;&lt;KeyPress-{}&gt;&quot;.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n</span>
+<span class="sd">            -&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 10\n</span>
+<span class="sd">            1 -&gt; loco ID 1\n</span>
+<span class="sd">            2 -&gt; loco ID 2\n</span>
+<span class="sd">            3 -&gt; loco ID 3\n</span>
+<span class="sd">            4 -&gt; loco ID 4\n</span>
+<span class="sd">            5 -&gt; loco ID 5\n</span>
+<span class="sd">            6 -&gt; loco ID 6\n</span>
+<span class="sd">            7 -&gt; loco ID 7\n</span>
+<span class="sd">            8 -&gt; loco ID 8\n</span>
+<span class="sd">            9 -&gt; loco ID 9\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;Control-KeyPress-{}&gt;&quot;.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n</span>
+<span class="sd">            -&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 20\n</span>
+<span class="sd">            Control-0 -&gt; lodo ID 10\n</span>
+<span class="sd">            Control-1 -&gt; loco ID 11\n</span>
+<span class="sd">            Control-2 -&gt; loco ID 12\n</span>
+<span class="sd">            Control-3 -&gt; loco ID 13\n</span>
+<span class="sd">            Control-4 -&gt; loco ID 14\n</span>
+<span class="sd">            Control-5 -&gt; loco ID 15\n</span>
+<span class="sd">            Control-6 -&gt; loco ID 16\n</span>
+<span class="sd">            Control-7 -&gt; loco ID 17\n</span>
+<span class="sd">            Control-8 -&gt; loco ID 18\n</span>
+<span class="sd">            Control-9 -&gt; loco ID 19\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;c&gt;&quot;, lambda event: self.open_control())\n</span>
+<span class="sd">            c -&gt; Apre la finestra circuit\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;s&gt;&quot;, lambda event: self.open_settings_window())\n</span>
+<span class="sd">            s -&gt; Apre le impostazione del sistema\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;o&gt;&quot;, lambda event: self.on_off())\n</span>
+<span class="sd">            o -&gt; Permette di dare la corrente ai binari\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;i&gt;&quot;, lambda event: self.open_info_window())\n</span>
+<span class="sd">            i -&gt; Apre le Informazioni generali\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;plus&gt;&quot;, lambda event: self.open_locomotive_creation_window())\n</span>
+<span class="sd">            + -&gt; Preme il tasto aggiungi locomotiva\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;minus&gt;&quot;, lambda event: self.open_locomotive_remove_window())\n</span>
+<span class="sd">            - -&gt; Preme il tasto rimuovi locomotiva\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;m&gt;&quot;, lambda event: self.open_locomotive_modify_window())\n</span>
+<span class="sd">            m -&gt; Preme il tasto modifica locomotiva\n</span>
+<span class="sd">\n</span>
+<span class="sd">            self.container.bind(&quot;&lt;Return&gt;&quot;, lambda event: self.GENERAL_STOP_START())\n</span>
+<span class="sd">            Enter -&gt; Ferma o avvia il sistema senza togliere la corrente\n</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1">#FRAME dei bottoni e del menu</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># impostazioni</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_settings_path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s1">&#39;controllo&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_settings</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_settings_path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_settings</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">,</span> <span class="n">borderwidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                       <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_settings_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_settings_window</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_settings_window</span><span class="p">())</span>
+
+        <span class="c1"># Labels</span>
+        <span class="c1"># Database Locomotive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;DATABASE LOCOMOTIVE&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span><span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>
+        <span class="c1"># self.locomotive_label.place(relx=0.5, rely=0.05, anchor=&quot;center&quot;)</span>
+
+        <span class="c1">#Selezione lingua</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_flag_Path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_flag</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_flag_Path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var_language</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_button</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Menubutton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_flag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Menu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flag_button</span><span class="p">,</span> <span class="n">tearoff</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+    <span class="c1">#stile del bottone per cambiare lingua e del suo menu, Assegno un valore ad ogni menubutton, seguendo il vettore data.languages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style1</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style1</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style1</span><span class="o">.</span><span class="n">layout</span><span class="p">(</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">,</span> <span class="n">utilities</span><span class="o">.</span><span class="n">indicatoron</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_button</span><span class="p">[</span><span class="s2">&quot;menu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">language</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="o">.</span><span class="n">add_radiobutton</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+                <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">var_language</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">change_language</span><span class="p">)</span>
+
+        <span class="c1">#informazioni</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_info_path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_info</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_info_path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_info</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">,</span> <span class="n">borderwidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                       <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_info_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>  <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;i&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_info_window</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_info_window</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">#Tabella</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;ID Locale&quot;</span><span class="p">,</span> <span class="s2">&quot;ID Locomotive&quot;</span><span class="p">,</span> <span class="s2">&quot;Colore&quot;</span><span class="p">,</span> <span class="s2">&quot;Nome&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;headings&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Bottoni</span>
+        <span class="c1"># Aggiungi locomotiva</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;AGGIUNGI LOCOMOTIVA&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> 
+                                    <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_creation_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_creation_window</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;plus&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_creation_window</span><span class="p">())</span>
+
+        <span class="c1"># Rimuovi locomotiva</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;RIMUOVI LOCOMOTIVA&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                                       <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_remove_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_remove_window</span> <span class="o">=</span> <span class="kc">None</span>
+        
+
+        <span class="c1"># Modifica locomotiva</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modify_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;MODIFICA LOCOMOTIVA&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span>
+                                       <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_modify_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modify_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modify_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_modify_window</span> <span class="o">=</span> <span class="kc">None</span>
+        
+
+        <span class="c1"># Controlla locomotiva</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_control_path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s1">&#39;locomotiva&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_control</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_control_path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var_locomotive</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Menubutton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_control</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Menu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="p">,</span> <span class="n">tearoff</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">#stile del bottone controlla locomotiva e del suo menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">layout</span><span class="p">(</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">,</span> <span class="n">utilities</span><span class="o">.</span><span class="n">indicatoron</span><span class="p">)</span>
+        
+
+        <span class="c1"># Circuit button</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s1">&#39;controller&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">circuit_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">,</span> <span class="n">borderwidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                        <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_control</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">circuit_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_circuit_window</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;c&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_control</span><span class="p">())</span>
+
+        <span class="c1"># Power button </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_power_path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s1">&#39;power_icon&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_power</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_power_path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_power</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> 
+                                   <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_off</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;o&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_off</span><span class="p">())</span>
+
+        <span class="c1"># Stop generale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">STOP_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;STOP GENERALE&quot;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;#f08080&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+                                    <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">GENERAL_STOP_START</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">STOP_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">STOP_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+
+        <span class="c1">#Inserimento di max finestre nel locomotive control window in base al max_loco</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">max_loco</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="s2">&quot;locomotive_control_var&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1">#Fa riferimento alla pagina creata nel circuit, serve poiche quando chiamo la funzione dal circuit essa va a cercarla.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_RFID_window</span> <span class="o">=</span> <span class="kc">None</span>
+        
+
+   <span class="c1">#Funzione che gestisce e semplifica la creazione dei TopLevel dell&#39;applicazione.</span>
+<div class="viewcode-block" id="GUI.open_locomotive_window">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_locomotive_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_locomotive_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_type</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">window_title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">window_size</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+        <span class="n">att</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;locomotive_</span><span class="si">{</span><span class="n">window_type</span><span class="si">}</span><span class="s1">_window&#39;</span>
+        <span class="n">window_var</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;locomotive_</span><span class="si">{</span><span class="n">window_type</span><span class="si">}</span><span class="s1">_var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># utilities.set_variabilechiusura(window_type)</span>
+
+        <span class="c1">#Controllo per vedere se la finestra è gia aperta</span>
+        <span class="k">if</span> <span class="n">window_var</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">window_var</span><span class="o">.</span><span class="n">winfo_exists</span><span class="p">():</span>
+            <span class="n">window_var</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+            <span class="c1">#Nasconde la finestra</span>
+            <span class="n">window_var</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">window_type</span> <span class="o">==</span> <span class="s1">&#39;info&#39;</span><span class="p">:</span>
+                <span class="n">window_var</span><span class="o">.</span><span class="n">iconbitmap</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;ico&quot;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">window_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">,</span> <span class="s1">&#39;RFID&#39;</span><span class="p">]:</span>
+                <span class="n">window_var</span><span class="o">.</span><span class="n">iconbitmap</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s2">&quot;controllo&quot;</span><span class="p">,</span> <span class="s2">&quot;ico&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span> <span class="n">window_var</span><span class="o">.</span><span class="n">iconbitmap</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s2">&quot;icon_control&quot;</span><span class="p">,</span> <span class="s2">&quot;ico&quot;</span><span class="p">))</span>
+
+            <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;locomotive_</span><span class="si">{</span><span class="n">window_type</span><span class="si">}</span><span class="s1">_var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1">#Si setta l&#39;attributo a window_var</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att</span><span class="p">,</span> <span class="n">window_var</span><span class="p">)</span>
+            <span class="n">window_var</span><span class="o">.</span><span class="n">transient</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+            <span class="n">window_var</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span><span class="n">utilities</span><span class="o">.</span><span class="n">on_close</span><span class="p">(</span><span class="n">window_var</span><span class="p">,</span><span class="n">window_type</span><span class="p">))</span>
+            
+            <span class="c1">#Seleziona la pagina appena creata</span>
+            <span class="n">window_var</span><span class="o">.</span><span class="n">focus_set</span><span class="p">()</span>
+            <span class="n">window_var</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">window_title</span><span class="p">)</span>
+            
+            <span class="c1">#Fissa le finestra in maniera relativa al padre</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_rootx</span><span class="p">()</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_rooty</span><span class="p">()</span>
+
+            <span class="n">window_var</span><span class="o">.</span><span class="n">tk</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s1">&#39;wm&#39;</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="n">window_var</span><span class="o">.</span><span class="n">_w</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">width</span><span class="o">-</span><span class="mi">50</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">height</span><span class="o">-</span><span class="mi">50</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">window_var</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">window_size</span><span class="p">)</span>
+            <span class="n">window_var</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span>
+
+            <span class="n">window_var</span><span class="o">.</span><span class="n">resizable</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="c1"># window_var.transient(root)</span>
+
+            <span class="c1">#Rende la finestra visibile di nuovo</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">window_type</span> <span class="o">==</span> <span class="s2">&quot;circuit&quot;</span><span class="p">:</span> <span class="n">window_var</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+            
+            <span class="k">return</span> <span class="n">window_var</span>
+
+        <span class="n">utilities</span><span class="o">.</span><span class="n">show_error_box</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span><span class="n">window_var</span><span class="p">,</span><span class="s2">&quot;main&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1">#Apre la pagina delle impostazioni</span>
+<div class="viewcode-block" id="GUI.open_settings_window">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_settings_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_settings_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">locomotive_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_window</span><span class="p">(</span><span class="s2">&quot;settings&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="s2">&quot;400x200&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">locomotive_window</span><span class="p">:</span>
+            <span class="n">windows</span><span class="o">.</span><span class="n">settings_window</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+    <span class="c1">#Apre la pagina della creazione locomotive</span>
+<div class="viewcode-block" id="GUI.open_locomotive_creation_window">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_locomotive_creation_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_locomotive_creation_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">locomotive_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_window</span><span class="p">(</span><span class="s2">&quot;creation&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="s2">&quot;250x170&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">locomotive_window</span><span class="p">:</span>
+            <span class="n">windows</span><span class="o">.</span><span class="n">creation_window</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+    <span class="c1">#Apre la pagina della rimozione locomotive      </span>
+<div class="viewcode-block" id="GUI.open_locomotive_remove_window">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_locomotive_remove_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_locomotive_remove_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">locomotive_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_window</span><span class="p">(</span><span class="s2">&quot;remove&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="s2">&quot;250x150&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">locomotive_window</span><span class="p">:</span>
+            <span class="n">windows</span><span class="o">.</span><span class="n">remove_window</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+    <span class="c1">#Apre la pagina della modifica locomotive</span>
+<div class="viewcode-block" id="GUI.open_locomotive_modify_window">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_locomotive_modify_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_locomotive_modify_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">locomotive_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_window</span><span class="p">(</span><span class="s2">&quot;modify&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="s2">&quot;300x210&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">locomotive_window</span><span class="p">:</span>
+            <span class="n">windows</span><span class="o">.</span><span class="n">modify_window</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+    <span class="c1">#Apre la pagina per controllare il circuito</span>
+<div class="viewcode-block" id="GUI.open_control">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_control">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_control</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">open</span><span class="o">=</span><span class="kc">True</span>
+                    
+            
+        <span class="c1">#Nel caso in cui la seriale non sia collegata, si chiede all&#39;utente se vuole continuare</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_serial_port_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="p">):</span>
+            <span class="nb">open</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">are_you_sure</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span> <span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">41</span><span class="p">],</span><span class="bp">self</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">open</span> <span class="p">:</span>
+            <span class="c1">#creazione di circuit per decidere il tipo di controllo del sistema</span>
+            <span class="n">locomotive_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_window</span><span class="p">(</span><span class="s2">&quot;circuit&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="s2">&quot;1200x758&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">locomotive_window</span><span class="p">:</span>
+
+                <span class="c1">#Impostazioni di pagina, al premere del tasto ESC e al premere della x rossa, chiude la finestra, ferma l&#39;algoritmo, toglie l&#39;opacita e rilascia la pagina padre</span>
+
+                <span class="n">locomotive_window</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Escape&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">on_close</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span><span class="s2">&quot;circuit&quot;</span><span class="p">),</span>
+                                                                                <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">algo</span><span class="o">.</span><span class="n">stop_algo</span><span class="p">(),</span>
+                                                                                <span class="c1"># self.container.attributes(&quot;-alpha&quot;, 1),</span>
+                                                                                <span class="n">locomotive_window</span><span class="o">.</span><span class="n">grab_release</span><span class="p">(),</span>
+                                                                                <span class="p">))</span>
+                <span class="c1">#locomotive_circuit_window.transient(self.root)</span>
+                <span class="n">locomotive_window</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:(</span><span class="n">utilities</span><span class="o">.</span><span class="n">on_close</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span><span class="s2">&quot;circuit&quot;</span><span class="p">),</span>
+                                                                                    <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">algo</span><span class="o">.</span><span class="n">stop_algo</span><span class="p">(),</span>
+                                                                                    <span class="c1"># self.container.attributes(&quot;-alpha&quot;, 1),</span>
+                                                                                    <span class="n">locomotive_window</span><span class="o">.</span><span class="n">grab_release</span><span class="p">(),</span>
+                                                                                    <span class="p">))</span>
+    
+                <span class="n">locomotive_circuit_window1</span> <span class="o">=</span> <span class="n">windows</span><span class="o">.</span><span class="n">circuit_window</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Turnouts</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span>
+                <span class="c1">#Il parametro indica se è automatico o no</span>
+                <span class="n">locomotive_circuit_window1</span><span class="o">.</span><span class="n">open_circuit_window</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+    <span class="c1">#Apre la pagina per controllare locomotive    </span>
+<div class="viewcode-block" id="GUI.open_locomotive_control">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_locomotive_control">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_locomotive_control</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">locomotiva</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_locomotive</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">id_controllo</span>    <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">CalcolaIDtreno</span><span class="p">(</span><span class="s1">&#39;Nome&#39;</span><span class="p">,</span><span class="n">locomotiva</span><span class="p">)</span>
+
+        <span class="c1">#Nel caso in cui la funzione viene chiamata da tastiera, l&#39;impostazione dell&#39;id avviene dalla funzione set_var_keypress_locomotive_control</span>
+        <span class="k">if</span> <span class="n">id_controllo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">id_controllo</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">var_supporto</span>
+            <span class="n">locomotiva</span>   <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">][</span><span class="s1">&#39;Nome&#39;</span><span class="p">]</span> 
+
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">winfo_exists</span><span class="p">():</span>
+            <span class="c1">#Apri solo se il button è sullo stato normal, non si puo togliere il print(self.control_button[&#39;state&#39;]), </span>
+            <span class="c1"># Equivale a questo : self.control_button[&#39;state&#39;] == &#39;normal&#39;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_button</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;background&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;#00ff00&quot;</span><span class="p">:</span>
+                <span class="c1">#Creazione della finestra di controllo</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="s2">&quot;locomotive_control_var&quot;</span><span class="p">][</span><span class="n">id_controllo</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">transient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">iconbitmap</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s1">&#39;icon_control&#39;</span><span class="p">,</span><span class="s1">&#39;ico&#39;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span><span class="n">utilities</span><span class="o">.</span><span class="n">on_close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">],</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">id_controllo</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+
+                <span class="c1">#Seleziona la pagina appena creata</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">focus_set</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">locomotiva</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;300x250&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">]</span><span class="o">.</span><span class="n">resizable</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+
+                <span class="n">windows</span><span class="o">.</span><span class="n">control_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">],</span><span class="bp">self</span><span class="p">,</span><span class="n">locomotiva</span><span class="p">,</span><span class="n">id_controllo</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">utilities</span><span class="o">.</span><span class="n">show_error_box</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">locomotive_control_window</span><span class="p">[</span><span class="n">id_controllo</span><span class="p">],</span><span class="s2">&quot;main&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GUI.open_info_window">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.open_info_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_info_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1">#Creazione della finestra per le informazioni</span>
+        <span class="n">locomotive_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_window</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="s2">&quot;600x400&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">locomotive_window</span><span class="p">:</span>
+
+            <span class="c1">#Serie di informazioni sull&#39;applicazione</span>
+            <span class="n">info_text</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span> <span class="o">+</span>     <span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;1. &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">101</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">102</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">103</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;2. &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">104</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">105</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">106</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">107</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">108</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">109</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">110</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">111</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">112</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; - &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">113</span><span class="p">]</span>
+                <span class="p">)</span>
+            
+            <span class="n">label_title</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">114</span><span class="p">],</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">))</span>
+            <span class="n">label_title</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            
+            <span class="n">text</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span> <span class="n">wrap</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">info_text</span><span class="p">)</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            
+            <span class="n">locomotive_window</span><span class="o">.</span><span class="n">transient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+
+            <span class="c1">#Comandi da tastiera e x rossa</span>
+            <span class="n">locomotive_window</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">locomotive_window</span><span class="o">.</span><span class="n">destroy</span><span class="p">())</span>
+            <span class="n">locomotive_window</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Return&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">locomotive_window</span><span class="o">.</span><span class="n">destroy</span><span class="p">())</span>
+            <span class="n">locomotive_window</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Escape&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">locomotive_window</span><span class="o">.</span><span class="n">destroy</span><span class="p">())</span>
+
+            <span class="n">close_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">locomotive_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">43</span><span class="p">],</span> <span class="n">command</span><span class="o">=</span><span class="n">locomotive_window</span><span class="o">.</span><span class="n">destroy</span><span class="p">)</span>
+            <span class="n">close_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></div>
+
+        
+    <span class="c1">#funzione che serve per la gestione del bottone ON/OFF della corrente</span>
+<div class="viewcode-block" id="GUI.on_off">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.on_off">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_off</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">current_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_button</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;background&quot;</span><span class="p">)</span>
+
+        <span class="c1">#controlla se la seriale è collegata correttamente</span>
+        <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_serial_port_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="p">):</span>
+            <span class="n">on_offButton</span> <span class="o">=</span> <span class="n">buttons</span><span class="o">.</span><span class="n">Buttons</span><span class="p">(</span><span class="n">current_color</span><span class="p">)</span>
+            <span class="n">on_offButton</span><span class="o">.</span><span class="n">on_off</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">utilities</span><span class="o">.</span><span class="n">show_error_box</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span> <span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span><span class="bp">self</span><span class="p">,</span><span class="s2">&quot;main&quot;</span><span class="p">)</span></div>
+
+
+
+    <span class="c1">#funzione che serve per la gesetione dell&#39;avvio e dell&#39;arresto del sistema senza togliere la corrente</span>
+<div class="viewcode-block" id="GUI.GENERAL_STOP_START">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.GENERAL_STOP_START">[docs]</a>
+    <span class="k">def</span> <span class="nf">GENERAL_STOP_START</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+        <span class="n">current_color</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STOP_button</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;background&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_serial_port_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="p">):</span>
+            <span class="n">STOP_button</span> <span class="o">=</span> <span class="n">buttons</span><span class="o">.</span><span class="n">Buttons</span><span class="p">(</span><span class="n">current_color</span><span class="p">)</span>
+            <span class="n">STOP_button</span><span class="o">.</span><span class="n">GENERAL_STOP_START_button</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+           
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">utilities</span><span class="o">.</span><span class="n">show_error_box</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span> <span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span><span class="bp">self</span><span class="p">,</span><span class="s2">&quot;main&quot;</span><span class="p">)</span></div>
+
+        
+    <span class="c1">#Funzione che gestisce lo stato dei bottoni nella pagina principale</span>
+<div class="viewcode-block" id="GUI.check_control_button_state">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.check_control_button_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_control_button_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;minus&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_remove_window</span><span class="p">())</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">modify_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;m&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_modify_window</span><span class="p">())</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_button</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;background&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;#00ff00&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">STOP_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Return&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">GENERAL_STOP_START</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">STOP_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;&lt;Return&gt;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;&lt;minus&gt;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">modify_button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;&lt;m&gt;&quot;</span><span class="p">)</span></div>
+
+        
+    <span class="c1">#funzione per aggioranre la tabella - all&#39;interno c&#39;è anche la funzione che gestisce il menu a tendina del controllo</span>
+<div class="viewcode-block" id="GUI.update_table">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.update_table">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="c1"># Pulizia della tabella</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="c1"># Riempimento della tabella con i dati delle locomotive</span>
+        <span class="k">for</span> <span class="n">locomotive</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">],</span>
+                <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;LocoID&#39;</span><span class="p">],</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;Colore&#39;</span><span class="p">]],</span>
+                <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;Nome&#39;</span><span class="p">]</span>
+            <span class="p">),</span><span class="n">tags</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;RFIDtag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">calibred</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">tag_configure</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;#EDEDED&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>  <span class="c1"># Imposta l&#39;allineamento al centro per tutte le colonne</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;Nome&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">locomotive</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_control_button_state</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_button</span><span class="p">[</span><span class="s2">&quot;menu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+
+        <span class="c1">#Riordinando il dizionario locomotives_data, ad ogni id assegna il tasto corrispondente</span>
+        <span class="c1">#Questo ciclo for itera su ogni elemento della lista self.locomotive_names. La funzione enumerate() ottiene una coppia di valori durante l&#39;iterazione: l&#39;indice dell&#39;elemento e l&#39;elemento stesso.</span>
+        <span class="c1"># start=1: Questo parametro opzionale specifica da quale indice iniziare la numerazione degli indici. L&#39;indice inizia da 1 anziché da 0.</span>
+        <span class="c1">#Questo permette di eseguire operazioni sull&#39;elemento e sull&#39;indice contemporaneamente durante l&#39;iterazione.</span>
+        <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">loco</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locomotive_names</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># Costruisci il pattern del tasto da associare</span>
+            <span class="n">key_pattern</span> <span class="o">=</span> <span class="s2">&quot;&lt;KeyPress-</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="k">if</span> <span class="nb">id</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="s2">&quot;&lt;Control-KeyPress-</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span>
+
+            <span class="c1"># Controlla se il tasto non ha già una funzione associata</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">key_pattern</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">key_pattern</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">loco_id</span><span class="o">=</span><span class="nb">id</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_var_keypress_locomotive_control</span><span class="p">(</span><span class="n">loco_id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_control</span><span class="p">()))</span>
+            
+            <span class="c1">#Aggiorna il menubutton con le locomotive inserite</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">add_radiobutton</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">loco</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">loco</span><span class="p">,</span>
+                <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">var_locomotive</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_locomotive_control</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locomotive_names</span><span class="p">)</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">max_loco_standard</span><span class="p">:</span> <span class="n">utilities</span><span class="o">.</span><span class="n">show_info</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span><span class="bp">self</span><span class="p">)</span></div>
+
+            
+    <span class="c1">#Aiuta la gestione dei tasti per aprire la pagina di controllo relativa alla locomotiva</span>
+<div class="viewcode-block" id="GUI.set_var_keypress_locomotive_control">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.set_var_keypress_locomotive_control">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_var_keypress_locomotive_control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">id</span><span class="p">):</span>
+        <span class="n">id_controllo</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">CalcolaIDtreno</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">var_supporto</span> <span class="o">=</span> <span class="n">id_controllo</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span></div>
+
+
+    <span class="c1">#Funzione che permette di tradurre tutti i testi visibili all&#39;interno dell&#39;app</span>
+<div class="viewcode-block" id="GUI.change_language">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.change_language">[docs]</a>
+    <span class="k">def</span> <span class="nf">change_language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">language</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_language</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">utilities</span><span class="o">.</span><span class="n">are_you_sure</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">66</span><span class="p">],</span><span class="bp">self</span><span class="p">):</span>
+            <span class="c1"># Identifica l&#39;indice della stringa nel vettore</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+            <span class="c1"># Rimuovi la stringa dal suo attuale indice</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="c1"># Inserisci la stringa nella prima posizione del vettore</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+            <span class="c1">#Traduce il file inserito nella prima posizione</span>
+            <span class="n">utilities</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+
+            <span class="c1">#Aggiorna la pagina con la nuova lingua inserita</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span></div>
+
+
+    <span class="c1">#Funzione che serve per aggiornare la lingua della pagina principale</span>
+<div class="viewcode-block" id="GUI.refresh">
+<a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI.refresh">[docs]</a>
+    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Prendo tutti i widget della pagina</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+             <span class="c1"># Chiudi solo le finestre Toplevel</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">):</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="c1">#Cambio il nome dei label nella lingua giusta, anche il link dell&#39;immagine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locomotive_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        
+        <span class="c1">#cambio il nome delle colonne della tabella</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">80</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+        <span class="c1">#Aggiornamento dei labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modify_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">STOP_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_flag_Path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_flag</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_flag_Path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_flag</span><span class="p">)</span></div>
+</div>
+
+
+</pre></div>
+
+	    </div>
+            <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, Alessio Cammarata.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/jucacrispim/sphinx_pdj_theme">theme</a> provided by <a href="https://poraodojuca.dev">Porão do Juca</a>.
+
+</footer>
+	</div>
+	</div>
+	  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.2.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/doctools.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js">
+
+    </script>
+
+  
+
+   <script type="text/javascript"
+           src="../../_static/js/theme.js"></script>
+
+   <script type="text/javascript"
+           src="../../_static/js/pdj.js"></script>
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  </body>
+</html>

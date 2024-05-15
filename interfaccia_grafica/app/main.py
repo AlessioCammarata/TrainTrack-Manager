@@ -1,8 +1,8 @@
 import tkinter as tk
-import GUI_refactored
-import utilities
-import data
-from algorithm import Algorithm
+import app.GUI_refactored as GUI_refactored
+import app.utilities as utilities
+import app.data as data
+from app.algorithm import Algorithm
 import os
 import platform
 

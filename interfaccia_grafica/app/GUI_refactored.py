@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-import windows
-import buttons
-import utilities
-import data
+import app.windows as windows
+import app.buttons as buttons
+import app.utilities as utilities
+import app.data as data
 
 #from tkfontawesome import icon_to_image
 
@@ -17,6 +17,8 @@ class GUI(tk.Frame):
         #self.container.bind("<FocusIn>", lambda event: self.container.focus_set())
 
         '''
+        .. code-block:: txt
+
                         ___    _   _    ___   
                 o O O  / __|  | | | |  |_ _|  
                o      | (_ |  | |_| |   | |   
@@ -24,56 +26,57 @@ class GUI(tk.Frame):
              {======|_|"""""|_|"""""|_|"""""| 
             ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
     
-    SHORTCUTS
+            
+        SHORTCUTS
         
-        self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) 
-        -> Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID < 10
-        1 -> loco ID 1
-        2 -> loco ID 2
-        3 -> loco ID 3
-        4 -> loco ID 4
-        5 -> loco ID 5
-        6 -> loco ID 6
-        7 -> loco ID 7
-        8 -> loco ID 8
-        9 -> loco ID 9
-
-        self.container.bind("<Control-KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) 
-        -> Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID < 20
-        Control-0 -> lodo ID 10
-        Control-1 -> loco ID 11
-        Control-2 -> loco ID 12
-        Control-3 -> loco ID 13
-        Control-4 -> loco ID 14
-        Control-5 -> loco ID 15
-        Control-6 -> loco ID 16
-        Control-7 -> loco ID 17
-        Control-8 -> loco ID 18
-        Control-9 -> loco ID 19
-
-        self.container.bind("<c>", lambda event: self.open_control())
-        c -> Apre la finestra circuit
-
-        self.container.bind("<s>", lambda event: self.open_settings_window())
-        s -> Apre le impostazione del sistema
-
-        self.container.bind("<o>", lambda event: self.on_off())
-        o -> Permette di dare la corrente ai binari
-
-        self.container.bind("<i>", lambda event: self.open_info_window())
-        i -> Apre le Informazioni generali
-
-        self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())
-        + -> Preme il tasto aggiungi locomotiva
-
-        self.container.bind("<minus>", lambda event: self.open_locomotive_remove_window())
-        - -> Preme il tasto rimuovi locomotiva
-
-        self.container.bind("<m>", lambda event: self.open_locomotive_modify_window())
-        m -> Preme il tasto modifica locomotiva
-
-        self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())
-        Enter -> Ferma o avvia il sistema senza togliere la corrente
+            self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n
+            -> Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID < 10\n
+            1 -> loco ID 1\n
+            2 -> loco ID 2\n
+            3 -> loco ID 3\n
+            4 -> loco ID 4\n
+            5 -> loco ID 5\n
+            6 -> loco ID 6\n
+            7 -> loco ID 7\n
+            8 -> loco ID 8\n
+            9 -> loco ID 9\n
+\n
+            self.container.bind("<Control-KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n
+            -> Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID < 20\n
+            Control-0 -> lodo ID 10\n
+            Control-1 -> loco ID 11\n
+            Control-2 -> loco ID 12\n
+            Control-3 -> loco ID 13\n
+            Control-4 -> loco ID 14\n
+            Control-5 -> loco ID 15\n
+            Control-6 -> loco ID 16\n
+            Control-7 -> loco ID 17\n
+            Control-8 -> loco ID 18\n
+            Control-9 -> loco ID 19\n
+\n
+            self.container.bind("<c>", lambda event: self.open_control())\n
+            c -> Apre la finestra circuit\n
+\n
+            self.container.bind("<s>", lambda event: self.open_settings_window())\n
+            s -> Apre le impostazione del sistema\n
+\n
+            self.container.bind("<o>", lambda event: self.on_off())\n
+            o -> Permette di dare la corrente ai binari\n
+\n
+            self.container.bind("<i>", lambda event: self.open_info_window())\n
+            i -> Apre le Informazioni generali\n
+\n
+            self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())\n
+            + -> Preme il tasto aggiungi locomotiva\n
+\n
+            self.container.bind("<minus>", lambda event: self.open_locomotive_remove_window())\n
+            - -> Preme il tasto rimuovi locomotiva\n
+\n
+            self.container.bind("<m>", lambda event: self.open_locomotive_modify_window())\n
+            m -> Preme il tasto modifica locomotiva\n
+\n
+            self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())\n
+            Enter -> Ferma o avvia il sistema senza togliere la corrente\n
         '''
 
         #FRAME dei bottoni e del menu
@@ -207,14 +210,7 @@ class GUI(tk.Frame):
         #Fa riferimento alla pagina creata nel circuit, serve poiche quando chiamo la funzione dal circuit essa va a cercarla.
         self.locomotive_RFID_window = None
         
-    '''
-                    ___    _   _    ___   
-            o O O  / __|  | | | |  |_ _|  
-           o      | (_ |  | |_| |   | |   
-          TS__[O]  \___|   \___/   |___|  
-         {======|_|"""""|_|"""""|_|"""""| 
-        ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
-    '''
+
    #Funzione che gestisce e semplifica la creazione dei TopLevel dell'applicazione.
     def open_locomotive_window(self, window_type : str, window_title: str, window_size: str, root):
         att = f'locomotive_{window_type}_window'

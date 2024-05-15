@@ -1,0 +1,798 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="" lang="" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
+    <link rel="icon" type="image/x-icon" href="_static/window_logo.ico">
+
+  
+  <title>app package &mdash; TrainTrack Manager 1.2.1 documentation</title>
+  
+
+  
+
+  
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+
+
+  <link rel="stylesheet" href="_static/css/img.css" type="text/css"/>
+  
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/pdj.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="_static/css/darker.css" type="text/css" media="(prefers-color-scheme: dark)"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="TrainTrack Manager 1.2.1 documentation" href="index.html"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="module" src="https://googlechromelabs.github.io/dark-mode-toggle/src/dark-mode-toggle.mjs"></script>
+
+  </head>
+
+  <body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+	
+        <a href="index.html" class="fa fa-home"> TrainTrack Manager </a>
+	
+	
+	<div id="logo-container">
+	  <a href="index.html">
+	    <img src="_static/window_logo.ico"
+		 style="
+		 width:200px;
+		 height:150px;
+		"
+		 />
+
+	  </a>
+	</div>
+	
+        <div role="search">
+	  
+	  <form id ="rtd-search-form" class="wy-form"
+		action="search.html" method="get">
+	    <input type="text" name="q" placeholder="Search docs" />
+	    <input type="hidden" name="check_keywords" value="yes" />
+	    <input type="hidden" name="area" value="default" />
+	  </form>
+	  
+	</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	
+          
+          
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">app package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-app.GUI_refactored">app.GUI_refactored module</a><ul>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI"><code class="docutils literal notranslate"><span class="pre">GUI</span></code></a><ul>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.GENERAL_STOP_START"><code class="docutils literal notranslate"><span class="pre">GUI.GENERAL_STOP_START()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.change_language"><code class="docutils literal notranslate"><span class="pre">GUI.change_language()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.check_control_button_state"><code class="docutils literal notranslate"><span class="pre">GUI.check_control_button_state()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.locomotive_names"><code class="docutils literal notranslate"><span class="pre">GUI.locomotive_names</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.on_off"><code class="docutils literal notranslate"><span class="pre">GUI.on_off()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_control"><code class="docutils literal notranslate"><span class="pre">GUI.open_control()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_info_window"><code class="docutils literal notranslate"><span class="pre">GUI.open_info_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_locomotive_control"><code class="docutils literal notranslate"><span class="pre">GUI.open_locomotive_control()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_locomotive_creation_window"><code class="docutils literal notranslate"><span class="pre">GUI.open_locomotive_creation_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_locomotive_modify_window"><code class="docutils literal notranslate"><span class="pre">GUI.open_locomotive_modify_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_locomotive_remove_window"><code class="docutils literal notranslate"><span class="pre">GUI.open_locomotive_remove_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_locomotive_window"><code class="docutils literal notranslate"><span class="pre">GUI.open_locomotive_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.open_settings_window"><code class="docutils literal notranslate"><span class="pre">GUI.open_settings_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.refresh"><code class="docutils literal notranslate"><span class="pre">GUI.refresh()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.set_var_keypress_locomotive_control"><code class="docutils literal notranslate"><span class="pre">GUI.set_var_keypress_locomotive_control()</span></code></a></li>
+<li><a class="reference internal" href="#app.GUI_refactored.GUI.update_table"><code class="docutils literal notranslate"><span class="pre">GUI.update_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.algorithm">app.algorithm module</a><ul>
+<li><a class="reference internal" href="#app.algorithm.Algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm</span></code></a><ul>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.calibred_RFID"><code class="docutils literal notranslate"><span class="pre">Algorithm.calibred_RFID()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.control"><code class="docutils literal notranslate"><span class="pre">Algorithm.control()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.gestione_velocita"><code class="docutils literal notranslate"><span class="pre">Algorithm.gestione_velocita()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.process_messages"><code class="docutils literal notranslate"><span class="pre">Algorithm.process_messages()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.scegli_percorso"><code class="docutils literal notranslate"><span class="pre">Algorithm.scegli_percorso()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.show_percorsi_liberi"><code class="docutils literal notranslate"><span class="pre">Algorithm.show_percorsi_liberi()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.start_algo"><code class="docutils literal notranslate"><span class="pre">Algorithm.start_algo()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.start_sensor"><code class="docutils literal notranslate"><span class="pre">Algorithm.start_sensor()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.start_throttle"><code class="docutils literal notranslate"><span class="pre">Algorithm.start_throttle()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.stop_algo"><code class="docutils literal notranslate"><span class="pre">Algorithm.stop_algo()</span></code></a></li>
+<li><a class="reference internal" href="#app.algorithm.Algorithm.trova_criticita"><code class="docutils literal notranslate"><span class="pre">Algorithm.trova_criticita()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.buttons">app.buttons module</a><ul>
+<li><a class="reference internal" href="#app.buttons.Buttons"><code class="docutils literal notranslate"><span class="pre">Buttons</span></code></a><ul>
+<li><a class="reference internal" href="#app.buttons.Buttons.GENERAL_STOP_START_button"><code class="docutils literal notranslate"><span class="pre">Buttons.GENERAL_STOP_START_button()</span></code></a></li>
+<li><a class="reference internal" href="#app.buttons.Buttons.on_off"><code class="docutils literal notranslate"><span class="pre">Buttons.on_off()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.cam">app.cam module</a><ul>
+<li><a class="reference internal" href="#app.cam.Camera"><code class="docutils literal notranslate"><span class="pre">Camera</span></code></a><ul>
+<li><a class="reference internal" href="#app.cam.Camera.cattura_webcam"><code class="docutils literal notranslate"><span class="pre">Camera.cattura_webcam()</span></code></a></li>
+<li><a class="reference internal" href="#app.cam.Camera.chiudi_finestra_webcam"><code class="docutils literal notranslate"><span class="pre">Camera.chiudi_finestra_webcam()</span></code></a></li>
+<li><a class="reference internal" href="#app.cam.Camera.esiste"><code class="docutils literal notranslate"><span class="pre">Camera.esiste()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.comandi">app.comandi module</a><ul>
+<li><a class="reference internal" href="#app.comandi.STOP"><code class="docutils literal notranslate"><span class="pre">STOP()</span></code></a></li>
+<li><a class="reference internal" href="#app.comandi.cambia_deviatoio"><code class="docutils literal notranslate"><span class="pre">cambia_deviatoio()</span></code></a></li>
+<li><a class="reference internal" href="#app.comandi.change_id"><code class="docutils literal notranslate"><span class="pre">change_id()</span></code></a></li>
+<li><a class="reference internal" href="#app.comandi.crea_deviatoio"><code class="docutils literal notranslate"><span class="pre">crea_deviatoio()</span></code></a></li>
+<li><a class="reference internal" href="#app.comandi.name_serial_port"><code class="docutils literal notranslate"><span class="pre">name_serial_port()</span></code></a></li>
+<li><a class="reference internal" href="#app.comandi.open_current"><code class="docutils literal notranslate"><span class="pre">open_current()</span></code></a></li>
+<li><a class="reference internal" href="#app.comandi.throttle"><code class="docutils literal notranslate"><span class="pre">throttle()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.data">app.data module</a><ul>
+<li><a class="reference internal" href="#app.data.sensor_response"><code class="docutils literal notranslate"><span class="pre">sensor_response</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.main">app.main module</a><ul>
+<li><a class="reference internal" href="#app.main.App"><code class="docutils literal notranslate"><span class="pre">App</span></code></a><ul>
+<li><a class="reference internal" href="#app.main.App.on_close_root"><code class="docutils literal notranslate"><span class="pre">App.on_close_root()</span></code></a></li>
+<li><a class="reference internal" href="#app.main.App.refresh"><code class="docutils literal notranslate"><span class="pre">App.refresh()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.utilities">app.utilities module</a><ul>
+<li><a class="reference internal" href="#app.utilities.CalcolaIDtreno"><code class="docutils literal notranslate"><span class="pre">CalcolaIDtreno()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.are_you_sure"><code class="docutils literal notranslate"><span class="pre">are_you_sure()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.asset_path"><code class="docutils literal notranslate"><span class="pre">asset_path()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.color_update"><code class="docutils literal notranslate"><span class="pre">color_update()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.find_port_path"><code class="docutils literal notranslate"><span class="pre">find_port_path()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.is_serial_port_available"><code class="docutils literal notranslate"><span class="pre">is_serial_port_available()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.on_close"><code class="docutils literal notranslate"><span class="pre">on_close()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.port_exist"><code class="docutils literal notranslate"><span class="pre">port_exist()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.process_image"><code class="docutils literal notranslate"><span class="pre">process_image()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.set_port_var"><code class="docutils literal notranslate"><span class="pre">set_port_var()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.set_variabilechiusura"><code class="docutils literal notranslate"><span class="pre">set_variabilechiusura()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.show_error_box"><code class="docutils literal notranslate"><span class="pre">show_error_box()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.show_info"><code class="docutils literal notranslate"><span class="pre">show_info()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.translate"><code class="docutils literal notranslate"><span class="pre">translate()</span></code></a></li>
+<li><a class="reference internal" href="#app.utilities.update_circuit_table"><code class="docutils literal notranslate"><span class="pre">update_circuit_table()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.windows">app.windows module</a><ul>
+<li><a class="reference internal" href="#app.windows.RFID_window"><code class="docutils literal notranslate"><span class="pre">RFID_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.circuit_window"><code class="docutils literal notranslate"><span class="pre">circuit_window</span></code></a><ul>
+<li><a class="reference internal" href="#app.windows.circuit_window.change_Sensors"><code class="docutils literal notranslate"><span class="pre">circuit_window.change_Sensors()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.circuit_window.change_Turnouts"><code class="docutils literal notranslate"><span class="pre">circuit_window.change_Turnouts()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.circuit_window.change_color"><code class="docutils literal notranslate"><span class="pre">circuit_window.change_color()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.circuit_window.open_RFID_window"><code class="docutils literal notranslate"><span class="pre">circuit_window.open_RFID_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.circuit_window.open_circuit_window"><code class="docutils literal notranslate"><span class="pre">circuit_window.open_circuit_window()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#app.windows.control_window"><code class="docutils literal notranslate"><span class="pre">control_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.creation_window"><code class="docutils literal notranslate"><span class="pre">creation_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.modify_window"><code class="docutils literal notranslate"><span class="pre">modify_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.remove_window"><code class="docutils literal notranslate"><span class="pre">remove_window()</span></code></a></li>
+<li><a class="reference internal" href="#app.windows.settings_window"><code class="docutils literal notranslate"><span class="pre">settings_window()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+          
+        
+
+      </div>
+      &nbsp;
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">TrainTrack Manager </a>
+      </nav>
+
+      <div class="wy-nav-content">
+	<div class="fundo-claro">
+	</div>
+	<div class="fundo-escuro">
+	</div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+	    
+	    <!-- <ul class="wy-breadcrumbs"> -->
+	    <!--   <li><a href="#">Docs</a> &raquo;</li> -->
+
+	    <!--   <li>Features</li> -->
+	    <!--   <li class="wy-breadcrumbs-aside"> -->
+
+	    <!-- 	<a href="_sources/index.txt" rel="nofollow"> View page source</a> -->
+
+	    <!--   </li> -->
+	    <!-- </ul> -->
+	    <!-- <hr/> -->
+	  </div>
+          <div role="main" class="">
+
+	    <div id="content" class="hfeed entry-container hentry">
+      	<div id="dark-mode-toggle-container">
+	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
+	  </dark-mode-toggle>
+	</div>
+  <section id="app-package">
+<h1>app package<a class="headerlink" href="#app-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-app.GUI_refactored">
+<span id="app-gui-refactored-module"></span><h2>app.GUI_refactored module<a class="headerlink" href="#module-app.GUI_refactored" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.GUI_refactored.</span></span><span class="sig-name descname"><span class="pre">GUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.GENERAL_STOP_START">
+<span class="sig-name descname"><span class="pre">GENERAL_STOP_START</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.GENERAL_STOP_START"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.GENERAL_STOP_START" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.change_language">
+<span class="sig-name descname"><span class="pre">change_language</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.change_language"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.change_language" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.check_control_button_state">
+<span class="sig-name descname"><span class="pre">check_control_button_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.check_control_button_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.check_control_button_state" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.locomotive_names">
+<span class="sig-name descname"><span class="pre">locomotive_names</span></span><a class="headerlink" href="#app.GUI_refactored.GUI.locomotive_names" title="Link to this definition">¶</a></dt>
+<dd><div class="highlight-txt notranslate"><div class="highlight"><pre><span></span>            ___    _   _    ___   
+    o O O  / __|  | | | |  |_ _|  
+   o      | (_ |  | |_| |   | |   
+  TS__[O]  \___|   \___/   |___|  
+ {======|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;| 
+./o--000&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39; 
+</pre></div>
+</div>
+<p>SHORTCUTS</p>
+<blockquote>
+<div><p>self.container.bind(“&lt;KeyPress-{}&gt;”.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))</p>
+<p>-&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 10</p>
+<p>1 -&gt; loco ID 1</p>
+<p>2 -&gt; loco ID 2</p>
+<p>3 -&gt; loco ID 3</p>
+<p>4 -&gt; loco ID 4</p>
+<p>5 -&gt; loco ID 5</p>
+<p>6 -&gt; loco ID 6</p>
+<p>7 -&gt; loco ID 7</p>
+<p>8 -&gt; loco ID 8</p>
+<p>9 -&gt; loco ID 9</p>
+<p>self.container.bind(“&lt;Control-KeyPress-{}&gt;”.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))</p>
+<p>-&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 20</p>
+<p>Control-0 -&gt; lodo ID 10</p>
+<p>Control-1 -&gt; loco ID 11</p>
+<p>Control-2 -&gt; loco ID 12</p>
+<p>Control-3 -&gt; loco ID 13</p>
+<p>Control-4 -&gt; loco ID 14</p>
+<p>Control-5 -&gt; loco ID 15</p>
+<p>Control-6 -&gt; loco ID 16</p>
+<p>Control-7 -&gt; loco ID 17</p>
+<p>Control-8 -&gt; loco ID 18</p>
+<p>Control-9 -&gt; loco ID 19</p>
+<p>self.container.bind(“&lt;c&gt;”, lambda event: self.open_control())</p>
+<p>c -&gt; Apre la finestra circuit</p>
+<p>self.container.bind(“&lt;s&gt;”, lambda event: self.open_settings_window())</p>
+<p>s -&gt; Apre le impostazione del sistema</p>
+<p>self.container.bind(“&lt;o&gt;”, lambda event: self.on_off())</p>
+<p>o -&gt; Permette di dare la corrente ai binari</p>
+<p>self.container.bind(“&lt;i&gt;”, lambda event: self.open_info_window())</p>
+<p>i -&gt; Apre le Informazioni generali</p>
+<p>self.container.bind(“&lt;plus&gt;”, lambda event: self.open_locomotive_creation_window())</p>
+<ul class="simple">
+<li><p>-&gt; Preme il tasto aggiungi locomotiva</p></li>
+</ul>
+<p>self.container.bind(“&lt;minus&gt;”, lambda event: self.open_locomotive_remove_window())</p>
+<ul class="simple">
+<li><p>-&gt; Preme il tasto rimuovi locomotiva</p></li>
+</ul>
+<p>self.container.bind(“&lt;m&gt;”, lambda event: self.open_locomotive_modify_window())</p>
+<p>m -&gt; Preme il tasto modifica locomotiva</p>
+<p>self.container.bind(“&lt;Return&gt;”, lambda event: self.GENERAL_STOP_START())</p>
+<p>Enter -&gt; Ferma o avvia il sistema senza togliere la corrente</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.on_off">
+<span class="sig-name descname"><span class="pre">on_off</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.on_off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.on_off" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_control">
+<span class="sig-name descname"><span class="pre">open_control</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_control" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_info_window">
+<span class="sig-name descname"><span class="pre">open_info_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_info_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_info_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_locomotive_control">
+<span class="sig-name descname"><span class="pre">open_locomotive_control</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_locomotive_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_locomotive_control" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_locomotive_creation_window">
+<span class="sig-name descname"><span class="pre">open_locomotive_creation_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_locomotive_creation_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_locomotive_creation_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_locomotive_modify_window">
+<span class="sig-name descname"><span class="pre">open_locomotive_modify_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_locomotive_modify_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_locomotive_modify_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_locomotive_remove_window">
+<span class="sig-name descname"><span class="pre">open_locomotive_remove_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_locomotive_remove_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_locomotive_remove_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_locomotive_window">
+<span class="sig-name descname"><span class="pre">open_locomotive_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_locomotive_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_locomotive_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.open_settings_window">
+<span class="sig-name descname"><span class="pre">open_settings_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.open_settings_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.open_settings_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.refresh" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.set_var_keypress_locomotive_control">
+<span class="sig-name descname"><span class="pre">set_var_keypress_locomotive_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.set_var_keypress_locomotive_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.set_var_keypress_locomotive_control" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.GUI_refactored.GUI.update_table">
+<span class="sig-name descname"><span class="pre">update_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.update_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.update_table" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.algorithm">
+<span id="app-algorithm-module"></span><h2>app.algorithm module<a class="headerlink" href="#module-app.algorithm" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.algorithm.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.calibred_RFID">
+<span class="sig-name descname"><span class="pre">calibred_RFID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ID_treno</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RFIDtag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.calibred_RFID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.calibred_RFID" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.control">
+<span class="sig-name descname"><span class="pre">control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Turnout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direzione</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">natural_link</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.control" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.gestione_velocita">
+<span class="sig-name descname"><span class="pre">gestione_velocita</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocita</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.gestione_velocita"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.gestione_velocita" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.process_messages">
+<span class="sig-name descname"><span class="pre">process_messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.process_messages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.process_messages" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.scegli_percorso">
+<span class="sig-name descname"><span class="pre">scegli_percorso</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.scegli_percorso"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.scegli_percorso" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.show_percorsi_liberi">
+<span class="sig-name descname"><span class="pre">show_percorsi_liberi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.show_percorsi_liberi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.show_percorsi_liberi" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.start_algo">
+<span class="sig-name descname"><span class="pre">start_algo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.start_algo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.start_algo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.start_sensor">
+<span class="sig-name descname"><span class="pre">start_sensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.start_sensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.start_sensor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.start_throttle">
+<span class="sig-name descname"><span class="pre">start_throttle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.start_throttle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.start_throttle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.stop_algo">
+<span class="sig-name descname"><span class="pre">stop_algo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.stop_algo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.stop_algo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.algorithm.Algorithm.trova_criticita">
+<span class="sig-name descname"><span class="pre">trova_criticita</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/algorithm.html#Algorithm.trova_criticita"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.algorithm.Algorithm.trova_criticita" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.buttons">
+<span id="app-buttons-module"></span><h2>app.buttons module<a class="headerlink" href="#module-app.buttons" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.buttons.Buttons">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.buttons.</span></span><span class="sig-name descname"><span class="pre">Buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.buttons.Buttons.GENERAL_STOP_START_button">
+<span class="sig-name descname"><span class="pre">GENERAL_STOP_START_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons.GENERAL_STOP_START_button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons.GENERAL_STOP_START_button" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.buttons.Buttons.on_off">
+<span class="sig-name descname"><span class="pre">on_off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons.on_off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons.on_off" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.cam">
+<span id="app-cam-module"></span><h2>app.cam module<a class="headerlink" href="#module-app.cam" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.cam.Camera">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.cam.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.cam.Camera.cattura_webcam">
+<span class="sig-name descname"><span class="pre">cattura_webcam</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.cattura_webcam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.cattura_webcam" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.cam.Camera.chiudi_finestra_webcam">
+<span class="sig-name descname"><span class="pre">chiudi_finestra_webcam</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.chiudi_finestra_webcam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.chiudi_finestra_webcam" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.cam.Camera.esiste">
+<span class="sig-name descname"><span class="pre">esiste</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.esiste"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.esiste" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.comandi">
+<span id="app-comandi-module"></span><h2>app.comandi module<a class="headerlink" href="#module-app.comandi" title="Link to this heading">¶</a></h2>
+<p>The purpose of this file is to comunicate with arduino directly by the serial port.
+With these command you could be able to control both the system and all the locomotives.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.comandi.STOP">
+<span class="sig-prename descclassname"><span class="pre">app.comandi.</span></span><span class="sig-name descname"><span class="pre">STOP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memoria</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/comandi.html#STOP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.comandi.STOP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.comandi.cambia_deviatoio">
+<span class="sig-prename descclassname"><span class="pre">app.comandi.</span></span><span class="sig-name descname"><span class="pre">cambia_deviatoio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Turnout_ID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/comandi.html#cambia_deviatoio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.comandi.cambia_deviatoio" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.comandi.change_id">
+<span class="sig-prename descclassname"><span class="pre">app.comandi.</span></span><span class="sig-name descname"><span class="pre">change_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_ID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/comandi.html#change_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.comandi.change_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.comandi.crea_deviatoio">
+<span class="sig-prename descclassname"><span class="pre">app.comandi.</span></span><span class="sig-name descname"><span class="pre">crea_deviatoio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Turnout_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/comandi.html#crea_deviatoio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.comandi.crea_deviatoio" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.comandi.name_serial_port">
+<span class="sig-prename descclassname"><span class="pre">app.comandi.</span></span><span class="sig-name descname"><span class="pre">name_serial_port</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/comandi.html#name_serial_port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.comandi.name_serial_port" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.comandi.open_current">
+<span class="sig-prename descclassname"><span class="pre">app.comandi.</span></span><span class="sig-name descname"><span class="pre">open_current</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/comandi.html#open_current"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.comandi.open_current" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.comandi.throttle">
+<span class="sig-prename descclassname"><span class="pre">app.comandi.</span></span><span class="sig-name descname"><span class="pre">throttle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memoria</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SPEED</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DIR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/comandi.html#throttle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.comandi.throttle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-app.data">
+<span id="app-data-module"></span><h2>app.data module<a class="headerlink" href="#module-app.data" title="Link to this heading">¶</a></h2>
+<div class="highlight-txt notranslate"><div class="highlight"><pre><span></span>            ___             _            
+    o O O  |   \   __ _    | |_    __ _  
+   o       | |) | / _` |   |  _|  / _` | 
+  TS__[O]  |___/  \__,_|   _\__|  \__,_| 
+ {======|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|
+./o--000&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="app.data.sensor_response">
+<span class="sig-prename descclassname"><span class="pre">app.data.</span></span><span class="sig-name descname"><span class="pre">sensor_response</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['_/_']</span></em><a class="headerlink" href="#app.data.sensor_response" title="Link to this definition">¶</a></dt>
+<dd><p>Se partono da 7 viaggiano verso sinistra e cominciano alla stazione</p>
+<blockquote>
+<div><p>1-GCDEFHG    -&gt; Schiva A e B    -&gt; Ricomincia da G, GCDEFHG
+2-GCDEFG     -&gt; Schiva A,B,H    -&gt; Ricomincia da G, GCDEFG
+3-GCDEFHD    -&gt; Schiva A e B    -&gt; Ricomincia da D, DEFHD
+4-GCDEBA     -&gt; Schiva F e H    -&gt; Finisce in deposito, A
+5-GCDEBC     -&gt; Schiva A,F,H    -&gt; Ricomincia Da C, CDEB</p>
+</div></blockquote>
+<p>1A 2B 3C 4D 5E 6F 7G 8H</p>
+<blockquote>
+<div><p>6-ABEDCGFE   -&gt; Schiva H             -&gt; Ricomincia da E, EDCGFE
+7-ABEDHFE   -&gt; Schiva C e G          -&gt; Ricomincia da E, EDHFE
+8-ABEDCB     -&gt; Schiva F,G,H         -&gt; Ricomincia da B, BEDCB
+9-ABEDCGHFE  -&gt; Non schiva niente    -&gt; Ricomincia Da E, EDCGHF</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="module-app.main">
+<span id="app-main-module"></span><h2>app.main module<a class="headerlink" href="#module-app.main" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.main.App">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.main.</span></span><span class="sig-name descname"><span class="pre">App</span></span><a class="reference internal" href="_modules/app/main.html#App"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Tk</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.main.App.on_close_root">
+<span class="sig-name descname"><span class="pre">on_close_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.on_close_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.on_close_root" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.main.App.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.refresh" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.utilities">
+<span id="app-utilities-module"></span><h2>app.utilities module<a class="headerlink" href="#module-app.utilities" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.CalcolaIDtreno">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">CalcolaIDtreno</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elemento</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#CalcolaIDtreno"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.CalcolaIDtreno" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.are_you_sure">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">are_you_sure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">descrizione</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finestra_padre</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#are_you_sure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.are_you_sure" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.asset_path">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">asset_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">asset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extenction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/app/utilities.html#asset_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.asset_path" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.color_update">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">color_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#color_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.color_update" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.find_port_path">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">find_port_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_port</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#find_port_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.find_port_path" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.is_serial_port_available">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">is_serial_port_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_port</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#is_serial_port_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.is_serial_port_available" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.on_close">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">on_close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">finestra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#on_close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.on_close" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.port_exist">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">port_exist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_port</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#port_exist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.port_exist" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.process_image">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">process_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#process_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.process_image" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.set_port_var">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">set_port_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#set_port_var"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.set_port_var" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.set_variabilechiusura">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">set_variabilechiusura</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#set_variabilechiusura"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.set_variabilechiusura" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.show_error_box">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">show_error_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">descrizione</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finestra_padre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">importance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#show_error_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.show_error_box" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.show_info">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">show_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">descrizione</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finestra_padre</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#show_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.show_info" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.translate">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.translate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utilities.update_circuit_table">
+<span class="sig-prename descclassname"><span class="pre">app.utilities.</span></span><span class="sig-name descname"><span class="pre">update_circuit_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utilities.html#update_circuit_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.utilities.update_circuit_table" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-app.windows">
+<span id="app-windows-module"></span><h2>app.windows module<a class="headerlink" href="#module-app.windows" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.RFID_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">RFID_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#RFID_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.RFID_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.windows.circuit_window">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">circuit_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nscambi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.change_Sensors">
+<span class="sig-name descname"><span class="pre">change_Sensors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RFIDtag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_Sensors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_Sensors" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.change_Turnouts">
+<span class="sig-name descname"><span class="pre">change_Turnouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_Turnouts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_Turnouts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.change_color">
+<span class="sig-name descname"><span class="pre">change_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activated</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_color" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.open_RFID_window">
+<span class="sig-name descname"><span class="pre">open_RFID_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.open_RFID_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.open_RFID_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.open_circuit_window">
+<span class="sig-name descname"><span class="pre">open_circuit_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">automatico</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.open_circuit_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.open_circuit_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.control_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">control_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locomotiva</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_controllo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#control_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.control_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.creation_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">creation_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#creation_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.creation_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.modify_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">modify_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#modify_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.modify_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.remove_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">remove_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#remove_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.remove_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.settings_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">settings_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#settings_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.settings_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-app">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-app" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+	    </div>
+            <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, Alessio Cammarata.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/jucacrispim/sphinx_pdj_theme">theme</a> provided by <a href="https://poraodojuca.dev">Porão do Juca</a>.
+
+</footer>
+	</div>
+	</div>
+	  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.2.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    <script type="text/javascript" src="_static/documentation_options.js">
+
+    </script>
+    <script type="text/javascript" src="_static/doctools.js">
+
+    </script>
+    <script type="text/javascript" src="_static/sphinx_highlight.js">
+
+    </script>
+
+  
+
+   <script type="text/javascript"
+           src="_static/js/theme.js"></script>
+
+   <script type="text/javascript"
+           src="_static/js/pdj.js"></script>
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  </body>
+</html>

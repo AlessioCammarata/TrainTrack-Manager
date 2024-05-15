@@ -1,0 +1,462 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="" lang="" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
+    <link rel="icon" type="image/x-icon" href="../../_static/window_logo.ico">
+
+  
+  <title>app.utilities &mdash; TrainTrack Manager 1.2.1 documentation</title>
+  
+
+  
+
+  
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+
+
+  <link rel="stylesheet" href="../../_static/css/img.css" type="text/css"/>
+  
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/pdj.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/darker.css" type="text/css" media="(prefers-color-scheme: dark)"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TrainTrack Manager 1.2.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="module" src="https://googlechromelabs.github.io/dark-mode-toggle/src/dark-mode-toggle.mjs"></script>
+
+  </head>
+
+  <body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+	
+        <a href="../../index.html" class="fa fa-home"> TrainTrack Manager </a>
+	
+	
+	<div id="logo-container">
+	  <a href="../../index.html">
+	    <img src="../../_static/window_logo.ico"
+		 style="
+		 width:200px;
+		 height:150px;
+		"
+		 />
+
+	  </a>
+	</div>
+	
+        <div role="search">
+	  
+	  <form id ="rtd-search-form" class="wy-form"
+		action="../../search.html" method="get">
+	    <input type="text" name="q" placeholder="Search docs" />
+	    <input type="hidden" name="check_keywords" value="yes" />
+	    <input type="hidden" name="area" value="default" />
+	  </form>
+	  
+	</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	
+          
+          
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+          
+        
+
+      </div>
+      &nbsp;
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">TrainTrack Manager </a>
+      </nav>
+
+      <div class="wy-nav-content">
+	<div class="fundo-claro">
+	</div>
+	<div class="fundo-escuro">
+	</div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+	    
+	    <!-- <ul class="wy-breadcrumbs"> -->
+	    <!--   <li><a href="#">Docs</a> &raquo;</li> -->
+
+	    <!--   <li>Features</li> -->
+	    <!--   <li class="wy-breadcrumbs-aside"> -->
+
+	    <!-- 	<a href="_sources/index.txt" rel="nofollow"> View page source</a> -->
+
+	    <!--   </li> -->
+	    <!-- </ul> -->
+	    <!-- <hr/> -->
+	  </div>
+          <div role="main" class="">
+
+	    <div id="content" class="hfeed entry-container hentry">
+      	<div id="dark-mode-toggle-container">
+	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
+	  </dark-mode-toggle>
+	</div>
+  <h1>Source code for app.utilities</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageTk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">messagebox</span>
+<span class="kn">import</span> <span class="nn">app.data</span> <span class="k">as</span> <span class="nn">data</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">serial</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. code-block:: txt</span>
+
+<span class="sd">               _   _    _        _       _       _      _        _                    </span>
+<span class="sd">        o O O | | | |  | |_     (_)     | |     (_)    | |_     (_)     ___     ___   </span>
+<span class="sd">       o      | |_| |  |  _|    | |     | |     | |    |  _|    | |    / -_)   (_-&lt;   </span>
+<span class="sd">      TS__[O]  \___/   _\__|   _|_|_   _|_|_   _|_|_   _\__|   _|_|_   \___|   /__/_  </span>
+<span class="sd">     {======|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;| </span>
+<span class="sd">    ./o--000&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">indicatoron</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Menubutton.border&#39;</span><span class="p">,</span>
+  <span class="p">{</span><span class="s1">&#39;sticky&#39;</span><span class="p">:</span> <span class="s1">&#39;nswe&#39;</span><span class="p">,</span>
+   <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;Menubutton.focus&#39;</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;sticky&#39;</span><span class="p">:</span> <span class="s1">&#39;nswe&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[</span>
+       <span class="p">(</span><span class="s1">&#39;Menubutton.padding&#39;</span><span class="p">,</span>
+        <span class="p">{</span><span class="s1">&#39;expand&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;sticky&#39;</span><span class="p">:</span> <span class="s1">&#39;we&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;Menubutton.label&#39;</span><span class="p">,</span>
+           <span class="p">{</span><span class="s1">&#39;side&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;sticky&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">})]})]})]})]</span>
+
+
+<span class="c1"># def image_path(image_name: str):</span>
+<span class="c1">#     image_path = asset_path(image_name, &quot;png&quot;)</span>
+<span class="c1">#     img = Image.open(image_path)</span>
+<span class="c1">#     return ImageTk.PhotoImage(img)</span>
+
+<span class="c1">#Funzione che riassume il path relativo</span>
+<div class="viewcode-block" id="asset_path">
+<a class="viewcode-back" href="../../app.html#app.utilities.asset_path">[docs]</a>
+<span class="k">def</span> <span class="nf">asset_path</span><span class="p">(</span><span class="n">asset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extenction</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  
+                    <span class="c1"># Per sistemi Windows                                                Per sistemi Unix-like (Linux, macOS)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">assets</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">asset_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">extenction</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">SO</span> <span class="o">==</span> <span class="s1">&#39;Windows&#39;</span> <span class="k">else</span> <span class="n">data</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/assets/&quot;</span> <span class="o">+</span> <span class="n">asset_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">extenction</span></div>
+
+
+<span class="c1"># Funzione che riassume i resize e i rotate, viene utilizzata per preparare le immagini a essere posizionate nel canvas</span>
+<div class="viewcode-block" id="process_image">
+<a class="viewcode-back" href="../../app.html#app.utilities.process_image">[docs]</a>
+<span class="k">def</span> <span class="nf">process_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+    <span class="k">match</span> <span class="n">operation</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s1">&#39;resize&#39;</span><span class="p">:</span>
+            <span class="n">processed_img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ImageTk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="n">processed_img</span><span class="p">)</span>
+
+        <span class="k">case</span> <span class="s1">&#39;rotate&#39;</span><span class="p">:</span>
+            <span class="n">rotated_img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">processed_img</span> <span class="o">=</span> <span class="n">rotated_img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ImageTk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="n">processed_img</span><span class="p">)</span></div>
+
+        
+            
+<span class="c1">#Funzione per impostare la var di chiusura, quando si chiude la finestra</span>
+<div class="viewcode-block" id="set_variabilechiusura">
+<a class="viewcode-back" href="../../app.html#app.utilities.set_variabilechiusura">[docs]</a>
+<span class="k">def</span> <span class="nf">set_variabilechiusura</span><span class="p">(</span><span class="n">window_type</span><span class="p">):</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;locomotive_</span><span class="si">{</span><span class="n">window_type</span><span class="si">}</span><span class="s1">_var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<span class="c1">#funzione per gli errori</span>
+<div class="viewcode-block" id="show_error_box">
+<a class="viewcode-back" href="../../app.html#app.utilities.show_error_box">[docs]</a>
+<span class="k">def</span> <span class="nf">show_error_box</span><span class="p">(</span><span class="n">descrizione</span><span class="p">,</span><span class="n">finestra_padre</span><span class="p">,</span><span class="n">importance</span><span class="p">):</span>
+
+    <span class="c1">#Ci sono degli errori che non devono attivare la var</span>
+    <span class="k">if</span> <span class="n">importance</span> <span class="o">!=</span> <span class="s2">&quot;main&quot;</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">control_var_errore</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">finestra_padre</span><span class="o">.</span><span class="n">grab_set</span><span class="p">()</span>
+    <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;ERRORE&quot;</span><span class="p">,</span> <span class="n">descrizione</span><span class="p">,</span>  <span class="n">parent</span> <span class="o">=</span> <span class="n">finestra_padre</span><span class="p">)</span>
+    <span class="n">finestra_padre</span><span class="o">.</span><span class="n">grab_release</span><span class="p">()</span></div>
+
+
+<span class="c1">#Funzione per WARNING - Grab del padre</span>
+<div class="viewcode-block" id="are_you_sure">
+<a class="viewcode-back" href="../../app.html#app.utilities.are_you_sure">[docs]</a>
+<span class="k">def</span> <span class="nf">are_you_sure</span><span class="p">(</span><span class="n">descrizione</span><span class="p">,</span><span class="n">finestra_padre</span><span class="p">):</span>
+    <span class="n">finestra_padre</span><span class="o">.</span><span class="n">grab_set</span><span class="p">()</span>
+    <span class="n">risposta</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">askyesno</span><span class="p">(</span><span class="s2">&quot;ATTENZIONE&quot;</span><span class="p">,</span> <span class="n">descrizione</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">65</span><span class="p">],</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="n">finestra_padre</span><span class="p">)</span>
+    <span class="n">finestra_padre</span><span class="o">.</span><span class="n">grab_release</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">risposta</span></div>
+
+
+<span class="c1">#Funzione per INFO - Grab del padre</span>
+<div class="viewcode-block" id="show_info">
+<a class="viewcode-back" href="../../app.html#app.utilities.show_info">[docs]</a>
+<span class="k">def</span> <span class="nf">show_info</span><span class="p">(</span><span class="n">descrizione</span><span class="p">,</span><span class="n">finestra_padre</span><span class="p">):</span>
+    <span class="n">finestra_padre</span><span class="o">.</span><span class="n">grab_set</span><span class="p">()</span>
+    <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="s2">&quot;AVVISO&quot;</span><span class="p">,</span> <span class="n">descrizione</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="n">finestra_padre</span><span class="p">)</span>
+    <span class="n">finestra_padre</span><span class="o">.</span><span class="n">grab_release</span><span class="p">()</span></div>
+
+    
+
+<span class="c1">#Calcola l&#39;ID del treno dalle info - Elemento, stringa che dice che elemento si analizza - info, informazione da cui si vuole partire</span>
+<div class="viewcode-block" id="CalcolaIDtreno">
+<a class="viewcode-back" href="../../app.html#app.utilities.CalcolaIDtreno">[docs]</a>
+<span class="k">def</span> <span class="nf">CalcolaIDtreno</span><span class="p">(</span><span class="n">elemento</span><span class="p">,</span><span class="n">info</span><span class="p">):</span>
+    <span class="n">ID_treno</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">)</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="n">elemento</span><span class="p">]</span> <span class="o">==</span> <span class="n">info</span> <span class="p">),</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ID_treno</span></div>
+
+
+<span class="c1">#Gestione della funzione di controllo per la chiusura della finestra</span>
+<div class="viewcode-block" id="on_close">
+<a class="viewcode-back" href="../../app.html#app.utilities.on_close">[docs]</a>
+<span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="n">finestra</span><span class="p">,</span><span class="n">window_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">window_type</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="n">set_variabilechiusura</span><span class="p">(</span><span class="n">window_type</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;locomotive_control_var&#39;</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">window_type</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">finestra</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+    <span class="n">finestra</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<span class="c1">#Controlla il SO, e scrive il path a seconda del SO</span>
+<div class="viewcode-block" id="find_port_path">
+<a class="viewcode-back" href="../../app.html#app.utilities.find_port_path">[docs]</a>
+<span class="k">def</span> <span class="nf">find_port_path</span><span class="p">(</span><span class="n">function_port</span><span class="p">):</span>
+
+            <span class="c1"># Per sistemi Windows                       Per sistemi Unix-like (Linux, macOS)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;COM</span><span class="si">{</span><span class="n">function_port</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">SO</span> <span class="o">==</span> <span class="s1">&#39;Windows&#39;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;/dev/</span><span class="si">{</span><span class="n">function_port</span><span class="si">}</span><span class="s2">&quot;</span>  </div>
+
+    
+
+<span class="c1">#Funzione che controlla se la porta seriale chiamata è collegata o meno e se è stata inizializzata - in caso non sia stata inizializzata, la inizializza</span>
+<div class="viewcode-block" id="is_serial_port_available">
+<a class="viewcode-back" href="../../app.html#app.utilities.is_serial_port_available">[docs]</a>
+<span class="k">def</span> <span class="nf">is_serial_port_available</span><span class="p">(</span><span class="n">function_port</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
+        <span class="c1"># show_info(&quot;ROOT&quot;)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="p">[</span><span class="n">function_port</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="c1"># Costruisci il percorso del dispositivo della porta seriale</span>
+        <span class="n">port_path</span> <span class="o">=</span> <span class="n">find_port_path</span><span class="p">(</span><span class="n">function_port</span><span class="p">)</span>  
+        <span class="n">exist</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">port_path</span><span class="p">)</span>
+
+        <span class="c1">#Nel caso in cui la porta non sia stata inizializzzìata, la inizializza.</span>
+        <span class="k">if</span> <span class="n">exist</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="p">[</span><span class="n">function_port</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="p">[</span><span class="n">function_port</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port_path</span><span class="p">,</span><span class="n">baudrate</span><span class="o">=</span><span class="mi">115200</span><span class="p">,</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Verifica l&#39;esistenza del percorso della porta seriale</span>
+
+        <span class="n">exist_inizialized</span> <span class="o">=</span> <span class="n">exist</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="p">[</span><span class="n">function_port</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">exist_inizialized</span>
+    <span class="c1"># else: </span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+    
+<span class="c1">#Funzione che controlla solo che sia collegata una porta al pc</span>
+<div class="viewcode-block" id="port_exist">
+<a class="viewcode-back" href="../../app.html#app.utilities.port_exist">[docs]</a>
+<span class="k">def</span> <span class="nf">port_exist</span><span class="p">(</span><span class="n">function_port</span><span class="p">):</span>
+    <span class="c1"># Costruisci il percorso del dispositivo della porta seriale</span>
+    <span class="n">port_path</span> <span class="o">=</span> <span class="n">find_port_path</span><span class="p">(</span><span class="n">function_port</span><span class="p">)</span>  
+    <span class="n">exist</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">port_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;port exist:</span><span class="si">{</span><span class="n">port_path</span><span class="si">}</span><span class="s2"> e </span><span class="si">{</span><span class="n">exist</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># print(data.serial_ports)</span>
+    <span class="k">return</span> <span class="n">exist</span></div>
+
+
+<span class="c1">#Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria</span>
+<div class="viewcode-block" id="set_port_var">
+<a class="viewcode-back" href="../../app.html#app.utilities.set_port_var">[docs]</a>
+<span class="k">def</span> <span class="nf">set_port_var</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">ports_available</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+    <span class="n">port1_enable</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">port2_enable</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+        
+        <span class="c1">#Controlla le prime 10 porte se sono libere - si puo cambiare</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">port_range</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">port_exist</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">and</span> <span class="n">flag</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">):</span>
+               <span class="n">ports_available</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+               <span class="n">flag</span><span class="o">+=</span><span class="mi">1</span> 
+            <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+        <span class="c1">#Reimposta i valori standard nel caso in cui sia stato modificato qualcosa - Esce nel caso in cui non ci sia nessuna porta collegata</span>
+        <span class="k">if</span> <span class="n">flag</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span> 
+            <span class="n">ports_available</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">port2_enable</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">flag</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> 
+                <span class="n">ports_available</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">33</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ports_available</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ports_available</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1">#Dizionario temporale che aggiorna le chiavi</span>
+    <span class="n">temp_dict</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">ports_available</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">ports_available</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="p">}</span>
+    
+    <span class="c1">#assegnazione delle porte nel vettore</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ports_available</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ports_available</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Aggiornare il dizionario originale con le nuove chiavi</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">temp_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+        <span class="c1">#Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>      <span class="o">=</span> <span class="n">port1_enable</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">serial_port_info</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>      <span class="o">=</span> <span class="n">port2_enable</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span></div>
+
+
+<span class="c1">#Funzione che permette di aggiornare la tabella delle calibrazioni RFID</span>
+<div class="viewcode-block" id="update_circuit_table">
+<a class="viewcode-back" href="../../app.html#app.utilities.update_circuit_table">[docs]</a>
+<span class="k">def</span> <span class="nf">update_circuit_table</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span><span class="n">tree</span><span class="p">):</span>
+        
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nswe&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="c1"># Riempimento della tabella con i dati delle locomotive</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">locomotive</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;RFIDtag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">calibred</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">],</span>
+            <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;RFIDtag&#39;</span><span class="p">],</span>
+            <span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;Nome&#39;</span><span class="p">]</span>
+        <span class="p">),</span><span class="n">tags</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">tag_configure</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">locomotive</span><span class="p">[</span><span class="s1">&#39;Colore&#39;</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Imposta l&#39;allineamento al centro per tutte le colonne</span></div>
+
+
+<span class="c1">#Funzione che aggiorna il textlines con la nuova lingua selezionata</span>
+<div class="viewcode-block" id="translate">
+<a class="viewcode-back" href="../../app.html#app.utilities.translate">[docs]</a>
+<span class="k">def</span> <span class="nf">translate</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Apro il file in modalità lettura</span>
+    <span class="n">relative_path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">languages</span><span class="se">\\</span><span class="s2">file</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">SO</span> <span class="o">==</span> <span class="s1">&#39;Windows&#39;</span> <span class="k">else</span> <span class="s2">&quot;/languages/file</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">relative_path</span> <span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="c1"># Leggo ogni riga del file</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+            <span class="c1"># Aggiungo la riga alla lista</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">color_update</span><span class="p">()</span></div>
+
+
+<span class="c1">#Funzione che aggiorna la traduzione dei colori</span>
+<div class="viewcode-block" id="color_update">
+<a class="viewcode-back" href="../../app.html#app.utilities.color_update">[docs]</a>
+<span class="k">def</span> <span class="nf">color_update</span><span class="p">():</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">colors</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">colors</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">colors</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">140</span><span class="o">+</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+</pre></div>
+
+	    </div>
+            <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, Alessio Cammarata.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/jucacrispim/sphinx_pdj_theme">theme</a> provided by <a href="https://poraodojuca.dev">Porão do Juca</a>.
+
+</footer>
+	</div>
+	</div>
+	  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.2.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/doctools.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js">
+
+    </script>
+
+  
+
+   <script type="text/javascript"
+           src="../../_static/js/theme.js"></script>
+
+   <script type="text/javascript"
+           src="../../_static/js/pdj.js"></script>
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  </body>
+</html>

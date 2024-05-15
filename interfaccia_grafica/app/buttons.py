@@ -1,7 +1,8 @@
-import comandi
-import data
+import app.comandi as comandi
+import app.data as data
 
 '''
+.. code-block:: txt
 
                 ___             _       _                             
         o O O  | _ )   _  _    | |_    | |_     ___    _ _      ___   

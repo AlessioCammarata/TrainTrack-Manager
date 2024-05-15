@@ -2,9 +2,10 @@ import cv2
 import tkinter as tk
 from PIL import Image, ImageTk
 # import numpy as np
-import utilities
+import app.utilities as utilities
 
 '''
+.. code-block:: txt
 
                 ___                   
         o O O  / __|   __ _    _ __   

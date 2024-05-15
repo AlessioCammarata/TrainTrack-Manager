@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
 import random
-import comandi
-import cam
-import data
-import utilities
+import app.comandi as comandi
+import app.cam as cam
+import app.data as data
+import app.utilities as utilities 
 
 '''
-
+.. code-block:: txt
              __      __  _                _                           
         o O O\ \    / / (_)    _ _     __| |    ___   __ __ __  ___   
        o      \ \/\/ /  | |   | ' \   / _` |   / _ \  \ V  V / (_-<   
@@ -15,20 +15,20 @@ import utilities
      {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
     ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
 
-     
-    SHORTCUTS 
+
+SHORTCUTS 
+
+Queste 2 sono utilizzate da tutte le finestra della classe windows, ad esclusione della pagina circuit window che utilizza le sue personalizzate.
+
+    self.locomotive_window.bind('<Return>', lambda event: {Bottone})
+    Invio -> Tramite il tasto invio e come se schiaccisassi il tasto salva
+
+    self.locomotive_window.bind("<Escape>", lambda event: utilities.on_close(self.locomotive_window,"{Nome finestra}"))
+    Esc -> Puoi schiacciare il tasto esc per chiudere la finestra
     
-    Queste 2 sono utilizzate da tutte le finestra della classe windows, ad esclusione della pagina circuit window che utilizza le sue personalizzate.
+Inoltre la finestra relativa ai settingsRFID dispone di un tasto particolare in piu per effettuare il refresh.
 
-        self.locomotive_window.bind('<Return>', lambda event: {Bottone})
-        Invio -> Tramite il tasto invio e come se schiaccisassi il tasto salva
-
-        self.locomotive_window.bind("<Escape>", lambda event: utilities.on_close(self.locomotive_window,"{Nome finestra}"))
-        Esc -> Puoi schiacciare il tasto esc per chiudere la finestra
-        
-    Inoltre la finestra relativa ai settingsRFID dispone di un tasto particolare in piu per effettuare il refresh.
-
-        self.locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
+    self.locomotive_window.bind("<KeyPress-r>", lambda event: refresh())
         
 '''
 #Funzione che gestisce la logica della pagine di creazione locomotive
@@ -856,12 +856,6 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     locomotive_window.protocol("WM_DELETE_WINDOW", lambda: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
     locomotive_window.grab_set()
 '''
-                ___      _                               _      _            __      __  _                _                    
-        o O O  / __|    (_)      _ _    __     _  _     (_)    | |_          \ \    / / (_)    _ _     __| |    ___   __ __ __ 
-       o      | (__     | |     | '_|  / _|   | +| |    | |    |  _|    ___   \ \/\/ /  | |   | ' \   / _` |   / _ \  \ V  V / 
-      TS__[O]  \___|   _|_|_   _|_|_   \__|_   \_,_|   _|_|_   _\__|   |___|   \_/\_/  _|_|_  |_||_|  \__,_|   \___/   \_/\_/  
-     {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|  
-    ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'  
 
     SHORTCUTS
 
@@ -979,14 +973,6 @@ class circuit_window:
     #Funzione principale del circuito, qui si trova il canvas
     def open_circuit_window(self,automatico):
         #creo un oggetto Algorithm
-        '''
-                    ___      _                               _      _     
-            o O O  / __|    (_)      _ _    __     _  _     (_)    | |_   
-           o      | (__     | |     | '_|  / _|   | +| |    | |    |  _|  
-          TS__[O]  \___|   _|_|_   _|_|_   \__|_   \_,_|   _|_|_   _\__|  
-         {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
-        ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
-        '''
  
     #funzione che gestisce il bottone che attiva la webcam
         def change_color_webcam():

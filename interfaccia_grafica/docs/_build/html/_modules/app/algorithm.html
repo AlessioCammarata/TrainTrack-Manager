@@ -1,0 +1,714 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="" lang="" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
+    <link rel="icon" type="image/x-icon" href="../../_static/window_logo.ico">
+
+  
+  <title>app.algorithm &mdash; TrainTrack Manager 1.2.1 documentation</title>
+  
+
+  
+
+  
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+
+
+  <link rel="stylesheet" href="../../_static/css/img.css" type="text/css"/>
+  
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/pdj.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/darker.css" type="text/css" media="(prefers-color-scheme: dark)"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TrainTrack Manager 1.2.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="module" src="https://googlechromelabs.github.io/dark-mode-toggle/src/dark-mode-toggle.mjs"></script>
+
+  </head>
+
+  <body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+	
+        <a href="../../index.html" class="fa fa-home"> TrainTrack Manager </a>
+	
+	
+	<div id="logo-container">
+	  <a href="../../index.html">
+	    <img src="../../_static/window_logo.ico"
+		 style="
+		 width:200px;
+		 height:150px;
+		"
+		 />
+
+	  </a>
+	</div>
+	
+        <div role="search">
+	  
+	  <form id ="rtd-search-form" class="wy-form"
+		action="../../search.html" method="get">
+	    <input type="text" name="q" placeholder="Search docs" />
+	    <input type="hidden" name="check_keywords" value="yes" />
+	    <input type="hidden" name="area" value="default" />
+	  </form>
+	  
+	</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	
+          
+          
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+          
+        
+
+      </div>
+      &nbsp;
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">TrainTrack Manager </a>
+      </nav>
+
+      <div class="wy-nav-content">
+	<div class="fundo-claro">
+	</div>
+	<div class="fundo-escuro">
+	</div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+	    
+	    <!-- <ul class="wy-breadcrumbs"> -->
+	    <!--   <li><a href="#">Docs</a> &raquo;</li> -->
+
+	    <!--   <li>Features</li> -->
+	    <!--   <li class="wy-breadcrumbs-aside"> -->
+
+	    <!-- 	<a href="_sources/index.txt" rel="nofollow"> View page source</a> -->
+
+	    <!--   </li> -->
+	    <!-- </ul> -->
+	    <!-- <hr/> -->
+	  </div>
+          <div role="main" class="">
+
+	    <div id="content" class="hfeed entry-container hentry">
+      	<div id="dark-mode-toggle-container">
+	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
+	  </dark-mode-toggle>
+	</div>
+  <h1>Source code for app.algorithm</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">serial</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">queue</span>
+<span class="kn">import</span> <span class="nn">app.data</span> <span class="k">as</span> <span class="nn">data</span>
+<span class="kn">import</span> <span class="nn">app.utilities</span> <span class="k">as</span> <span class="nn">utilities</span>
+<span class="kn">import</span> <span class="nn">app.comandi</span> <span class="k">as</span> <span class="nn">comandi</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="c1">#import traffic_light</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Mi serve lo stato degli scambi, le info delle locomotive(velocita,direzione), e l&#39;otuptut dei sensori</span>
+<span class="sd">    Quando una locomotiva incontra uno scambio il sensore mi dira che lo ha incontrato, io so a quale fa riferimento, prendo i dati dallo scambio e vedo se è aperto o chiuso,</span>
+<span class="sd">    a seconda di questo e della direzione della locomotiva, decido se aprirlo o lasciarlo come è - inoltre potro dire che il treno finche non ricevo un altro messaggio dai sensori,        </span>
+<span class="sd">    si trova in quel pezzo di circuito.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+     
+<div class="viewcode-block" id="Algorithm">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm">[docs]</a>
+<span class="k">class</span> <span class="nc">Algorithm</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Definzione della coda </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+        <span class="c1">#flag che gesetisce il fatto che io abbia dichiarato i thread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">called</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#tengo a memoria i threads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+        <span class="c1">#flag che serve per la chiamata del thread di process_messages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Algorithm.start_sensor">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.start_sensor">[docs]</a>
+    <span class="k">def</span> <span class="nf">start_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">circuit_window</span><span class="p">):</span>
+        
+        <span class="n">port_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;COM</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port_path</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">115200</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">data</span><span class="o">.</span><span class="n">terminate</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ricevuto dalla porta seriale: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">message_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># Aggiungi il messaggio alla coda</span>
+
+                        <span class="c1">#tengo in memoria la risposta per la registrazione delle locomotive</span>
+                        <span class="n">data</span><span class="o">.</span><span class="n">sensor_response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span>
+
+                        <span class="n">message</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="s2">&quot;locomotive_RFID_var&quot;</span><span class="p">]:</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="n">circuit_window</span><span class="o">.</span><span class="n">tag_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                            <span class="c1"># background=data.Sensors[&quot;Sensore {}&quot;.format(message[0])][4])</span>
+                        <span class="c1"># circuit_window.tag_label.after(1000, lambda: circuit_window.tag_label.configure(text=message[1]))</span>
+                        <span class="n">circuit_window</span><span class="o">.</span><span class="n">tag_color</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">background</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">])][</span><span class="mi">4</span><span class="p">])</span>
+                        <span class="c1"># circuit_window.tag_color.after(1000, lambda: circuit_window.tag_label.configure(text=message[1],background=&quot;SystemButtonFace&quot;))</span>
+                    
+                    <span class="c1">#Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">calibred</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]:</span>
+                        <span class="c1"># self.GUI.on_off()</span>
+                        <span class="n">parent</span> <span class="o">=</span> <span class="n">circuit_window</span><span class="o">.</span><span class="n">GUI</span><span class="o">.</span><span class="n">locomotive_RFID_window</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="s2">&quot;locomotive_RFID_var&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">circuit_window</span><span class="o">.</span><span class="n">locomotive_window</span>
+
+                        <span class="n">utilities</span><span class="o">.</span><span class="n">show_info</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">60</span><span class="p">],</span><span class="n">parent</span><span class="p">)</span>
+                        
+                        <span class="c1">#creo il thread e lo metto in memoria</span>
+                        <span class="n">process_messages_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">process_messages</span><span class="p">(</span><span class="n">circuit_window</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_messages_thread</span>
+                        <span class="c1">#pulisco la queue - avvio il thread - setto la flag</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">message_queue</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                        <span class="n">process_messages_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">start_throttle</span><span class="p">(</span><span class="n">circuit_window</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PARTITO&quot;</span><span class="p">)</span>
+                        <span class="c1">#self.flag = False</span>
+                <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">40</span><span class="p">])</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    .. code-block:: txt</span>
+<span class="sd">                    ___      _      __ _         </span>
+<span class="sd">            o O O  /   \    | |    / _` |   ___  </span>
+<span class="sd">           o       | - |    | |    \__, |  / _ \ </span>
+<span class="sd">          TS__[O]  |_|_|   _|_|_   |___/   \___/ </span>
+<span class="sd">         {======|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|</span>
+<span class="sd">        ./o--000&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Algorithm.calibred_RFID">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.calibred_RFID">[docs]</a>
+    <span class="k">def</span> <span class="nf">calibred_RFID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ID_treno</span> <span class="p">:</span> <span class="nb">int</span><span class="p">,</span><span class="n">RFIDtag</span> <span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="n">ID_treno</span><span class="p">][</span><span class="s2">&quot;RFIDtag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFIDtag</span></div>
+
+
+<div class="viewcode-block" id="Algorithm.start_algo">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.start_algo">[docs]</a>
+    <span class="k">def</span> <span class="nf">start_algo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">circuit_window</span><span class="p">):</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Algoritmo online&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">called</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">terminate</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># Crea un thread per la funzione start_sensor</span>
+        <span class="n">sensor_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">start_sensor</span><span class="p">(</span><span class="n">circuit_window</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sensor_thread</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">#avvio i thread</span>
+        <span class="n">sensor_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+        
+             
+<div class="viewcode-block" id="Algorithm.stop_algo">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.stop_algo">[docs]</a>
+    <span class="k">def</span> <span class="nf">stop_algo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Controlla che la funzione sia stata chiamata e che non sia amministratore</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">called</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">data</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">terminate</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># Attendi che i thread terminino</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Threads terminati correttamente.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">called</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1">#Set dei percorsi a []</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">percorsi_assegnati</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;l&#39;ho fermato io ;)&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Algorithm.gestione_velocita">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.gestione_velocita">[docs]</a>
+    <span class="k">def</span> <span class="nf">gestione_velocita</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">circuit_window</span><span class="p">,</span><span class="nb">id</span><span class="p">,</span><span class="n">velocita</span><span class="p">):</span>
+
+        <span class="n">memoria</span>         <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
+        <span class="n">ID</span>              <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;LocoID&#39;</span><span class="p">]</span>
+        <span class="n">direzione</span>       <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;Direzione&#39;</span><span class="p">]</span>
+
+        <span class="c1">#Impostare la velocita in memoria e la direzione</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;Velocita&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="n">velocita</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;Direzione&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">direzione</span>
+        <span class="n">velocita_effettiva</span> <span class="o">=</span> <span class="n">velocita</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">K_velocita</span>
+
+        <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_serial_port_available</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="c1">#mando il comando di throttle</span>
+            <span class="n">comandi</span><span class="o">.</span><span class="n">throttle</span><span class="p">(</span><span class="n">memoria</span><span class="p">,</span><span class="n">ID</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">velocita_effettiva</span><span class="p">),</span><span class="n">direzione</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">utilities</span><span class="o">.</span><span class="n">show_error_box</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span><span class="n">circuit_window</span><span class="o">.</span><span class="n">locomotive_window</span><span class="p">,</span><span class="s2">&quot;main&quot;</span><span class="p">)</span></div>
+
+
+
+    <span class="c1">#Ritorna un vettore che contiene i percorsi liberi in quel momento</span>
+<div class="viewcode-block" id="Algorithm.show_percorsi_liberi">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.show_percorsi_liberi">[docs]</a>
+    <span class="k">def</span> <span class="nf">show_percorsi_liberi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">id</span><span class="p">):</span>
+        <span class="n">direzione</span>       <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;Direzione&#39;</span><span class="p">]</span>
+
+        <span class="c1">#A seconda delle direzione ci sono dei percorsi diversi</span>
+        <span class="k">if</span> <span class="n">direzione</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">LRoutes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">percorsi_assegnati</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">RRoutes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">percorsi_assegnati</span><span class="p">))</span></div>
+
+
+    <span class="c1">#Ritorna l&#39;intersezione tra i percorsi assegnati, in modo da trovare i punti in cui si incrociano i percorsi</span>
+<div class="viewcode-block" id="Algorithm.trova_criticita">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.trova_criticita">[docs]</a>
+    <span class="k">def</span> <span class="nf">trova_criticita</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">LRoutes</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">percorsi_assegnati</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">RRoutes</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">percorsi_assegnati</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span></div>
+
+
+    <span class="c1">#Dato un treno sceglie il percorso, inserisce il vettore contenente le criticita nel caso sia il secondo</span>
+<div class="viewcode-block" id="Algorithm.scegli_percorso">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.scegli_percorso">[docs]</a>
+    <span class="k">def</span> <span class="nf">scegli_percorso</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;i percorsi assegnati sono: &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">percorsi_assegnati</span><span class="p">))</span>
+        <span class="n">percorsi_liberi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_percorsi_liberi</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="n">percorso_scelto</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">percorsi_liberi</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;il percorso scelto è: &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">percorso_scelto</span><span class="p">))</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">percorsi_assegnati</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">percorso_scelto</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;Percorso&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percorso_scelto</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">criticita</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trova_criticita</span><span class="p">()</span></div>
+
+        
+    <span class="c1">#Funzione che fa partire i treni, e sceglie il percorso iniziale, in automatico scarta la terza locomotiva</span>
+    <span class="c1">#Devo stabilire la partenza per decidere la direzione, </span>
+    <span class="c1">#in questo momento la locomotivaq 1 e la 2 partono a velocita stabilita</span>
+<div class="viewcode-block" id="Algorithm.start_throttle">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.start_throttle">[docs]</a>
+    <span class="k">def</span> <span class="nf">start_throttle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">circuit_window</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_serial_port_available</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">comandi</span><span class="o">.</span><span class="n">open_current</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="c1">#Impostiamo un percorso e la direzione da prendere</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;Direzione&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scegli_percorso</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+                <span class="c1">#Impostiamo la velocita che vogliamo da 0 a 100</span>
+                <span class="n">velocita</span>  <span class="o">=</span> <span class="mi">20</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gestione_velocita</span><span class="p">(</span><span class="n">circuit_window</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">velocita</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;le criticità sono: &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">criticita</span><span class="p">))</span>
+            
+            <span class="c1">#Per ora non funzione</span>
+            <span class="c1"># for item in data.criticita:</span>
+            <span class="c1">#     semaphore = traffic_light.Semaphore(circuit_window,item)</span>
+            <span class="c1">#     self.semaphore.append(semaphore.thread)</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">utilities</span><span class="o">.</span><span class="n">show_error_box</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span><span class="o">+</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span><span class="n">circuit_window</span><span class="o">.</span><span class="n">locomotive_window</span><span class="p">,</span><span class="s2">&quot;main&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#   Questa funzione controlla che i percorsi adiacenti a quelli toccati dal treno, nella direzione in cui sta andando siano liberi</span>
+<div class="viewcode-block" id="Algorithm.control">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.control">[docs]</a>
+    <span class="k">def</span> <span class="nf">control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Turnout</span><span class="p">,</span><span class="n">direzione</span><span class="p">,</span><span class="n">natural_link</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">Adjacent_Turnouts</span><span class="p">[</span><span class="n">Turnout</span><span class="p">][</span><span class="n">direzione</span><span class="p">]:</span>
+            <span class="c1">#Se nel sensore c&#39;è qualcosa, attiva lo scambio, almeno che non sia passivo, </span>
+            <span class="c1">#in quel caso deve fermare il treno e poi farlo ripartire quando passa    --------------------------------------------</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)][</span><span class="n">direzione</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="p">:</span>
+                <span class="c1">#-1 vuoldire cambio passivo</span>
+                <span class="k">if</span> <span class="n">natural_link</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;STOP&quot;</span><span class="p">)</span>
+
+                <span class="c1">#Assegno il percorso che è occupato.</span>
+
+                <span class="n">data</span><span class="o">.</span><span class="n">root_occupied</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="k">return</span> <span class="n">natural_link</span><span class="o">==</span><span class="n">data</span><span class="o">.</span><span class="n">root_occupied</span>
+            
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Algorithm.process_messages">
+<a class="viewcode-back" href="../../app.html#app.algorithm.Algorithm.process_messages">[docs]</a>
+    <span class="k">def</span> <span class="nf">process_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">circuit_window</span><span class="p">):</span>
+        <span class="c1"># print(f&quot;Variabile di terminazione: {GUI.Sensors[&#39;Terminate&#39;][0]}&quot;)</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">data</span><span class="o">.</span><span class="n">terminate</span><span class="p">:</span>
+            <span class="c1">#Controlla che la finestra della calibrazione sia aperta</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">variabili_apertura</span><span class="p">[</span><span class="s2">&quot;locomotive_RFID_var&quot;</span><span class="p">]:</span>
+               <span class="c1">#aspetta che venga chiusa e pulisce la queue</span>
+               <span class="n">circuit_window</span><span class="o">.</span><span class="n">GUI</span><span class="o">.</span><span class="n">locomotive_RFID_window</span><span class="o">.</span><span class="n">wait_window</span><span class="p">()</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">message_queue</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Attendi con un timeout di 0.1 secondi</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+                <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="c1">#-------&gt; per separare la parte del messaggio che riguarda l&#39;ID del sensore da quella che riguarda l&#39;ID del treno, che corrisponde al LocoID</span>
+                <span class="n">canvas</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">canvas_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="c1">#gestione dei cambi tramite l&#39;outupt dei sensori</span>
+
+
+                <span class="c1">#Cerco l&#39;id corrispondente alla locomotiva che è passata.</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">CalcolaIDtreno</span><span class="p">(</span><span class="s1">&#39;RFIDtag&#39;</span><span class="p">,</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Cambio </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">sensor</span> <span class="o">=</span> <span class="s2">&quot;Sensore </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+                <span class="c1">#Metto in memoria del sensore che ha ricevuto, l&#39;ultimo uid letto</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="n">sensor</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">canvas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">circuit_window</span><span class="o">.</span><span class="n">change_Sensors</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;Direzione&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># va verso sinistra &lt;--</span>
+                    <span class="c1">#Percorsi possibili partendo da G, stazione:</span>
+<span class="w">                    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">                        ABCDEFGH -&gt; 12345678</span>
+<span class="sd">                        1-GCDEFHG    -&gt; Schiva A e B    -&gt; Ricomincia da G, GCDEFHG</span>
+<span class="sd">                        2-GCDEFG     -&gt; Schiva A,B,H    -&gt; Ricomincia da G, GCDEFG</span>
+<span class="sd">                        3-GCDEFHD    -&gt; Schiva A e B    -&gt; Ricomincia da D, DEFHD</span>
+<span class="sd">                        4-GCDEBA     -&gt; Schiva F e H    -&gt; Finisce in deposito, A</span>
+<span class="sd">                        5-GCDEBC     -&gt; Schiva A,F,H    -&gt; Ricomincia Da C, CDEB</span>
+<span class="sd">                        Lettere che cambiano stato sono: -&gt; A cambia ma si gestisce da solo</span>
+<span class="sd">                        A,H,E,F,</span>
+<span class="sd">                        Lettere passive sono: </span>
+<span class="sd">                        C,D,G</span>
+
+<span class="sd">                        Albero logico:</span>
+<span class="sd">                        if E == aperto:</span>
+<span class="sd">                            if F == aperto:</span>
+<span class="sd">                                if H == aperto:</span>
+<span class="sd">                                    1</span>
+<span class="sd">                                else:</span>
+<span class="sd">                                    3</span>
+<span class="sd">                            else:</span>
+<span class="sd">                                2</span>
+<span class="sd">                        else:</span>
+<span class="sd">                            if B == aperto:</span>
+<span class="sd">                                5</span>
+<span class="sd">                            else:</span>
+<span class="sd">                                4</span>
+
+<span class="sd">                        Tutti i percorsi dipendono da E</span>
+<span class="sd">                        Le altre dipendenze sono:</span>
+<span class="sd">                        1 e 3 dipendono da H e F; hanno F uguale, se cambia diventa 2</span>
+<span class="sd">                        2 Dipende da F</span>
+<span class="sd">                        4 va in deposito, dopo di esso sicuramente si cambia direzione. Dipende da E e B</span>
+<span class="sd">                        5 dipende da </span>
+<span class="sd">                        I percorsi percio sono intercambiabili, a seconda delle loro dipendenze, in ogni caso seguono questi schemi. Da 1 pero si puo andare a 4, </span>
+<span class="sd">                        basta modificare le dipendenze di 4 che sono E e B. Infatti tutti i percorsi dipendono da E.</span>
+
+<span class="sd">                        10 = B and E -&gt; Il percorso dieci sara la distanza tra b ed e, il suo passaggio da destra è inevitabile se si arriva da B</span>
+<span class="sd">                        11 = E and D</span>
+<span class="sd">                        12 = C and D</span>
+<span class="sd">                        13 = C and B</span>
+<span class="sd">                        14 = C and G</span>
+<span class="sd">                        15 = G and F</span>
+<span class="sd">                        16 = F and E</span>
+<span class="sd">                        17 = H and G</span>
+<span class="sd">                        18 = H and D</span>
+
+<span class="sd">                        Vige la precedenza a destra</span>
+<span class="sd">                        Partenza da A: In ogni caso bisogna controllare sinistra e destra, prima sinistra</span>
+<span class="sd">                        10 - Arriva il segnale in A, e si decide che fare</span>
+<span class="sd">                            if C == False,</span>
+<span class="sd">                                if sensore C == &#39;&#39; or sensore C == sensore B vai pure, </span>
+<span class="sd">                                else aspetta che C sia == a B di DESTRA  </span>
+<span class="sd">                            if E == False, bisogna controllare se ci sono dei treni, </span>
+<span class="sd">                                if sensore E != &#39;&#39; or sensore E == sensore B vai pure, </span>
+<span class="sd">                                else aspetta che E sia = a B di SINISTRA</span>
+
+<span class="sd">                        11 - Arriva il segnale in B, e si decide che fare</span>
+<span class="sd">ì</span>
+<span class="sd">                            if sensore F == &#39;&#39; or sensore G == sensore F </span>
+<span class="sd">                                ifsensore F == sensore H vai pure, </span>
+<span class="sd">                                else aspetta che F sia uguale a H</span>
+<span class="sd">                            else aspetta che F sia == a G di DESTRA  </span>
+
+<span class="sd">                            if sensore D == &#39;&#39; or sensore D == sensore E vai pure, </span>
+<span class="sd">                            else aspetta che D sia = a E di SINISTRA</span>
+
+<span class="sd">                         12 - Arriva il segnale in B, e si decide che fare   </span>
+
+<span class="sd">                            if sensore G == &#39;&#39; or sensore G != sensore C </span>
+<span class="sd">                                   if sensore B == &#39;&#39; or sensore B != sensore C vai pure, </span>
+<span class="sd">                                   else scambia D prima che arriva l&#39;altro treno, scambio deve essere True</span>
+<span class="sd">                            else scambia D prima che arriva l&#39;altro treno da 14, scambio deve essere False  DESTRA</span>
+
+<span class="sd">                            2 casi:</span>
+<span class="sd">                            Arriva da G, </span>
+<span class="sd">                            if B == &#39;&#39; or B == C, vai</span>
+<span class="sd">                            else aspetta che B sia uguale a C</span>
+
+<span class="sd">                            Arriva da G, </span>
+<span class="sd">                            if B == &#39;&#39; or B == C, vai</span>
+<span class="sd">                            else aspetta che B sia uguale a C</span>
+
+<span class="sd">                    &#39;&#39;&#39;</span>
+                    <span class="c1">#A questo punto arriva il sensore che ha letto il messaggio della locomotiva che va all&#39;indietro e ha l&#39;id registrato dal sensore che trasmette</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;Nome&quot;</span><span class="p">])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;del sensore: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+                    <span class="k">match</span> <span class="n">text</span><span class="p">:</span>
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 1&quot;</span><span class="p">:</span>
+
+                            <span class="c1">#Azzero il cambio precedente</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 2&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                            <span class="c1"># database.Sensors[text][0] = message[1]</span>
+                            <span class="c1"># canvas.after(0, GUI.change_Sensors, text, message[1])</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 5&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ABA&quot;</span>
+
+
+                            <span class="c1"># Avvia la funzione dopo un certo tempo, a seconda di quanto serva </span>
+                            <span class="n">time</span> <span class="o">=</span> <span class="mi">5</span>
+                            <span class="c1">#Impostiamo la velocita che vogliamo da 0 a 100</span>
+                            <span class="n">velocita</span>  <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">gestione_velocita</span><span class="p">(</span><span class="n">circuit_window</span><span class="p">,</span><span class="nb">id</span><span class="p">,</span><span class="n">velocita</span><span class="p">))</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+                            <span class="c1">#questa if controlla che l&#39;ultimo treno passato non sia lo stesso che è passato ora</span>
+                            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 1&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;RFIDtag&quot;</span><span class="p">]:</span>
+                                <span class="c1">#comando per scambiare</span>
+                                <span class="n">canvas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">circuit_window</span><span class="o">.</span><span class="n">change_Turnouts</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                            <span class="c1">#Imposta la var del treno in memoria</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 1&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;RFIDtag&quot;</span><span class="p">]</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 1&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 2&quot;</span><span class="p">:</span>
+                            <span class="c1">#questa if controlla che l&#39;ultimo treno passato non sia lo stesso che è passato ora</span>
+                            <span class="c1"># if database.Sensors[&quot;Sensore 2&quot;][1] != database.locomotives_data[id][&quot;RFIDtag&quot;] and database.Sensors[&quot;Sensore 1&quot;][2] == &quot;&quot;:</span>
+                            <span class="c1">#     canvas.after(0, circuit_window.change_Turnouts, text, &quot;&quot;)</span>
+                            <span class="c1">#     database.Sensors[&quot;Sensore 2&quot;][1] = database.locomotives_data[id][&quot;RFIDtag&quot;]</span>
+
+                            <span class="c1">#Azzero il cambio precedente da sinistra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 5&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                            <span class="c1">#è il collegamento che ha di natura il cambio, all&#39;inizio di tutto.</span>
+                            <span class="n">natural_link</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">Turnouts</span><span class="p">[</span><span class="n">text</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span>
+                            <span class="c1">#Gli si puo mettere anche 0 fisso</span>
+                            <span class="c1">#Fa il controllo, and se il link di base è uguale a quello occupato avvia lo scambio</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;Direzione&quot;</span><span class="p">],</span><span class="n">natural_link</span><span class="p">):</span>
+                                <span class="n">canvas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">circuit_window</span><span class="o">.</span><span class="n">change_Turnouts</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 3&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da sinistra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 2&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 7&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 4&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da sinistra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 3&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 8&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 5&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da sinistra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 4&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 6&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da sinistra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 5&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 7&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da sinistra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 6&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 8&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 8&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da sinistra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 6&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cambio insesistente&quot;</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># va verso destra --&gt;</span>
+                    <span class="c1">#Percorsi possibili partendo da A, deposito treni:</span>
+<span class="w">                    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">                        ABCDEFGH -&gt; 12345678</span>
+<span class="sd">                        1-ABEDCGFE   -&gt; Schiva H             -&gt; Ricomincia da E, EDCGFE</span>
+<span class="sd">                        2-ABEDHFE   -&gt; Schiva C e G          -&gt; Ricomincia da E, EDHFE</span>
+<span class="sd">                        3-ABEDCB     -&gt; Schiva F,G,H         -&gt; Ricomincia da B, BEDCB</span>
+<span class="sd">                        4-ABEDCGHFE  -&gt; Non schiva niente    -&gt; Ricomincia Da E, EDCGHF</span>
+<span class="sd">                        Lettere che cambiano stato sono:</span>
+<span class="sd">                        C,D,</span>
+<span class="sd">                        Lettere passive sono:</span>
+<span class="sd">                        A,B,E,F,H</span>
+
+<span class="sd">                        Albero logico:</span>
+<span class="sd">                        if D == aperto:</span>
+<span class="sd">                                2</span>
+<span class="sd">                        else:</span>
+<span class="sd">                            if C == aperto:</span>
+<span class="sd">                                if G == aperto:</span>
+<span class="sd">                                    4</span>
+<span class="sd">                                else:</span>
+<span class="sd">                                    1   </span>
+<span class="sd">                            else:</span>
+<span class="sd">                                3</span>
+
+<span class="sd">                        Tutti i percorsi dipendono da D</span>
+<span class="sd">                        Le altre dipendenze sono:</span>
+<span class="sd">                        2 dipende solo da D</span>
+<span class="sd">                        1 e 4 dipendono da C e G; hanno C uguale, se cambia diventa 3</span>
+<span class="sd">                        3 Dipende da C</span>
+
+<span class="sd">                        I percorsi percio sono intercambiabili, a seconda delle loro dipendenze, in ogni caso seguono questi schemi. Da 4 pero si puo andare a 3, </span>
+<span class="sd">                        basta modificare le dipendenze di 3 che sono D e C. Infatti tutti i percorsi dipendono da D.</span>
+<span class="sd">                        In questo caso non sara neanche necessario cambiare D  dato che si trova nella stessa condizione di 4.</span>
+
+<span class="sd">                        Negli scambi passivi vige la precedenza a destra, percio se si proviene da destra si potra andare, se si proviene da sinistra bisognera attendere lo scambio di destra e frontale</span>
+<span class="sd">                        Gli scambi attivi dovranno invece controllare che ci sia un treno in ognuno dei suoi percorsi adiacenti.</span>
+<span class="sd">                    &#39;&#39;&#39;</span>
+
+
+                    <span class="k">match</span> <span class="n">text</span><span class="p">:</span>
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 1&quot;</span><span class="p">:</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 1&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">locomotives_data</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;RFIDtag&quot;</span><span class="p">]</span>
+                            <span class="c1">#Deve avvisare il 2 che sta arrivando un treno e che quindi non puo aprirsi,</span>
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 2&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da destra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 1&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 3&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+
+                            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 1&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 2&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>
+                                <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 1&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 3&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da destra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 4&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 4&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da destra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 5&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 5&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da destra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 2&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 6&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 6&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da destra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 8&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 7&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 7&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da destra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 3&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span> <span class="s2">&quot;Cambio 8&quot;</span><span class="p">:</span>
+                            <span class="c1">#Azzero il cambio precedente da destra</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 8&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">Sensors</span><span class="p">[</span><span class="s2">&quot;Sensore 4&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cambio insesistente&quot;</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                <span class="c1"># Timeout scaduto, controlla nuovamente la variabile di terminazione</span>
+                <span class="k">pass</span></div>
+</div>
+
+</pre></div>
+
+	    </div>
+            <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, Alessio Cammarata.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/jucacrispim/sphinx_pdj_theme">theme</a> provided by <a href="https://poraodojuca.dev">Porão do Juca</a>.
+
+</footer>
+	</div>
+	</div>
+	  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.2.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/doctools.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js">
+
+    </script>
+
+  
+
+   <script type="text/javascript"
+           src="../../_static/js/theme.js"></script>
+
+   <script type="text/javascript"
+           src="../../_static/js/pdj.js"></script>
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  </body>
+</html>
