@@ -4,6 +4,14 @@ app package
 Submodules
 ----------
 
+app.main module
+---------------
+
+.. automodule:: app.main
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 app.GUI\_refactored module
 --------------------------
 
@@ -12,10 +20,10 @@ app.GUI\_refactored module
    :undoc-members:
    :show-inheritance:
 
-app.algorithm module
---------------------
+app.windows module
+------------------
 
-.. automodule:: app.algorithm
+.. automodule:: app.windows
    :members:
    :undoc-members:
    :show-inheritance:
@@ -28,10 +36,10 @@ app.buttons module
    :undoc-members:
    :show-inheritance:
 
-app.cam module
---------------
+app.algorithm module
+--------------------
 
-.. automodule:: app.cam
+.. automodule:: app.algorithm
    :members:
    :undoc-members:
    :show-inheritance:
@@ -52,13 +60,6 @@ app.data module
    :undoc-members:
    :show-inheritance:
 
-app.main module
----------------
-
-.. automodule:: app.main
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 app.utilities module
 --------------------
@@ -68,10 +69,10 @@ app.utilities module
    :undoc-members:
    :show-inheritance:
 
-app.windows module
-------------------
+app.cam module
+--------------
 
-.. automodule:: app.windows
+.. automodule:: app.cam
    :members:
    :undoc-members:
    :show-inheritance:

@@ -116,17 +116,23 @@ def crea_deviatoio(Turnout_ID,pin):
     
     -- ID: the numeric ID (0-32767) of the output to control\n
     -- PIN: the arduino pin number to use for the output\n
-    -- IFLAG: defines the operational behavior of the output based on bits 0, 1, and 2 as follows:\n\n\n
+    -- IFLAG: defines the operational behavior of the output based on bits 0, 1, and 2 as follows:\n\n
+    
+    ---\n
 
-    - 1) IFLAG, bit 0:\n
+    - 1) -IFLAG, bit 0:\n
     0 = forward operation (ACTIVE=HIGH / INACTIVE=LOW)\n
-    1 = inverted operation (ACTIVE=LOW / INACTIVE=HIGH)\n\n
+    1 = inverted operation (ACTIVE=LOW / INACTIVE=HIGH)\n
 
-    - 2) IFLAG, bit 1:\n 
+    ---\n
+
+    - 2) -IFLAG, bit 1:\n 
     0 = state of pin restored on power-up to either ACTIVE or INACTIVE depending on state before power-down; state of pin set to INACTIVE when first created\n
     1 = state of pin set on power-up, or when first created, to either ACTIVE of INACTIVE depending on IFLAG, bit 2\n\n
 
-    - 3) IFLAG, bit 2:\n
+    ---\n
+
+    - 3) -IFLAG, bit 2:\n
     0 = state of pin set to INACTIVE uponm power-up or when first created\n
     1 = state of pin set to ACTIVE uponm power-up or when first created 
 

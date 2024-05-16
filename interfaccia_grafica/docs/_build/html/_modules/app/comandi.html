@@ -269,17 +269,17 @@
 <span class="sd">    </span>
 <span class="sd">    -- ID: the numeric ID (0-32767) of the output to control\n</span>
 <span class="sd">    -- PIN: the arduino pin number to use for the output\n</span>
-<span class="sd">    -- IFLAG: defines the operational behavior of the output based on bits 0, 1, and 2 as follows:\n\n\n</span>
-
-<span class="sd">    - 1) IFLAG, bit 0:\n</span>
+<span class="sd">    -- IFLAG: defines the operational behavior of the output based on bits 0, 1, and 2 as follows:\n\n</span>
+<span class="sd">    ---\n</span>
+<span class="sd">    - 1) -IFLAG, bit 0:\n</span>
 <span class="sd">    0 = forward operation (ACTIVE=HIGH / INACTIVE=LOW)\n</span>
-<span class="sd">    1 = inverted operation (ACTIVE=LOW / INACTIVE=HIGH)\n\n</span>
-
-<span class="sd">    - 2) IFLAG, bit 1:\n </span>
+<span class="sd">    1 = inverted operation (ACTIVE=LOW / INACTIVE=HIGH)\n</span>
+<span class="sd">    ---\n</span>
+<span class="sd">    - 2) -IFLAG, bit 1:\n </span>
 <span class="sd">    0 = state of pin restored on power-up to either ACTIVE or INACTIVE depending on state before power-down; state of pin set to INACTIVE when first created\n</span>
 <span class="sd">    1 = state of pin set on power-up, or when first created, to either ACTIVE of INACTIVE depending on IFLAG, bit 2\n\n</span>
-
-<span class="sd">    - 3) IFLAG, bit 2:\n</span>
+<span class="sd">    ---\n</span>
+<span class="sd">    - 3) -IFLAG, bit 2:\n</span>
 <span class="sd">    0 = state of pin set to INACTIVE uponm power-up or when first created\n</span>
 <span class="sd">    1 = state of pin set to ACTIVE uponm power-up or when first created </span>
 

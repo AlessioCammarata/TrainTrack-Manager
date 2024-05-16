@@ -139,6 +139,45 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
+<section id="module-app.main">
+<span id="app-main-module"></span><h2>app.main module<a class="headerlink" href="#module-app.main" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.main.App">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.main.</span></span><span class="sig-name descname"><span class="pre">App</span></span><a class="reference internal" href="_modules/app/main.html#App"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Tk</span></code></p>
+<p># APP</p>
+<p>The app class is useful to create the root page. In these class you define the parameters of the root window.</p>
+<p>Inside this class you can call 2 different method</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.main.App.on_close_root">
+<span class="sig-name descname"><span class="pre">on_close_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.on_close_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.on_close_root" title="Link to this definition">¶</a></dt>
+<dd><ul class="simple">
+<li><p>This function is useful to <strong>close the root window and to stop the algorithm</strong> if it was started.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.main.App.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.refresh" title="Link to this definition">¶</a></dt>
+<dd><ul class="simple">
+<li><p>This function is useful to <strong>refresh</strong> the page when a language change occurs.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.main.setup">
+<span class="sig-prename descclassname"><span class="pre">app.main.</span></span><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.setup" title="Link to this definition">¶</a></dt>
+<dd><ul>
+<li><p>During the <strong>setup</strong> function are determined some important depndencies like the current path of the project, the current SO and processor architecture and also the current language</p>
+<p>which is standard set on italian language. Moreover if you have connected the serial ports of your arduino devices, they are automatically connected and setted into the data cache.</p>
+<p>If you want to modify the latter, just go to the settings and set the configuration according to your needs.</p>
+</li>
+</ul>
+</dd></dl>
+
+</section>
 <section id="module-app.GUI_refactored">
 <span id="app-gui-refactored-module"></span><h2>app.GUI_refactored module<a class="headerlink" href="#module-app.GUI_refactored" title="Link to this heading">¶</a></h2>
 <dl class="py class">
@@ -274,6 +313,89 @@
 </dd></dl>
 
 </section>
+<section id="module-app.windows">
+<span id="app-windows-module"></span><h2>app.windows module<a class="headerlink" href="#module-app.windows" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.RFID_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">RFID_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#RFID_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.RFID_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.windows.circuit_window">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">circuit_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nscambi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.change_Sensors">
+<span class="sig-name descname"><span class="pre">change_Sensors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RFIDtag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_Sensors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_Sensors" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.change_Turnouts">
+<span class="sig-name descname"><span class="pre">change_Turnouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_Turnouts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_Turnouts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.change_color">
+<span class="sig-name descname"><span class="pre">change_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activated</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_color" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.open_RFID_window">
+<span class="sig-name descname"><span class="pre">open_RFID_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.open_RFID_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.open_RFID_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.windows.circuit_window.open_circuit_window">
+<span class="sig-name descname"><span class="pre">open_circuit_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">automatico</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.open_circuit_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.open_circuit_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.control_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">control_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locomotiva</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_controllo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#control_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.control_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.creation_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">creation_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#creation_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.creation_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.modify_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">modify_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#modify_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.modify_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.remove_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">remove_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#remove_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.remove_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.windows.settings_window">
+<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">settings_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#settings_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.settings_window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-app.buttons">
+<span id="app-buttons-module"></span><h2>app.buttons module<a class="headerlink" href="#module-app.buttons" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.buttons.Buttons">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.buttons.</span></span><span class="sig-name descname"><span class="pre">Buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.buttons.Buttons.GENERAL_STOP_START_button">
+<span class="sig-name descname"><span class="pre">GENERAL_STOP_START_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons.GENERAL_STOP_START_button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons.GENERAL_STOP_START_button" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.buttons.Buttons.on_off">
+<span class="sig-name descname"><span class="pre">on_off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons.on_off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons.on_off" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-app.algorithm">
 <span id="app-algorithm-module"></span><h2>app.algorithm module<a class="headerlink" href="#module-app.algorithm" title="Link to this heading">¶</a></h2>
 <dl class="py class">
@@ -338,49 +460,6 @@
 </dd></dl>
 
 </section>
-<section id="module-app.buttons">
-<span id="app-buttons-module"></span><h2>app.buttons module<a class="headerlink" href="#module-app.buttons" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="app.buttons.Buttons">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.buttons.</span></span><span class="sig-name descname"><span class="pre">Buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="app.buttons.Buttons.GENERAL_STOP_START_button">
-<span class="sig-name descname"><span class="pre">GENERAL_STOP_START_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons.GENERAL_STOP_START_button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons.GENERAL_STOP_START_button" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="app.buttons.Buttons.on_off">
-<span class="sig-name descname"><span class="pre">on_off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/buttons.html#Buttons.on_off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.buttons.Buttons.on_off" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-app.cam">
-<span id="app-cam-module"></span><h2>app.cam module<a class="headerlink" href="#module-app.cam" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="app.cam.Camera">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.cam.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="app.cam.Camera.cattura_webcam">
-<span class="sig-name descname"><span class="pre">cattura_webcam</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.cattura_webcam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.cattura_webcam" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="app.cam.Camera.chiudi_finestra_webcam">
-<span class="sig-name descname"><span class="pre">chiudi_finestra_webcam</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.chiudi_finestra_webcam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.chiudi_finestra_webcam" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="app.cam.Camera.esiste">
-<span class="sig-name descname"><span class="pre">esiste</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.esiste"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.esiste" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
 <section id="module-app.comandi">
 <span id="app-comandi-module"></span><h2>app.comandi module<a class="headerlink" href="#module-app.comandi" title="Link to this heading">¶</a></h2>
 <p>The purpose of this file is to comunicate with arduino directly by the serial port.
@@ -431,25 +510,28 @@ With these command you could be able to control both the system and all the loco
 <p>– ID: the numeric ID (0-32767) of the output to control</p>
 <p>– PIN: the arduino pin number to use for the output</p>
 <p>– IFLAG: defines the operational behavior of the output based on bits 0, 1, and 2 as follows:</p>
+<p>—</p>
 <ul class="simple">
 <li><ol class="arabic simple">
-<li><p>IFLAG, bit 0:</p></li>
+<li><p>-IFLAG, bit 0:</p></li>
 </ol>
 </li>
 </ul>
 <p>0 = forward operation (ACTIVE=HIGH / INACTIVE=LOW)</p>
 <p>1 = inverted operation (ACTIVE=LOW / INACTIVE=HIGH)</p>
+<p>—</p>
 <ul class="simple">
 <li><ol class="arabic simple" start="2">
-<li><p>IFLAG, bit 1:</p></li>
+<li><p>-IFLAG, bit 1:</p></li>
 </ol>
 </li>
 </ul>
 <p>0 = state of pin restored on power-up to either ACTIVE or INACTIVE depending on state before power-down; state of pin set to INACTIVE when first created</p>
 <p>1 = state of pin set on power-up, or when first created, to either ACTIVE of INACTIVE depending on IFLAG, bit 2</p>
+<p>—</p>
 <ul class="simple">
 <li><ol class="arabic simple" start="3">
-<li><p>IFLAG, bit 2:</p></li>
+<li><p>-IFLAG, bit 2:</p></li>
 </ol>
 </li>
 </ul>
@@ -510,45 +592,6 @@ With these command you could be able to control both the system and all the loco
 8-ABEDCB     -&gt; Schiva F,G,H         -&gt; Ricomincia da B, BEDCB
 9-ABEDCGHFE  -&gt; Non schiva niente    -&gt; Ricomincia Da E, EDCGHF</p>
 </div></blockquote>
-</dd></dl>
-
-</section>
-<section id="module-app.main">
-<span id="app-main-module"></span><h2>app.main module<a class="headerlink" href="#module-app.main" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="app.main.App">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.main.</span></span><span class="sig-name descname"><span class="pre">App</span></span><a class="reference internal" href="_modules/app/main.html#App"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Tk</span></code></p>
-<p># APP</p>
-<p>The app class is useful to create the root page. In these class you define the parameters of the root window.</p>
-<p>Inside this class you can call 2 different method</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="app.main.App.on_close_root">
-<span class="sig-name descname"><span class="pre">on_close_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.on_close_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.on_close_root" title="Link to this definition">¶</a></dt>
-<dd><ul class="simple">
-<li><p>This function is useful to <strong>close the root window and to stop the algorithm</strong> if it was started.</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="app.main.App.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.refresh" title="Link to this definition">¶</a></dt>
-<dd><ul class="simple">
-<li><p>This function is useful to <strong>refresh</strong> the page when a language change occurs.</p></li>
-</ul>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.main.setup">
-<span class="sig-prename descclassname"><span class="pre">app.main.</span></span><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.setup" title="Link to this definition">¶</a></dt>
-<dd><ul>
-<li><p>During the <strong>setup</strong> function are determined some important depndencies like the current path of the project, the current SO and processor architecture and also the current language</p>
-<p>which is standard set on italian language. Moreover if you have connected the serial ports of your arduino devices, they are automatically connected and setted into the data cache.</p>
-<p>If you want to modify the latter, just go to the settings and set the configuration according to your needs.</p>
-</li>
-</ul>
 </dd></dl>
 
 </section>
@@ -630,68 +673,28 @@ With these command you could be able to control both the system and all the loco
 <dd></dd></dl>
 
 </section>
-<section id="module-app.windows">
-<span id="app-windows-module"></span><h2>app.windows module<a class="headerlink" href="#module-app.windows" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="app.windows.RFID_window">
-<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">RFID_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#RFID_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.RFID_window" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<section id="module-app.cam">
+<span id="app-cam-module"></span><h2>app.cam module<a class="headerlink" href="#module-app.cam" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="app.windows.circuit_window">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">circuit_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nscambi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="app.cam.Camera">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.cam.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit_window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="app.windows.circuit_window.change_Sensors">
-<span class="sig-name descname"><span class="pre">change_Sensors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RFIDtag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_Sensors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_Sensors" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="app.cam.Camera.cattura_webcam">
+<span class="sig-name descname"><span class="pre">cattura_webcam</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.cattura_webcam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.cattura_webcam" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="app.windows.circuit_window.change_Turnouts">
-<span class="sig-name descname"><span class="pre">change_Turnouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_Turnouts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_Turnouts" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="app.cam.Camera.chiudi_finestra_webcam">
+<span class="sig-name descname"><span class="pre">chiudi_finestra_webcam</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.chiudi_finestra_webcam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.chiudi_finestra_webcam" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="app.windows.circuit_window.change_color">
-<span class="sig-name descname"><span class="pre">change_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activated</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.change_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.change_color" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="app.windows.circuit_window.open_RFID_window">
-<span class="sig-name descname"><span class="pre">open_RFID_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.open_RFID_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.open_RFID_window" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="app.windows.circuit_window.open_circuit_window">
-<span class="sig-name descname"><span class="pre">open_circuit_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">automatico</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#circuit_window.open_circuit_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.circuit_window.open_circuit_window" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="app.cam.Camera.esiste">
+<span class="sig-name descname"><span class="pre">esiste</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/cam.html#Camera.esiste"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.cam.Camera.esiste" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.windows.control_window">
-<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">control_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locomotiva</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_controllo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#control_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.control_window" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.windows.creation_window">
-<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">creation_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#creation_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.creation_window" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.windows.modify_window">
-<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">modify_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#modify_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.modify_window" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.windows.remove_window">
-<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">remove_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#remove_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.remove_window" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.windows.settings_window">
-<span class="sig-prename descclassname"><span class="pre">app.windows.</span></span><span class="sig-name descname"><span class="pre">settings_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locomotive_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/windows.html#settings_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.windows.settings_window" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </section>
 <section id="module-app">
