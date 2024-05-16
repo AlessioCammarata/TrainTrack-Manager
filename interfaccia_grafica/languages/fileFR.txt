@@ -68,8 +68,8 @@ En procédant, toutes les fenêtres supplémentaires par rapport à la principal
 Pour démarrer le circuit automatique, vous devez insérer un minimum de 2 locomotives et un maximum de 3.
 Pour modifier les paramètres relatifs aux locomotives maximales, le nombre de locomotives dans le tableau DOIT être inférieur à celles déjà présentes.
 Si vous continuez, le tableau sera vidé.
-
-
+Porte
+Dispositif
 
 
 
@@ -96,7 +96,7 @@ CIRCUIT DE CONTRÔLE MANUEL
 tag RFID
 ID Local
 Change
-
+Inconnu
 Informations | 100 - 122
 Ce que vous pouvez faire avec Train Track:
 Gestion des locomotives

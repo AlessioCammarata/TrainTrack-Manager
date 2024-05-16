@@ -57,6 +57,7 @@ serial_port_info = {
 #Vengono salvati i nomi delle porte
 serial_port_names = {
 }
+namesTC = []
 
 control_var_errore = False # Variabile che serve a controllare se c'è stato un errore
 

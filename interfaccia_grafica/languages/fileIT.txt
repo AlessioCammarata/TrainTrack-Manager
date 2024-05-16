@@ -68,8 +68,8 @@ Procedendo tutte le finestre in piu ripsetto alla principale verranno chiuse.
 Per avviare il circuito automatico bisogna inserire almeno 2 locomotive e massimo 3
 Per cambiare le impostazioni relative alle locomotive massime, il numero di locomotive in tabella DEVE essere minore di quelle gia presenti.
 Se si continua verrà svuotata la tabella.
-
-
+Porta
+Dispositivo
 
 
 
@@ -96,7 +96,7 @@ CONTROLLO MANUALE CIRCUITO
 tag RFID
 ID Locale
 Cambio
-
+Sconosciuto
 -Informazioni | 100 - 122
 Cosa puoi fare con Train Track:
 Gestione delle locomotive

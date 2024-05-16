@@ -31,6 +31,7 @@ class App(tk.Tk):
         self.title(data.Textlines[1])
 
 def setup():
+    
     #Ottengo il nome del sistema operativo
     sistema_operativo = platform.system()
     if sistema_operativo == "Darwin": sistema_operativo = "macOS"
@@ -49,10 +50,12 @@ def setup():
 
     #Aggiorno la lingua, con quella standard+.
     utilities.translate()
-    # utilities.get_name_arduino("COM7")
     
+    #Assegnazione diretta standard
+    data.name = data.Textlines[98] #Sconosciuto
+
     #Aggiorno le porte collegate nel caso in cui ci siano
-    print(utilities.set_port_var())
+    utilities.set_port_var()
 
     return True
 

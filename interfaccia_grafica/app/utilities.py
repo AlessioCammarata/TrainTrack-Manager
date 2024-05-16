@@ -140,7 +140,7 @@ def read_serial(port):
     #Nel caso in cui sia una string balza
     if str(port).isdigit():
         # Nel caso in cui sia sconosciuto controlla
-        if data.serial_port_names[port] == 'Sconosciuto' :
+        if data.serial_port_names[port] == data.Textlines[98] :#Sconosciuto
             command = 'get_name\n'
             ser = serial.Serial(find_port_path(port), 115200, timeout=1)
             #Il timer serve perche senno non parte arduino
@@ -151,7 +151,7 @@ def read_serial(port):
                 #Nel caso in cui la porta sia aperta scrive cio che riceve
                 response = ser.readline().decode().strip() if ser.isOpen() else ''
                 if response == '' :
-                    response = 'Sconosciuto'
+                    response = data.Textlines[98]#Sconosciuto
             finally:
                 ser.close()
 
@@ -169,7 +169,7 @@ def get_name_arduino(ports):
     #Assegnazione standard
     for port in ports:
         if str(port).isdigit() and port not in data.serial_port_names.keys():
-            data.serial_port_names[port] = 'Sconosciuto'
+            data.serial_port_names[port] = data.Textlines[98] #Sconosciuto
             # print(f"\n\nquesta porta {port} Non è presente in {data.serial_port_names}\n\n")
     
     for port in ports:
@@ -273,6 +273,7 @@ def update_circuit_table(columns,tree):
 def translate():
     print(data.languages[0])
     data.Textlines = []
+
     # Apro il file in modalità lettura
     relative_path = "\\languages\\file{}.txt".format(data.languages[0]) if data.SO == 'Windows' else "/languages/file{}.txt".format(data.languages[0])
     with open(data.path + relative_path , 'r',encoding='utf-8') as file:
@@ -280,6 +281,10 @@ def translate():
         for line in file:
             # Aggiungo la riga alla lista
             data.Textlines.append(line.strip())
+    
+    for name in data.namesTC:
+        data.serial_port_names[name] = data.Textlines[98]
+    data.namesTC = []
     color_update()
 
 #Funzione che aggiorna la traduzione dei colori
@@ -289,4 +294,9 @@ def color_update():
         data.colors[colors] = data.Textlines[140+i]
         i += 1
 
+#Aggiorna il namesTC con in nomi delle porte che sono sconosciute
+def serial_ports_name_update():
+    for name in data.serial_port_names:
+        if data.serial_port_names[name] == data.Textlines[98]:
+            data.namesTC.append(name)
 

@@ -265,7 +265,7 @@ class GUI(tk.Frame):
 
     #Apre la pagina delle impostazioni
     def open_settings_window(self):
-        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x280",self.container)
+        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "410x280",self.container)
         if locomotive_window:
             windows.settings_window(locomotive_window,self)
 
@@ -510,12 +510,19 @@ class GUI(tk.Frame):
     def change_language(self):
         language      = self.var_language.get()
         if language != data.languages[0] and utilities.are_you_sure(data.Textlines[66],self):
+
             # Identifica l'indice della stringa nel vettore
             index = data.languages.index(language)
+
             # Rimuovi la stringa dal suo attuale indice
             data.languages.pop(index)
+
             # Inserisci la stringa nella prima posizione del vettore
             data.languages.insert(0, language)
+
+            #Aggiorna il data.serialTC, in modo da sapere a quali porte deve cambiare il nome
+            utilities.serial_ports_name_update()
+
             #Traduce il file inserito nella prima posizione
             utilities.translate()
 
@@ -554,3 +561,4 @@ class GUI(tk.Frame):
         self.image_flag = utilities.process_image(self.image_flag_Path, 'resize', 25, 20)
         self.flag_button.configure(image=self.image_flag)
 
+       

@@ -68,8 +68,8 @@ Al proceder, se cerrarán todas las ventanas adicionales en comparación con la 
 Para iniciar el circuito automático, debes insertar un mínimo de 2 locomotoras y un máximo de 3.
 Para cambiar la configuración relacionada con las locomotoras máximas, el número de locomotoras en la tabla DEBE ser menor que las ya presentes.
 Si continúas, se vaciará la tabla.
-
-
+Puerta
+Dispositivo
 
 
 
@@ -96,7 +96,7 @@ CONTROL MANUAL DEL CIRCUITO
 etiqueta RFID
 ID Local
 Cambio
-
+Desconocido
 Información | 100 - 122
 Qué se puede hacer con Train Track:
 Gestión de locomotoras

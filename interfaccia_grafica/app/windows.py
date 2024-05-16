@@ -628,26 +628,27 @@ def settings_window(locomotive_window,GUI):
 
     #Refresh della tabelle dei nomi delle porte
     def refresh():
-
-        for col in columns:
-            tree.heading(col, text=col)
-            
+        
+        #Ottengo il nome delle porte nel caso in cui non li abbia gia
+        if set(ports_available) != set(data.serial_port_names.keys()):
+            print(f"{set(ports_available)} è diverso da {set(data.serial_port_names.keys())}")
+            utilities.get_name_arduino(ports_available)
+          
         for row in tree.get_children():
             tree.delete(row)
     
         # Riempimento della tabella con i dati delle porte seriali
         for port in ports_available:
-            
+            name = data.serial_port_names[port] if port in data.serial_port_names.keys() else data.Textlines[98]
             tree.insert('', tk.END, values=(
                 port,
-                data.serial_port_names[port]
+                name
             ),tags = port)
             
-        for col in columns:
-            width = 10 if col == "porta" else 150 
-            tree.column(col, anchor='center', width=width)
+        #Se schiacci la riga ti da la porta
         tree.bind("<Button-1>", onclick)
 
+    locomotive_window.after(50, refresh)
     #Controlla le prime 10 porte se sono libere
     ports_available = []
     for i in range(data.port_range):
@@ -656,13 +657,13 @@ def settings_window(locomotive_window,GUI):
             
         i+=1
     
-
+    
     style = ttk.Style()
     style.configure('UniqueCustom.TMenubutton',padding=(),background="white") 
 
     centralina_label = tk.Label(locomotive_window, text=data.Textlines[88])
     centralina_label.grid(row=0, column=0, sticky=tk.W, padx=5)
-
+    
 #Il numro dei colori all'interno del vettore deve essere almeno pari al numero di locomoitive massime del sistema, senno errore
     centralina_port = data.serial_ports[0]
     var_port0 = tk.StringVar(value=centralina_port)
@@ -734,15 +735,13 @@ def settings_window(locomotive_window,GUI):
     port1_button.config(style='UniqueCustom.TMenubutton')
 
     #Creazione della tabella con le porte e i nomi dei device
-    columns = ("porta","Dispositivo")
+    columns = (data.Textlines[70],data.Textlines[71])
     tree = ttk.Treeview(locomotive_window, columns=columns, show='headings', height= 2)
     tree.grid(row=4, column=0, pady=(10, 0), padx=(10,0), sticky="nsew")
-
-    #Ottengo il nome delle porte nel caso in cui non li abbia gia
-    if set(ports_available) != set(data.serial_port_names.keys()):
-        print(f"{set(ports_available)} è diverso da {set(data.serial_port_names.keys())}")
-        utilities.get_name_arduino(ports_available)
-    refresh()
+    for col in columns:
+        tree.heading(col, text=col)
+        width = 10 if col == data.Textlines[70] else 150 
+        tree.column(col, anchor='center', width=width)
 
     settings_button = tk.Button(locomotive_window, text=data.Textlines[50], width=5,
                                 command=active_settings)
@@ -758,6 +757,8 @@ def settings_window(locomotive_window,GUI):
     locomotive_window.bind('<Return>', lambda event: active_settings())
     locomotive_window.bind("<Escape>", lambda event: utilities.on_close(locomotive_window,"settings"))
     locomotive_window.bind("<FocusIn>",lambda event: max_loco_entry.focus_set())
+    
+    
 
 #Logica della finestra delle impostazioni della pagina dei tag RFID
 def RFID_window(locomotive_window,algo,circuit_window,GUI):
