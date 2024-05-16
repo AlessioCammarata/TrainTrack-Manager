@@ -15,7 +15,15 @@ import random
     a seconda di questo e della direzione della locomotiva, decido se aprirlo o lasciarlo come è - inoltre potro dire che il treno finche non ricevo un altro messaggio dai sensori,        
     si trova in quel pezzo di circuito.
 '''
-     
+
+#                ___      _      __ _                     _      _      _              
+#        o O O  /   \    | |    / _` |   ___      _ _    (_)    | |_   | |_     _ __   
+#       o       | - |    | |    \__, |  / _ \    | '_|   | |    |  _|  | ' \   | '  \  
+#      TS__[O]  |_|_|   _|_|_   |___/   \___/   _|_|_   _|_|_   _\__|  |_||_|  |_|_|_| 
+#     {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
+#    ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
+
+
 class Algorithm:
 
     def __init__(self):
@@ -78,16 +86,13 @@ class Algorithm:
         except serial.SerialException as e:
             print(data.Textlines[21]+ str(data.serial_ports[1])+" "+data.Textlines[41]+f"\n{e}")
 
-    '''
-    .. code-block:: txt
-                    ___      _      __ _         
-            o O O  /   \    | |    / _` |   ___  
-           o       | - |    | |    \__, |  / _ \ 
-          TS__[O]  |_|_|   _|_|_   |___/   \___/ 
-         {======|_|"""""|_|"""""|_|"""""|_|"""""|
-        ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
+#               ___      _      __ _         
+#       o O O  /   \    | |    / _` |   ___  
+#      o       | - |    | |    \__, |  / _ \ 
+#     TS__[O]  |_|_|   _|_|_   |___/   \___/ 
+#    {======|_|"""""|_|"""""|_|"""""|_|"""""|
+#   ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
     
-    '''
 
     def calibred_RFID(self,ID_treno : int,RFIDtag : str):
         data.locomotives_data[ID_treno]["RFIDtag"] = RFIDtag

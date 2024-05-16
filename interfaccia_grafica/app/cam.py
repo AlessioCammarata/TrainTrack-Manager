@@ -4,17 +4,12 @@ from PIL import Image, ImageTk
 # import numpy as np
 import app.utilities as utilities
 
-'''
-.. code-block:: 
-
-                ___                   
-        o O O  / __|   __ _    _ __   
-       o      | (__   / _` |  | '  \  
-      TS__[O]  \___|  \__,_|  |_|_|_| 
-     {======|_|"""""|_|"""""|_|"""""| 
-    ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'
-
-'''
+#                ___                   
+#        o O O  / __|   __ _    _ __   
+#       o      | (__   / _` |  | '  \  
+#      TS__[O]  \___|  \__,_|  |_|_|_| 
+#     {======|_|"""""|_|"""""|_|"""""| 
+#    ./o--000'"`-0-0-'"`-0-0-'"`-0-0-'
 
 class Camera:
     def __init__(self,circuit_window):

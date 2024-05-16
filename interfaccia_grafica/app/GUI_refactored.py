@@ -16,17 +16,14 @@ class GUI(tk.Frame):
         self.locomotive_names = []
         #self.container.bind("<FocusIn>", lambda event: self.container.focus_set())
 
-        '''
-        .. code-block::
-
-                        ___    _   _    ___   
-                o O O  / __|  | | | |  |_ _|  
-               o      | (_ |  | |_| |   | |   
-              TS__[O]  \___|   \___/   |___|  
-             {======|_|"""""|_|"""""|_|"""""| 
-            ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
+        #                ___    _   _    ___   
+        #        o O O  / __|  | | | |  |_ _|  
+        #       o      | (_ |  | |_| |   | |   
+        #      TS__[O]  \___|   \___/   |___|  
+        #     {======|_|"""""|_|"""""|_|"""""| 
+        #    ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
     
-            
+        '''   
         SHORTCUTS
         
             self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n
