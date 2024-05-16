@@ -519,16 +519,36 @@ With these command you could be able to control both the system and all the loco
 <dt class="sig sig-object py" id="app.main.App">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.main.</span></span><span class="sig-name descname"><span class="pre">App</span></span><a class="reference internal" href="_modules/app/main.html#App"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Tk</span></code></p>
+<p># APP</p>
+<p>The app class is useful to create the root page. In these class you define the parameters of the root window.</p>
+<p>Inside this class you can call 2 different method</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="app.main.App.on_close_root">
 <span class="sig-name descname"><span class="pre">on_close_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.on_close_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.on_close_root" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><ul class="simple">
+<li><p>This function is useful to <strong>close the root window and to stop the algorithm</strong> if it was started.</p></li>
+</ul>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="app.main.App.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#App.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.App.refresh" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><ul class="simple">
+<li><p>This function is useful to <strong>refresh</strong> the page when a language change occurs.</p></li>
+</ul>
+</dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.main.setup">
+<span class="sig-prename descclassname"><span class="pre">app.main.</span></span><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/main.html#setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.main.setup" title="Link to this definition">¶</a></dt>
+<dd><ul>
+<li><p>During the <strong>setup</strong> function are determined some important depndencies like the current path of the project, the current SO and processor architecture and also the current language</p>
+<p>which is standard set on italian language. Moreover if you have connected the serial ports of your arduino devices, they are automatically connected and setted into the data cache.</p>
+<p>If you want to modify the latter, just go to the settings and set the configuration according to your needs.</p>
+</li>
+</ul>
 </dd></dl>
 
 </section>

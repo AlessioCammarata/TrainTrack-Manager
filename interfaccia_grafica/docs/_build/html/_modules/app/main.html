@@ -84,8 +84,14 @@
 	
           
           
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">interfaccia_grafica</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../app.html">app package</a></li>
+</ul>
+</li>
+</ul>
+
           
         
 
@@ -136,11 +142,32 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">platform</span>
 
+
+<span class="c1">#            __  __             _            </span>
+<span class="c1">#      o O O|  \/  |  __ _     (_)    _ _    </span>
+<span class="c1">#     o     | |\/| | / _` |    | |   | &#39; \   </span>
+<span class="c1">#    TS__[O]|_|__|_| \__,_|   _|_|_  |_||_|  </span>
+<span class="c1">#   {======|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;| </span>
+<span class="c1">#  ./o--000&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;</span>
+
+
 <span class="c1"># @singleton</span>
 <div class="viewcode-block" id="App">
 <a class="viewcode-back" href="../../app.html#app.main.App">[docs]</a>
 <span class="k">class</span> <span class="nc">App</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># APP</span>
+
+<span class="sd">The app class is useful to create the root page. In these class you define the parameters of the root window.\n</span>
+<span class="sd">Inside this class you can call 2 different method</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        - This is the constructor of the App Class\n </span>
+<span class="sd">          Here are defined the specific of the root window as the icon or the window-size.\n\n</span>
+<span class="sd">          Furthermore an instance of algorithm is created because it is necessary to free the serial ports at the end of execution. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="c1">#Specifiche del root - style e icon</span>
@@ -158,6 +185,7 @@
 <div class="viewcode-block" id="App.on_close_root">
 <a class="viewcode-back" href="../../app.html#app.main.App.on_close_root">[docs]</a>
     <span class="k">def</span> <span class="nf">on_close_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;- This function is useful to **close the root window and to stop the algorithm** if it was started.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">algo</span><span class="o">.</span><span class="n">stop_algo</span><span class="p">()</span></div>
 
@@ -165,13 +193,20 @@
 <div class="viewcode-block" id="App.refresh">
 <a class="viewcode-back" href="../../app.html#app.main.App.refresh">[docs]</a>
     <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;- This function is useful to **refresh** the page when a language change occurs.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Textlines</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
 </div>
 
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    
+<div class="viewcode-block" id="setup">
+<a class="viewcode-back" href="../../app.html#app.main.setup">[docs]</a>
+<span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    - During the **setup** function are determined some important depndencies like the current path of the project, the current SO and processor architecture and also the current language \n </span>
+<span class="sd">      which is standard set on italian language. Moreover if you have connected the serial ports of your arduino devices, they are automatically connected and setted into the data cache.\n</span>
+<span class="sd">      If you want to modify the latter, just go to the settings and set the configuration according to your needs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#Ottengo il nome del sistema operativo</span>
     <span class="n">sistema_operativo</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">sistema_operativo</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span> <span class="n">sistema_operativo</span> <span class="o">=</span> <span class="s2">&quot;macOS&quot;</span>
@@ -190,9 +225,15 @@
 
     <span class="c1">#Aggiorno la lingua, con quella standard+.</span>
     <span class="n">utilities</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
-
+    <span class="c1"># utilities.get_name_arduino(&quot;COM7&quot;)</span>
+    
     <span class="c1">#Aggiorno le porte collegate nel caso in cui ci siano</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">set_port_var</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span> <span class="ow">and</span> <span class="n">setup</span><span class="p">():</span>
 
     <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">()</span>
     <span class="n">gui</span> <span class="o">=</span> <span class="n">GUI_refactored</span><span class="o">.</span><span class="n">GUI</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
