@@ -748,7 +748,11 @@ def settings_window(locomotive_window,GUI):
     settings_button.grid(row=5, column=0, pady=(20, 0), padx=(180,0), sticky="nsew")
 
     #Attiviamo la selezione del 1 che è la standard
-    appoint_selection(1)
+    print(port0_checkbox_var.get())
+    if port0_checkbox_var.get():
+        appoint_selection(1)
+    else:
+        checkbox1.config(state='disabled')
     
     #Rende di nuovo visibile la finestra
     locomotive_window.deiconify()
