@@ -184,6 +184,10 @@
 <dt class="sig sig-object py" id="app.GUI_refactored.GUI">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.GUI_refactored.</span></span><span class="sig-name descname"><span class="pre">GUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<p>The GUI class is the core of this application, it contains the main buttons to create, remove or modify locomotive and also control them.</p>
+<p>Furthermore is possible to open the circuit window in order to control the circuit Turnouts and to access to the other functionality.</p>
+<p>Other information are available in the information button where is insert a demo to perform the program.</p>
+<p>Settings could be manage through the settings button, there you could modify the settings dealing with the serial ports connected to the arduino’s systems.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="app.GUI_refactored.GUI.GENERAL_STOP_START">
 <span class="sig-name descname"><span class="pre">GENERAL_STOP_START</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/GUI_refactored.html#GUI.GENERAL_STOP_START"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GUI_refactored.GUI.GENERAL_STOP_START" title="Link to this definition">¶</a></dt>
@@ -202,11 +206,11 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="app.GUI_refactored.GUI.locomotive_names">
 <span class="sig-name descname"><span class="pre">locomotive_names</span></span><a class="headerlink" href="#app.GUI_refactored.GUI.locomotive_names" title="Link to this definition">¶</a></dt>
-<dd><p>SHORTCUTS</p>
+<dd><dl>
+<dt>#SHORTCUTS</dt><dd><p>-To open the command window of a specific locomotive, pressing its ID from the keyboard, for ID &lt; 10</p>
+<p>-comando: self.container.bind(“&lt;KeyPress-{}&gt;”.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))</p>
 <blockquote>
-<div><p>self.container.bind(“&lt;KeyPress-{}&gt;”.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))</p>
-<p>-&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 10</p>
-<p>1 -&gt; loco ID 1</p>
+<div><p>1 -&gt; loco ID 1</p>
 <p>2 -&gt; loco ID 2</p>
 <p>3 -&gt; loco ID 3</p>
 <p>4 -&gt; loco ID 4</p>
@@ -215,9 +219,13 @@
 <p>7 -&gt; loco ID 7</p>
 <p>8 -&gt; loco ID 8</p>
 <p>9 -&gt; loco ID 9</p>
-<p>self.container.bind(“&lt;Control-KeyPress-{}&gt;”.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))</p>
-<p>-&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 20</p>
-<p>Control-0 -&gt; lodo ID 10</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>-To open the command window of a specific locomotive, pressing its ID from the keyboard, for ID &lt; 20</p>
+<p>-comando: self.container.bind(“&lt;Control-KeyPress-{}&gt;”.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))</p>
+<blockquote>
+<div><p>Control-0 -&gt; lodo ID 10</p>
 <p>Control-1 -&gt; loco ID 11</p>
 <p>Control-2 -&gt; loco ID 12</p>
 <p>Control-3 -&gt; loco ID 13</p>
@@ -227,27 +235,23 @@
 <p>Control-7 -&gt; loco ID 17</p>
 <p>Control-8 -&gt; loco ID 18</p>
 <p>Control-9 -&gt; loco ID 19</p>
-<p>self.container.bind(“&lt;c&gt;”, lambda event: self.open_control())</p>
-<p>c -&gt; Apre la finestra circuit</p>
-<p>self.container.bind(“&lt;s&gt;”, lambda event: self.open_settings_window())</p>
-<p>s -&gt; Apre le impostazione del sistema</p>
-<p>self.container.bind(“&lt;o&gt;”, lambda event: self.on_off())</p>
-<p>o -&gt; Permette di dare la corrente ai binari</p>
-<p>self.container.bind(“&lt;i&gt;”, lambda event: self.open_info_window())</p>
-<p>i -&gt; Apre le Informazioni generali</p>
-<p>self.container.bind(“&lt;plus&gt;”, lambda event: self.open_locomotive_creation_window())</p>
-<ul class="simple">
-<li><p>-&gt; Preme il tasto aggiungi locomotiva</p></li>
-</ul>
-<p>self.container.bind(“&lt;minus&gt;”, lambda event: self.open_locomotive_remove_window())</p>
-<ul class="simple">
-<li><p>-&gt; Preme il tasto rimuovi locomotiva</p></li>
-</ul>
-<p>self.container.bind(“&lt;m&gt;”, lambda event: self.open_locomotive_modify_window())</p>
-<p>m -&gt; Preme il tasto modifica locomotiva</p>
-<p>self.container.bind(“&lt;Return&gt;”, lambda event: self.GENERAL_STOP_START())</p>
-<p>Enter -&gt; Ferma o avvia il sistema senza togliere la corrente</p>
 </div></blockquote>
+<p>-c -&gt; Opens the <strong>circuit window</strong></p>
+<p>comando: self.container.bind(“&lt;c&gt;”, lambda event: self.open_control())</p>
+<p>-s -&gt; Opens the <strong>system settings</strong></p>
+<p>self.container.bind(“&lt;s&gt;”, lambda event: self.open_settings_window())</p>
+<p>-o -&gt; Permit to <strong>open</strong> or <strong>cut off</strong> the current for the rails</p>
+<p>self.container.bind(“&lt;o&gt;”, lambda event: self.on_off())</p>
+<p>-i -&gt; Opens the general <strong>information</strong></p>
+<p>self.container.bind(“&lt;i&gt;”, lambda event: self.open_info_window())</p>
+<p>-+ -&gt; Press the button <strong>add locomotive</strong></p>
+<p>self.container.bind(“&lt;plus&gt;”, lambda event: self.open_locomotive_creation_window())</p>
+<p>– -&gt; Press the <strong>remove button</strong></p>
+<p>self.container.bind(“&lt;minus&gt;”, lambda event: self.open_locomotive_remove_window())</p>
+<p>-m -&gt; Press the <strong>modify button</strong></p>
+<p>self.container.bind(“&lt;m&gt;”, lambda event: self.open_locomotive_modify_window())</p>
+<p>-Enter -&gt; <strong>Start</strong> oor <strong>Stop</strong> the system without cutting of the current</p>
+<p>self.container.bind(“&lt;Return&gt;”, lambda event: self.GENERAL_STOP_START())</p>
 </dd></dl>
 
 <dl class="py method">

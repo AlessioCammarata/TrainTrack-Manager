@@ -146,8 +146,19 @@
 <div class="viewcode-block" id="GUI">
 <a class="viewcode-back" href="../../app.html#app.GUI_refactored.GUI">[docs]</a>
 <span class="k">class</span> <span class="nc">GUI</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">):</span>
 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The GUI class is the core of this application, it contains the main buttons to create, remove or modify locomotive and also control them.\n </span>
+<span class="sd">    Furthermore is possible to open the circuit window in order to control the circuit Turnouts and to access to the other functionality.\n\n</span>
+
+<span class="sd">    Other information are available in the information button where is insert a demo to perform the program.\n</span>
+<span class="sd">    Settings could be manage through the settings button, there you could modify the settings dealing with the serial ports connected to the arduino&#39;s systems.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        - This is the constructor of the App GUI\n </span>
+<span class="sd">          Here are defined the specific of the Frame that lies in the root window as the buttons or the Treeview menu where all the locomotives are stored.\n\n</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">serial_ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -160,12 +171,13 @@
         <span class="c1">#      TS__[O]  \___|   \___/   |___|  </span>
         <span class="c1">#     {======|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;|_|&quot;&quot;&quot;&quot;&quot;| </span>
         <span class="c1">#    ./o--000&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39;&quot;`-0-0-&#39; </span>
-<span class="w">    </span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;   </span>
-<span class="sd">        SHORTCUTS</span>
-<span class="sd">        </span>
-<span class="sd">            self.container.bind(&quot;&lt;KeyPress-{}&gt;&quot;.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n</span>
-<span class="sd">            -&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 10\n</span>
+
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">        #SHORTCUTS</span>
+<span class="sd">           -To open the command window of a specific locomotive, pressing its ID from the keyboard, for ID &lt; 10\n</span>
+<span class="sd">           -comando: self.container.bind(&quot;&lt;KeyPress-{}&gt;&quot;.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n\n</span>
 <span class="sd">            1 -&gt; loco ID 1\n</span>
 <span class="sd">            2 -&gt; loco ID 2\n</span>
 <span class="sd">            3 -&gt; loco ID 3\n</span>
@@ -174,10 +186,10 @@
 <span class="sd">            6 -&gt; loco ID 6\n</span>
 <span class="sd">            7 -&gt; loco ID 7\n</span>
 <span class="sd">            8 -&gt; loco ID 8\n</span>
-<span class="sd">            9 -&gt; loco ID 9\n</span>
-<span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;Control-KeyPress-{}&gt;&quot;.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n</span>
-<span class="sd">            -&gt; Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID &lt; 20\n</span>
+<span class="sd">            9 -&gt; loco ID 9\n\n</span>
+
+<span class="sd">        -To open the command window of a specific locomotive, pressing its ID from the keyboard, for ID &lt; 20\n</span>
+<span class="sd">        -comando: self.container.bind(&quot;&lt;Control-KeyPress-{}&gt;&quot;.format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))\n\n</span>
 <span class="sd">            Control-0 -&gt; lodo ID 10\n</span>
 <span class="sd">            Control-1 -&gt; loco ID 11\n</span>
 <span class="sd">            Control-2 -&gt; loco ID 12\n</span>
@@ -187,31 +199,31 @@
 <span class="sd">            Control-6 -&gt; loco ID 16\n</span>
 <span class="sd">            Control-7 -&gt; loco ID 17\n</span>
 <span class="sd">            Control-8 -&gt; loco ID 18\n</span>
-<span class="sd">            Control-9 -&gt; loco ID 19\n</span>
+<span class="sd">            Control-9 -&gt; loco ID 19\n\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;c&gt;&quot;, lambda event: self.open_control())\n</span>
-<span class="sd">            c -&gt; Apre la finestra circuit\n</span>
+<span class="sd">        -c -&gt; Opens the **circuit window**\n</span>
+<span class="sd">        comando: self.container.bind(&quot;&lt;c&gt;&quot;, lambda event: self.open_control())\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;s&gt;&quot;, lambda event: self.open_settings_window())\n</span>
-<span class="sd">            s -&gt; Apre le impostazione del sistema\n</span>
+<span class="sd">        -s -&gt; Opens the **system settings**\n</span>
+<span class="sd">        self.container.bind(&quot;&lt;s&gt;&quot;, lambda event: self.open_settings_window())\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;o&gt;&quot;, lambda event: self.on_off())\n</span>
-<span class="sd">            o -&gt; Permette di dare la corrente ai binari\n</span>
+<span class="sd">        -o -&gt; Permit to **open** or **cut off** the current for the rails\n</span>
+<span class="sd">        self.container.bind(&quot;&lt;o&gt;&quot;, lambda event: self.on_off())\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;i&gt;&quot;, lambda event: self.open_info_window())\n</span>
-<span class="sd">            i -&gt; Apre le Informazioni generali\n</span>
+<span class="sd">        -i -&gt; Opens the general **information**\n</span>
+<span class="sd">        self.container.bind(&quot;&lt;i&gt;&quot;, lambda event: self.open_info_window())\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;plus&gt;&quot;, lambda event: self.open_locomotive_creation_window())\n</span>
-<span class="sd">            + -&gt; Preme il tasto aggiungi locomotiva\n</span>
+<span class="sd">        -+ -&gt; Press the button **add locomotive**\n</span>
+<span class="sd">        self.container.bind(&quot;&lt;plus&gt;&quot;, lambda event: self.open_locomotive_creation_window())\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;minus&gt;&quot;, lambda event: self.open_locomotive_remove_window())\n</span>
-<span class="sd">            - -&gt; Preme il tasto rimuovi locomotiva\n</span>
+<span class="sd">        -- -&gt; Press the **remove button**\n</span>
+<span class="sd">        self.container.bind(&quot;&lt;minus&gt;&quot;, lambda event: self.open_locomotive_remove_window())\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;m&gt;&quot;, lambda event: self.open_locomotive_modify_window())\n</span>
-<span class="sd">            m -&gt; Preme il tasto modifica locomotiva\n</span>
+<span class="sd">        -m -&gt; Press the **modify button**\n</span>
+<span class="sd">        self.container.bind(&quot;&lt;m&gt;&quot;, lambda event: self.open_locomotive_modify_window())\n</span>
 <span class="sd">\n</span>
-<span class="sd">            self.container.bind(&quot;&lt;Return&gt;&quot;, lambda event: self.GENERAL_STOP_START())\n</span>
-<span class="sd">            Enter -&gt; Ferma o avvia il sistema senza togliere la corrente\n</span>
+<span class="sd">        -Enter -&gt; **Start** oor **Stop** the system without cutting of the current\n</span>
+<span class="sd">        self.container.bind(&quot;&lt;Return&gt;&quot;, lambda event: self.GENERAL_STOP_START())\n</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1">#FRAME dei bottoni e del menu</span>
@@ -313,7 +325,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;#c0c0c0&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">layout</span><span class="p">(</span><span class="s1">&#39;Custom.TMenubutton&#39;</span><span class="p">,</span> <span class="n">utilities</span><span class="o">.</span><span class="n">indicatoron</span><span class="p">)</span>
         
-
         <span class="c1"># Circuit button</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_path</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">asset_path</span><span class="p">(</span><span class="s1">&#39;controller&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_path</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
