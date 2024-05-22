@@ -8,8 +8,19 @@ import app.data as data
 #from tkfontawesome import icon_to_image
 
 class GUI(tk.Frame):
-    def __init__(self, container):
 
+    """
+    The GUI class is the core of this application, it contains the main buttons to create, remove or modify locomotive and also control them.\n 
+    Furthermore is possible to open the circuit window in order to control the circuit Turnouts and to access to the other functionality.\n\n
+
+    Other information are available in the information button where is insert a demo to perform the program.\n
+    Settings could be manage through the settings button, there you could modify the settings dealing with the serial ports connected to the arduino's systems.
+    """
+    def __init__(self, container):
+        """ 
+        - This is the constructor of the App GUI\n 
+          Here are defined the specific of the Frame that lies in the root window as the buttons or the Treeview menu where all the locomotives are stored.\n\n
+        """
         super().__init__(container)
         self.container = container
         self.serial_port = data.serial_ports[0]
@@ -22,12 +33,13 @@ class GUI(tk.Frame):
         #      TS__[O]  \___|   \___/   |___|  
         #     {======|_|"""""|_|"""""|_|"""""| 
         #    ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
-    
-        '''   
-        SHORTCUTS
-        
-            self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n
-            -> Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID < 10\n
+
+
+        '''
+
+        #SHORTCUTS
+           -To open the command window of a specific locomotive, pressing its ID from the keyboard, for ID < 10\n
+           -comando: self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n\n
             1 -> loco ID 1\n
             2 -> loco ID 2\n
             3 -> loco ID 3\n
@@ -36,10 +48,10 @@ class GUI(tk.Frame):
             6 -> loco ID 6\n
             7 -> loco ID 7\n
             8 -> loco ID 8\n
-            9 -> loco ID 9\n
-\n
-            self.container.bind("<Control-KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) \n
-            -> Permette di aprire la pagina relativa ai comandi di una locomotiva premendo il suo ID, per: ID < 20\n
+            9 -> loco ID 9\n\n
+
+        -To open the command window of a specific locomotive, pressing its ID from the keyboard, for ID < 20\n
+        -comando: self.container.bind("<Control-KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control()))\n\n
             Control-0 -> lodo ID 10\n
             Control-1 -> loco ID 11\n
             Control-2 -> loco ID 12\n
@@ -49,31 +61,31 @@ class GUI(tk.Frame):
             Control-6 -> loco ID 16\n
             Control-7 -> loco ID 17\n
             Control-8 -> loco ID 18\n
-            Control-9 -> loco ID 19\n
+            Control-9 -> loco ID 19\n\n
 \n
-            self.container.bind("<c>", lambda event: self.open_control())\n
-            c -> Apre la finestra circuit\n
+        -c -> Opens the **circuit window**\n
+        comando: self.container.bind("<c>", lambda event: self.open_control())\n
 \n
-            self.container.bind("<s>", lambda event: self.open_settings_window())\n
-            s -> Apre le impostazione del sistema\n
+        -s -> Opens the **system settings**\n
+        self.container.bind("<s>", lambda event: self.open_settings_window())\n
 \n
-            self.container.bind("<o>", lambda event: self.on_off())\n
-            o -> Permette di dare la corrente ai binari\n
+        -o -> Permit to **open** or **cut off** the current for the rails\n
+        self.container.bind("<o>", lambda event: self.on_off())\n
 \n
-            self.container.bind("<i>", lambda event: self.open_info_window())\n
-            i -> Apre le Informazioni generali\n
+        -i -> Opens the general **information**\n
+        self.container.bind("<i>", lambda event: self.open_info_window())\n
 \n
-            self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())\n
-            + -> Preme il tasto aggiungi locomotiva\n
+        -+ -> Press the button **add locomotive**\n
+        self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())\n
 \n
-            self.container.bind("<minus>", lambda event: self.open_locomotive_remove_window())\n
-            - -> Preme il tasto rimuovi locomotiva\n
+        -- -> Press the **remove button**\n
+        self.container.bind("<minus>", lambda event: self.open_locomotive_remove_window())\n
 \n
-            self.container.bind("<m>", lambda event: self.open_locomotive_modify_window())\n
-            m -> Preme il tasto modifica locomotiva\n
+        -m -> Press the **modify button**\n
+        self.container.bind("<m>", lambda event: self.open_locomotive_modify_window())\n
 \n
-            self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())\n
-            Enter -> Ferma o avvia il sistema senza togliere la corrente\n
+        -Enter -> **Start** oor **Stop** the system without cutting of the current\n
+        self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())\n
         '''
 
         #FRAME dei bottoni e del menu
@@ -175,7 +187,6 @@ class GUI(tk.Frame):
         self.style.configure('Custom.TMenubutton', background="#c0c0c0")
         self.style.layout('Custom.TMenubutton', utilities.indicatoron)
         
-
         # Circuit button
         self.image_path = utilities.asset_path('controller','png')
         self.image = utilities.process_image(self.image_path, 'resize', 35, 35)
