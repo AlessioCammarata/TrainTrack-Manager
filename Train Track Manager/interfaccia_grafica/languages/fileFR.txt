@@ -65,11 +65,11 @@ Passez la locomotive correspondant à l'ID saisi, sous le capteur correspondant 
 Appuyez sur CONFIRMER et répétez la procédure
 Êtes-vous sûr de vouloir continuer?
 En procédant, toutes les fenêtres supplémentaires par rapport à la principale seront fermées.
-Pour démarrer le circuit automatique, il faut insérer au moins 2 locomotives.
+Pour démarrer le circuit automatique, vous devez insérer un minimum de 2 locomotives et un maximum de 3.
 Pour modifier les paramètres relatifs aux locomotives maximales, le nombre de locomotives dans le tableau DOIT être inférieur à celles déjà présentes.
 Si vous continuez, le tableau sera vidé.
-
-
+Porte
+Dispositif
 
 
 
@@ -96,7 +96,7 @@ CIRCUIT DE CONTRÔLE MANUEL
 tag RFID
 ID Local
 Change
-
+Inconnu
 Informations | 100 - 122
 Ce que vous pouvez faire avec Train Track:
 Gestion des locomotives
@@ -107,7 +107,7 @@ Avec le bouton rouge ou avec la touche 'o' (sur le clavier), vous pouvez mettre 
 Après avoir ajouté des locomotives au tableau et avoir mis sous tension, vous pourrez commander les locomotives, soit en appuyant sur le bouton avec l'image d'un train, soit en tapant le numéro correspondant à l'ID local de la locomotive. En cas de plus de 9 locomotives, vous devrez appuyer sur 'Contrôle-numéro', donc pour la locomotive 15 'Contrôle-5'.
 Avec le bouton d'arrêt général ou avec la touche 'barre d'espace' (sur le clavier), vous pouvez arrêter le système sans couper le courant.
 Avec le bouton du gamepad ou avec la touche 'c' (sur le clavier), vous pouvez voir le dessin du circuit et commuter les aiguillages en temps réel, ils peuvent être cliqués ou vous pouvez cliquer sur la touche correspondant au numéro de l'aiguillage (sur le clavier), cela en mode MANUEL.
-Il existe également la version automatique, en appuyant à nouveau sur la touche 'c', qui gère le système tout seul à l'aide des capteurs, mais au moins 2 locomotives et jusqu'à 3 sont nécessaires.
+La version automatique est également disponible ; en appuyant sur le bouton 'o' ou sur le bouton de démarrage, elle sera activée. À l'aide de capteurs, elle gère le système toute seule. Cependant, un minimum de 2 locomotives et un maximum de 3 sont nécessaires.
 Depuis les paramètres ou avec la touche 's' (sur le clavier), vous pouvez configurer les ports qui communiqueront avec les systèmes Arduino.
 Cette page est également accessible en appuyant sur la touche 'i' (sur le clavier).
 Jusqu'à 4 langues sont disponibles, toutes avec leurs traductions certifiées.
@@ -125,3 +125,28 @@ Informations sur le circuit automatique
 
 
 FR
+
+
+
+
+
+
+
+
+
+
+
+
+-Couleurs | 140 - 151
+Rouge
+Vert
+Bleu clair
+Jaune
+Fuchsia
+Orange
+Rose
+Marron
+Gris
+Cyan
+Gris clair
+Default

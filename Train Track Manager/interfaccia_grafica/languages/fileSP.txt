@@ -65,11 +65,11 @@ Pasa la locomotora correspondiente al ID ingresado bajo el sensor correspondient
 Presiona CONFIRMAR y repite el procedimiento
 ¿Estás seguro de que quieres continuar?
 Al proceder, se cerrarán todas las ventanas adicionales en comparación con la principal.
-Para iniciar el circuito automático, es necesario insertar al menos 2 locomotoras.
+Para iniciar el circuito automático, debes insertar un mínimo de 2 locomotoras y un máximo de 3.
 Para cambiar la configuración relacionada con las locomotoras máximas, el número de locomotoras en la tabla DEBE ser menor que las ya presentes.
 Si continúas, se vaciará la tabla.
-
-
+Puerta
+Dispositivo
 
 
 
@@ -96,7 +96,7 @@ CONTROL MANUAL DEL CIRCUITO
 etiqueta RFID
 ID Local
 Cambio
-
+Desconocido
 Información | 100 - 122
 Qué se puede hacer con Train Track:
 Gestión de locomotoras
@@ -107,7 +107,7 @@ Con el botón rojo o con la tecla 'o' (en el teclado) puedes encender la corrien
 Después de agregar locomotoras a la tabla y encender la corriente, podrás controlar las locomotoras, ya sea presionando el botón con la imagen de un tren, o escribiendo el número correspondiente al ID local de la locomotora. En caso de tener más de 9 locomotoras, tendrás que presionar 'Control-número', por lo tanto, para la locomotora 15 'Control-5'.
 Con el botón de parada general o con la tecla 'barra espaciadora' (en el teclado) puedes detener el sistema sin cortar la corriente.
 Con el botón del gamepad o con la tecla 'c' (en el teclado) puedes ver el dibujo del circuito e intercambiar las desviaciones en tiempo real, se pueden hacer clic en ellas o se puede hacer clic en la tecla correspondiente al número de la desviación (en el teclado), esto en el modo MANUAL.
-También está disponible la versión automática, pulsando de nuevo la tecla 'c', que gestiona el sistema solo a través de los sensores, pero se necesitan al menos 2 locomotoras y como máximo 3.
+También está disponible la versión automática; al presionar el botón 'o' o el botón de inicio, se activará. A través de sensores, gestiona el sistema por sí solo. Sin embargo, se requieren como mínimo 2 locomotoras y como máximo 3.
 Desde la configuración o con la tecla 's' (en el teclado) puedes configurar los puertos que comunicarán con los sistemas Arduino.
 Esta página también se puede acceder presionando la tecla 'i' (en el teclado).
 Hasta 4 idiomas están disponibles, todos con sus traducciones certificadas.
@@ -125,3 +125,28 @@ Información sobre el circuito automático
 
 
 SP
+
+
+
+
+
+
+
+
+
+
+
+
+-Colores | 140 - 151
+Rojo
+Verde
+Azul claro
+Amarillo
+Fucsia
+Naranja
+Rosa
+Marrón
+Gris
+Cian
+Gris claro
+Default
