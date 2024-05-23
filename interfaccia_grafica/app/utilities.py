@@ -300,3 +300,26 @@ def serial_ports_name_update():
         if data.serial_port_names[name] == data.Textlines[98]:
             data.namesTC.append(name)
 
+
+#funzione che gestisce il bottone che attiva la webcam
+def change_color_webcam(id_cam,button,camera,window):
+    current_color = button.cget("background")
+    new_color = "#8fbc8f" if current_color == "#f08080" else "#f08080"
+    # new_text = data.Textlines[54] if current_color == "#f08080" else data.Textlines[53]
+    
+    if current_color == "#f08080" :
+        
+        #Controlla che la cam sia aperta ed esista, in caso contrario va a controllare
+        if not camera.cam_exist:
+            camera.esiste(id_cam)
+
+        #Controlla che la cam sia aperta ed esista
+        if camera.cam_exist:
+            button.config(background=new_color)
+            camera.cattura_webcam(id_cam)
+        else:
+            show_error_box(data.Textlines[36],window,"main")
+    else:
+        button.config(background=new_color)
+        camera.chiudi_finestra_webcam()
+

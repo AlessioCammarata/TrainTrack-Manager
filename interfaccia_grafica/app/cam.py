@@ -16,17 +16,17 @@ import utilities
 '''
 
 class Camera:
-    def __init__(self,circuit_window):
+    def __init__(self,circuit_window,root):
         self.circuit_window = circuit_window
-        self.root           = circuit_window.locomotive_window
+        self.root           = root
         self.cap            = ""
         self.tk_img         = None
         self.width          = 400
         self.height         = 300
         self.cam_exist      = False
 
-    def esiste(self):
-        self.cap = cv2.VideoCapture(0)
+    def esiste(self,id_cam):
+        self.cap = cv2.VideoCapture(id_cam)
         print("Exist")
         #controllo sulla presenza di una cam
         if not self.cap.isOpened():
@@ -38,12 +38,21 @@ class Camera:
     def chiudi_finestra_webcam(self):
         self.cap.release()
         self.video_window.destroy()
-        self.circuit_window.webcam.config(background="blue",text="VIDEO OFF")
+        self.circuit_window.webcam.config(background="#f08080")
         # print(self.cap)
         print("VIDEO destroyed")
 
+    #Permette di prendere tutti le cam connesse
+    def get_connected_cameras(self):
+        connected_cameras = []
+        for i in range(3):  # Prova fino a 3 dispositivi video
+            cap = cv2.VideoCapture(i)
+            if cap.isOpened():
+                connected_cameras.append(i)
+                cap.release()
+        return connected_cameras
 
-    def cattura_webcam(self):
+    def cattura_webcam(self,id_cam):
 
         def mostra_frame():
 
@@ -104,7 +113,7 @@ class Camera:
 
         self.tk_img = None
 
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(id_cam)
   
         self.video_window = tk.Toplevel(self.root)
         # Fissa la finestra in primo piano

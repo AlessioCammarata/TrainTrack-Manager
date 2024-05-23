@@ -337,9 +337,13 @@ class GUI(tk.Frame):
             #Apri solo se il button è sullo stato normal, non si puo togliere il print(self.control_button['state']), 
             # Equivale a questo : self.control_button['state'] == 'normal'
             if self.on_button.cget("background") == "#00ff00":
+
                 #Creazione della finestra di controllo
                 data.variabili_apertura["locomotive_control_var"][id_controllo] = True
                 self.locomotive_control_window[id_controllo] = tk.Toplevel(self.container)
+                #Nasconde la finestra
+                self.locomotive_control_window[id_controllo].withdraw()
+
                 self.locomotive_control_window[id_controllo].transient(self.container)
                 self.locomotive_control_window[id_controllo].iconbitmap(utilities.asset_path('icon_control','ico'))
                 self.locomotive_control_window[id_controllo].protocol("WM_DELETE_WINDOW", lambda:utilities.on_close(self.locomotive_control_window[id_controllo],f"{id_controllo}"))
@@ -349,7 +353,6 @@ class GUI(tk.Frame):
                 self.locomotive_control_window[id_controllo].title(locomotiva)
                 self.locomotive_control_window[id_controllo].geometry("300x250")
                 self.locomotive_control_window[id_controllo].resizable(False, False)
-
 
                 windows.control_window(self.locomotive_control_window[id_controllo],self,locomotiva,id_controllo)
 
@@ -448,7 +451,16 @@ class GUI(tk.Frame):
             self.container.unbind("<minus>")
             self.modify_button.config(state='disabled')
             self.container.unbind("<m>")
-        
+    
+    def onclick(self,event):
+        #ottiene l'iid dell'elemento basato sulla coordinata y del click. aiuta a garantire che l'elemento venga selezionato correttamente al primo click.
+        item_iid = self.tree.identify_row(event.y)  # Ottieni l'iid dell'elemento cliccato
+        if item_iid: # Verifica se un elemento è stato selezionato correttamente
+            item = self.tree.item(item_iid)
+            self.set_var_keypress_locomotive_control(item['values'][0])
+            self.open_locomotive_control()
+            # print(f"CLICK di porta {item['values'][0]} con id: {item_iid}")
+
     #funzione per aggioranre la tabella - all'interno c'è anche la funzione che gestisce il menu a tendina del controllo
     def update_table(self):
         
@@ -497,9 +509,13 @@ class GUI(tk.Frame):
                 value=loco,
                 variable=self.var_locomotive,
                 command= self.open_locomotive_control)
-            
+        
+        #Se hai inserito il numero max di locomotive ti avvisa
         if len(self.locomotive_names) == data.max_loco_standard: utilities.show_info(data.Textlines[23],self)
-            
+        
+        #Quando clicchi avvia la funzione
+        self.tree.bind("<Button-1>", self.onclick)
+
     #Aiuta la gestione dei tasti per aprire la pagina di controllo relativa alla locomotiva
     def set_var_keypress_locomotive_control(self,id):
         id_controllo = utilities.CalcolaIDtreno('ID',id)
