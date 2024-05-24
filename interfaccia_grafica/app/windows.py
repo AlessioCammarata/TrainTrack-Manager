@@ -97,7 +97,7 @@ def creation_window(locomotive_window,GUI):
                 locomotive = {
                     'ID': id,
                     'Nome': name,
-                    'LocoID': loco_id,
+                    'LocoID': int(loco_id),
                     'Colore': color,
                     'Velocita':0,
                     'VelocitaM':0,
@@ -337,7 +337,7 @@ def modify_window(locomotive_window,GUI):
 
                             new_dict = {'ID':id,
                                         'Nome':         name,
-                                        'LocoID':       loco_id, 
+                                        'LocoID':       int(loco_id), 
                                         'Colore':       color, 
                                         'Velocita':     0, 
                                         'VelocitaM':    0, 
@@ -358,7 +358,7 @@ def modify_window(locomotive_window,GUI):
                             color = data.locomotives_data[index_to_replace]['Colore']
                         new_dict = {'ID':           id,
                                     'Nome':         name,
-                                    'LocoID':       loco_id,
+                                    'LocoID':       int(loco_id),
                                     'Colore':       color, 
                                     'Velocita':     0, 
                                     'VelocitaM':    0, 
