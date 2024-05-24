@@ -450,16 +450,18 @@ def control_window(locomotive_window,GUI,locomotiva,id_controllo):
     
     idcam_available = camera.get_connected_cameras()
     locomotive_window.deiconify()
+
+    connected_cam = idcam_available[0] if idcam_available else "/"
     # Controlla locomotiva
     image_cam_path = utilities.asset_path('security-camera','png')
     locomotive_window.image_cam = utilities.process_image(image_cam_path, 'resize', 25, 25)
     locomotive_window.webcam = tk.Button(root_cam, image= locomotive_window.image_cam, bg="#f08080",
-                        command=lambda: utilities.change_color_webcam(0,locomotive_window.webcam,camera,locomotive_window))
+                        command=lambda: utilities.change_color_webcam(var.get(),locomotive_window.webcam,camera,locomotive_window))
     locomotive_window.webcam.pack(padx=5, side="left")
-    locomotive_window.bind("<v>", lambda event: utilities.change_color_webcam(0,locomotive_window.webcam,camera,locomotive_window))
+    locomotive_window.bind("<v>", lambda event: utilities.change_color_webcam(int(var.get()),locomotive_window.webcam,camera,locomotive_window))
 
-    var = tk.StringVar()
-    cam_button = ttk.Menubutton(root_cam, text="")
+    var = tk.StringVar(value=connected_cam)
+    cam_button = ttk.Menubutton(root_cam, text=connected_cam)
     control = tk.Menu(cam_button, tearoff=0)
     cam_button.pack(side='left')
     # cam_button.config(state='disabled')
@@ -474,7 +476,7 @@ def control_window(locomotive_window,GUI,locomotiva,id_controllo):
             variable=var,
             command=lambda:cam_button.configure(text=var.get())
             )
-    
+    print(var.get())
     speed_label = tk.Label(locomotive_window, text=data.Textlines[86])
     speed_label.pack(anchor="n",pady=10)
 

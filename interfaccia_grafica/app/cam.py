@@ -27,11 +27,13 @@ class Camera:
 
     def esiste(self,id_cam):
         self.cap = cv2.VideoCapture(id_cam)
-        print("Exist")
+        
         #controllo sulla presenza di una cam
         if not self.cap.isOpened():
             self.cam_exist = False
+            print("NOT Exist")
         else:
+            print("Exist")
             self.cap.release()
             self.cam_exist = True
         
@@ -48,8 +50,12 @@ class Camera:
         for i in range(3):  # Prova fino a 3 dispositivi video
             cap = cv2.VideoCapture(i)
             if cap.isOpened():
-                connected_cameras.append(i)
+                # Prova a catturare un singolo frame per vedere se la telecamera è in uso
+                ret, frame = cap.read()
+                if ret:
+                    connected_cameras.append(i)
                 cap.release()
+        print(connected_cameras)
         return connected_cameras
 
     def cattura_webcam(self,id_cam):
