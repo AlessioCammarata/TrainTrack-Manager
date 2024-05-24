@@ -579,16 +579,6 @@ def settings_window(locomotive_window,GUI):
 
                 #Cambiamo i rispettivi centralina e rfid
                 utilities.set_port_var(centralina,rfid)
-
-                # print(data.serial_ports)
-                # print(data.SO)
-                '''
-                Dovrebbe gia essere stato fatto a sto punto
-                '''
-                # for port in ports_available:
-                #     if ports_name[port] != 'Sconosciuto' and port in data.serial_ports:
-                #         data.serial_port_names[port] = ports_name[port]
-                #         print(f"Sto attivando: {ports_name[port]} sulla porta {port}")
                 
                 GUI.serial_port = data.serial_ports[0]
             #Aggiorniamo i valori relativi allo sblocco delle porte seriali dell'utente
