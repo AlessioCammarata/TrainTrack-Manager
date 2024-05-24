@@ -44,20 +44,6 @@ class Camera:
         # print(self.cap)
         print("VIDEO destroyed")
 
-    #Permette di prendere tutti le cam connesse
-    def get_connected_cameras(self):
-        connected_cameras = []
-        for i in range(3):  # Prova fino a 3 dispositivi video
-            cap = cv2.VideoCapture(i)
-            if cap.isOpened():
-                # Prova a catturare un singolo frame per vedere se la telecamera è in uso
-                ret, frame = cap.read()
-                if ret:
-                    connected_cameras.append(i)
-                cap.release()
-        print(connected_cameras)
-        return connected_cameras
-
     def cattura_webcam(self,id_cam):
 
         def mostra_frame():

@@ -103,7 +103,6 @@ def creation_window(locomotive_window,GUI):
                     'VelocitaM':0,
                     'Direzione':1,
                     'RFIDtag':"",
-                    'ID_cam': "",
                     'Percorso':"",
                     'Ultimo_sensore':""
                 }
@@ -343,8 +342,7 @@ def modify_window(locomotive_window,GUI):
                                         'Velocita':     0, 
                                         'VelocitaM':    0, 
                                         'Direzione':    1,
-                                        'RFIDtag':      RFIDtag,
-                                        'ID_cam': ""
+                                        'RFIDtag':      RFIDtag
                                         }
                             if utilities.is_serial_port_available(data.serial_ports[0]):
                                 comandi.change_id(data.locomotives_data[index_to_replace]['LocoID'],loco_id)
@@ -365,8 +363,7 @@ def modify_window(locomotive_window,GUI):
                                     'Velocita':     0, 
                                     'VelocitaM':    0, 
                                     'Direzione':    1,
-                                    'RFIDtag':      RFIDtag,
-                                    'ID_cam': ""
+                                    'RFIDtag':      RFIDtag
                                     }
                         data.locomotives_data[index_to_replace] = new_dict
                     GUI.update_table()
@@ -443,42 +440,8 @@ def modify_window(locomotive_window,GUI):
 #Finestra che permette di controllare manualmente le locomotive
 def control_window(locomotive_window,GUI,locomotiva,id_controllo):
     
-    camera = cam.Camera(locomotive_window,locomotive_window)
-
-    root_cam = tk.Frame(locomotive_window)
-    root_cam.pack(anchor="nw")
-    
-    idcam_available = camera.get_connected_cameras()
-    locomotive_window.deiconify()
-
-    connected_cam = idcam_available[0] if idcam_available else "/"
-    # Controlla locomotiva
-    image_cam_path = utilities.asset_path('security-camera','png')
-    locomotive_window.image_cam = utilities.process_image(image_cam_path, 'resize', 25, 25)
-    locomotive_window.webcam = tk.Button(root_cam, image= locomotive_window.image_cam, bg="#f08080",
-                        command=lambda: utilities.change_color_webcam(var.get(),locomotive_window.webcam,camera,locomotive_window))
-    locomotive_window.webcam.pack(padx=5, side="left")
-    locomotive_window.bind("<v>", lambda event: utilities.change_color_webcam(int(var.get()),locomotive_window.webcam,camera,locomotive_window))
-
-    var = tk.StringVar(value=connected_cam)
-    cam_button = ttk.Menubutton(root_cam, text=connected_cam)
-    control = tk.Menu(cam_button, tearoff=0)
-    cam_button.pack(side='left')
-    # cam_button.config(state='disabled')
-    
-    cam_button["menu"] = control
-    control.delete(0, "end")
-
-    for item in idcam_available:
-        control.add_radiobutton(
-            label=item,
-            value=item,
-            variable=var,
-            command=lambda:cam_button.configure(text=var.get())
-            )
-    print(var.get())
     speed_label = tk.Label(locomotive_window, text=data.Textlines[86])
-    speed_label.pack(anchor="n",pady=10)
+    speed_label.pack(pady=10)
 
     #creazione dello slider
     speed_slider = tk.Scale(locomotive_window, from_=0, to=100, orient=tk.HORIZONTAL)
@@ -560,9 +523,12 @@ def control_window(locomotive_window,GUI,locomotiva,id_controllo):
     #Creazione dei tasti da 0 a 9 per i numeri
     for i in range(10):
         locomotive_window.bind('<KeyPress-{}>'.format(i), lambda event, i=i: add_speed(i))
-    
+
     #Fissa la finestra in primo piano
     locomotive_window.attributes("-topmost", True)
+
+    #Rende la finestra visibile di nuovo
+    locomotive_window.deiconify()
 
 #Logica della finestra delle impostazioni della pagina principale
 def settings_window(locomotive_window,GUI):
@@ -1085,26 +1051,26 @@ class circuit_window:
         '''
  
     # #funzione che gestisce il bottone che attiva la webcam
-    #     def change_color_webcam():
-    #         current_color = self.webcam.cget("background")
-    #         new_color = "#8fbc8f" if current_color == "#f08080" else "#f08080"
-    #         # new_text = data.Textlines[54] if current_color == "#f08080" else data.Textlines[53]
+        def change_color_webcam():
+            current_color = self.webcam.cget("background")
+            new_color = "#8fbc8f" if current_color == "#f08080" else "#f08080"
+            # new_text = data.Textlines[54] if current_color == "#f08080" else data.Textlines[53]
             
-    #         if current_color == "#f08080" :
+            if current_color == "#f08080" :
                 
-    #             #Controlla che la cam sia aperta ed esista, in caso contrario va a controllare
-    #             if not self.camera.cam_exist:
-    #                 self.camera.esiste()
+                #Controlla che la cam sia aperta ed esista, in caso contrario va a controllare
+                if not self.camera.cam_exist:
+                    self.camera.esiste(0)
 
-    #             #Controlla che la cam sia aperta ed esista
-    #             if self.camera.cam_exist:
-    #                 self.webcam.config(background=new_color)
-    #                 self.camera.cattura_webcam()
-    #             else:
-    #                 utilities.show_error_box(data.Textlines[36],self.locomotive_window,"main")
-    #         else:
-    #             self.webcam.config(background=new_color)
-    #             self.camera.chiudi_finestra_webcam()
+                #Controlla che la cam sia aperta ed esista
+                if self.camera.cam_exist:
+                    self.webcam.config(background=new_color)
+                    self.camera.cattura_webcam(0)
+                else:
+                    utilities.show_error_box(data.Textlines[36],self.locomotive_window,"main")
+            else:
+                self.webcam.config(background=new_color)
+                self.camera.chiudi_finestra_webcam()
 
     # Funzione per creare un label con un checkbutton
         def create_label_with_button(canvas, x, y, text):
@@ -1224,9 +1190,9 @@ class circuit_window:
         image_webcam_path = utilities.asset_path('security-camera','png')
         image_webcam = utilities.process_image(image_webcam_path,'resize',35,35)
         self.webcam = tk.Button(frame, image= image_webcam, bg="#f08080",
-                            command=lambda: utilities.change_color_webcam(0,self.webcam,self.camera,self.locomotive_window))
+                            command=lambda: change_color_webcam())
         self.webcam.pack(padx=5,side=tk.LEFT)
-        root.bind("<v>", lambda event: utilities.change_color_webcam(0,self.webcam,self.camera,self.locomotive_window))
+        root.bind("<v>", lambda event: change_color_webcam())
 
         self.locomotive_label = tk.Label(frame, text=data.Textlines[93])
         self.locomotive_label.pack(padx=(280,0),pady=10,side=tk.LEFT)
