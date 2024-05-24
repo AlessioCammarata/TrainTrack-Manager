@@ -23,7 +23,8 @@ class GUI(tk.Frame):
               TS__[O]  \___|   \___/   |___|  
              {======|_|"""""|_|"""""|_|"""""| 
             ./o--000'"`-0-0-'"`-0-0-'"`-0-0-' 
-    
+        '''
+        """
     SHORTCUTS
         
         self.container.bind("<KeyPress-{}>".format(id), lambda event: (self.set_var_keypress_locomotive_control(id),self.open_locomotive_control())) 
@@ -74,7 +75,7 @@ class GUI(tk.Frame):
 
         self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())
         Enter -> Ferma o avvia il sistema senza togliere la corrente
-        '''
+        """
 
         #FRAME dei bottoni e del menu
 
@@ -233,10 +234,8 @@ class GUI(tk.Frame):
             else: window_var.iconbitmap(utilities.asset_path("icon_control", "ico"))
 
             data.variabili_apertura[f'locomotive_{window_type}_var'] = True
-            #if necessario, la control è gestita tramite un vettore
-            # if att == 'locomotive_control_window':
-            #     self.locomotive_control_window[window_type] = window_var
-            # else:
+
+            #Si setta l'attributo a window_var
             setattr(self, att, window_var)
             window_var.transient(root)
             window_var.protocol("WM_DELETE_WINDOW", lambda:utilities.on_close(window_var,window_type))
@@ -257,15 +256,16 @@ class GUI(tk.Frame):
             # window_var.transient(root)
 
             #Rende la finestra visibile di nuovo
-            if not window_type == "circuit": window_var.deiconify()
+            if not window_type in ["circuit","settings"]: 
+                window_var.deiconify()
             
             return window_var
 
-        utilities.show_error_box(data.Textlines[20],window_var,self,"main")
+        utilities.show_error_box(data.Textlines[20],window_var,"main")
 
     #Apre la pagina delle impostazioni
     def open_settings_window(self):
-        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "400x200",self.container)
+        locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "410x280",self.container)
         if locomotive_window:
             windows.settings_window(locomotive_window,self)
 
@@ -283,7 +283,7 @@ class GUI(tk.Frame):
 
     #Apre la pagina della modifica locomotive
     def open_locomotive_modify_window(self):
-        locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x200",self.container)
+        locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x210",self.container)
         if locomotive_window:
             windows.modify_window(locomotive_window,self)
 
@@ -295,11 +295,11 @@ class GUI(tk.Frame):
             
         #Nel caso in cui la seriale non sia collegata, si chiede all'utente se vuole continuare
         if not utilities.is_serial_port_available(self.serial_port):
-            open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41])
+            open = utilities.are_you_sure(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[41],self)
         
         if open :
             #creazione di circuit per decidere il tipo di controllo del sistema
-            locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "",self.container)
+            locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "1200x758",self.container)
             
             if locomotive_window:
 
@@ -337,9 +337,13 @@ class GUI(tk.Frame):
             #Apri solo se il button è sullo stato normal, non si puo togliere il print(self.control_button['state']), 
             # Equivale a questo : self.control_button['state'] == 'normal'
             if self.on_button.cget("background") == "#00ff00":
+
                 #Creazione della finestra di controllo
                 data.variabili_apertura["locomotive_control_var"][id_controllo] = True
                 self.locomotive_control_window[id_controllo] = tk.Toplevel(self.container)
+                #Nasconde la finestra
+                self.locomotive_control_window[id_controllo].withdraw()
+
                 self.locomotive_control_window[id_controllo].transient(self.container)
                 self.locomotive_control_window[id_controllo].iconbitmap(utilities.asset_path('icon_control','ico'))
                 self.locomotive_control_window[id_controllo].protocol("WM_DELETE_WINDOW", lambda:utilities.on_close(self.locomotive_control_window[id_controllo],f"{id_controllo}"))
@@ -350,11 +354,10 @@ class GUI(tk.Frame):
                 self.locomotive_control_window[id_controllo].geometry("300x250")
                 self.locomotive_control_window[id_controllo].resizable(False, False)
 
-
                 windows.control_window(self.locomotive_control_window[id_controllo],self,locomotiva,id_controllo)
 
         else:
-            utilities.show_error_box(data.Textlines[20],self.locomotive_control_window[id_controllo],self,"main")
+            utilities.show_error_box(data.Textlines[20],self.locomotive_control_window[id_controllo],"main")
 
     def open_info_window(self):
 
@@ -408,7 +411,7 @@ class GUI(tk.Frame):
             on_offButton.on_off(self)
 
         else:
-            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,self.container,"main")
+            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,"main")
 
 
     #funzione che serve per la gesetione dell'avvio e dell'arresto del sistema senza togliere la corrente
@@ -421,7 +424,7 @@ class GUI(tk.Frame):
             STOP_button.GENERAL_STOP_START_button(self)
            
         else:
-            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,self.container,"main")
+            utilities.show_error_box(data.Textlines[21] +f"{self.serial_port} " + data.Textlines[22],self,"main")
         
     #Funzione che gestisce lo stato dei bottoni nella pagina principale
     def check_control_button_state(self):
@@ -448,7 +451,16 @@ class GUI(tk.Frame):
             self.container.unbind("<minus>")
             self.modify_button.config(state='disabled')
             self.container.unbind("<m>")
-        
+    
+    def onclick(self,event):
+        #ottiene l'iid dell'elemento basato sulla coordinata y del click. aiuta a garantire che l'elemento venga selezionato correttamente al primo click.
+        item_iid = self.tree.identify_row(event.y)  # Ottieni l'iid dell'elemento cliccato
+        if item_iid: # Verifica se un elemento è stato selezionato correttamente
+            item = self.tree.item(item_iid)
+            self.set_var_keypress_locomotive_control(item['values'][0])
+            self.open_locomotive_control()
+            # print(f"CLICK di porta {item['values'][0]} con id: {item_iid}")
+
     #funzione per aggioranre la tabella - all'interno c'è anche la funzione che gestisce il menu a tendina del controllo
     def update_table(self):
         
@@ -497,9 +509,13 @@ class GUI(tk.Frame):
                 value=loco,
                 variable=self.var_locomotive,
                 command= self.open_locomotive_control)
-            
-        if len(self.locomotive_names) == data.max_loco_standard: utilities.show_info(data.Textlines[23])
-            
+        
+        #Se hai inserito il numero max di locomotive ti avvisa
+        if len(self.locomotive_names) == data.max_loco_standard: utilities.show_info(data.Textlines[23],self)
+        
+        #Quando clicchi avvia la funzione
+        self.tree.bind("<Button-1>", self.onclick)
+
     #Aiuta la gestione dei tasti per aprire la pagina di controllo relativa alla locomotiva
     def set_var_keypress_locomotive_control(self,id):
         id_controllo = utilities.CalcolaIDtreno('ID',id)
@@ -509,13 +525,20 @@ class GUI(tk.Frame):
     #Funzione che permette di tradurre tutti i testi visibili all'interno dell'app
     def change_language(self):
         language      = self.var_language.get()
-        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[66]):
+        if language != data.languages[0] and utilities.are_you_sure(data.Textlines[66],self):
+
             # Identifica l'indice della stringa nel vettore
             index = data.languages.index(language)
+
             # Rimuovi la stringa dal suo attuale indice
             data.languages.pop(index)
+
             # Inserisci la stringa nella prima posizione del vettore
             data.languages.insert(0, language)
+
+            #Aggiorna il data.serialTC, in modo da sapere a quali porte deve cambiare il nome
+            utilities.serial_ports_name_update()
+
             #Traduce il file inserito nella prima posizione
             utilities.translate()
 
@@ -554,3 +577,4 @@ class GUI(tk.Frame):
         self.image_flag = utilities.process_image(self.image_flag_Path, 'resize', 25, 20)
         self.flag_button.configure(image=self.image_flag)
 
+       

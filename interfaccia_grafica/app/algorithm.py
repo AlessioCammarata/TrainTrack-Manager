@@ -7,14 +7,6 @@ import data
 import utilities
 import comandi
 import random
-#import traffic_light
-
-'''
-    Mi serve lo stato degli scambi, le info delle locomotive(velocita,direzione), e l'otuptut dei sensori
-    Quando una locomotiva incontra uno scambio il sensore mi dira che lo ha incontrato, io so a quale fa riferimento, prendo i dati dallo scambio e vedo se è aperto o chiuso,
-    a seconda di questo e della direzione della locomotiva, decido se aprirlo o lasciarlo come è - inoltre potro dire che il treno finche non ricevo un altro messaggio dai sensori,        
-    si trova in quel pezzo di circuito.
-'''
 
 '''
                 ___      _      __ _                     _      _      _              
@@ -54,8 +46,6 @@ class Algorithm:
 
         try:
             ser = serial.Serial(port_path, baudrate=115200, timeout=0)
-            #if utilities.is_serial_port_available(port_path):
-                
 
             while not data.terminate:
                 try:
@@ -67,16 +57,21 @@ class Algorithm:
                         #tengo in memoria la risposta per la registrazione delle locomotive
                         data.sensor_response[0] = response
 
+                        message = response.split("/")
                         if data.variabili_apertura["locomotive_RFID_var"]:
-                            message = response.split("/")
                             data.label.configure(text=message[1])
+                        circuit_window.tag_label.configure(text=message[1])
+                            # background=data.Sensors["Sensore {}".format(message[0])][4])
+                        # circuit_window.tag_label.after(1000, lambda: circuit_window.tag_label.configure(text=message[1]))
+                        circuit_window.tag_color.configure(background=data.Sensors["Sensore {}".format(message[0])][4])
+                        # circuit_window.tag_color.after(1000, lambda: circuit_window.tag_label.configure(text=message[1],background="SystemButtonFace"))
+                    
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
-                    if data.calibred and self.flag and len(data.locomotives_data) >= 2:
+                    if data.calibred and self.flag and len(data.locomotives_data) in [2,3]:
                         # self.GUI.on_off()
-                        
-                        # circuit_window.RFID_button.config(state='disabled')
-                        utilities.show_info(data.Textlines[60])
-                        circuit_window.RFID_button.config(state='normal')
+                        parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
+
+                        utilities.show_info(data.Textlines[60],parent)
                         
                         #creo il thread e lo metto in memoria
                         process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
@@ -122,7 +117,7 @@ class Algorithm:
         
              
     def stop_algo(self):
-        #Controlla che la funzione sia stata chiamata
+        #Controlla che la funzione sia stata chiamata e che non sia amministratore
         if self.called and not data.root:
             data.terminate = True
             # Attendi che i thread terminino
@@ -132,6 +127,9 @@ class Algorithm:
                     self.threads[1].join(timeout=5)
                 print("Threads terminati correttamente.")
             self.called = False
+
+            #Set dei percorsi a []
+            data.percorsi_assegnati = []
         else:
             print("l'ho fermato io ;)")
 
@@ -151,27 +149,29 @@ class Algorithm:
             comandi.throttle(memoria,ID,round(velocita_effettiva),direzione)
 
         else: 
-            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window,circuit_window,"main")
+            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window.locomotive_window,"main")
 
 
     #Ritorna un vettore che contiene i percorsi liberi in quel momento
     def show_percorsi_liberi(self,id):
         direzione       = data.locomotives_data[id]['Direzione']
 
+        #A seconda delle direzione ci sono dei percorsi diversi
         if direzione == 0:
             return list(set(data.LRoutes.keys()) - set(data.percorsi_assegnati))
         else:
             return list(set(data.RRoutes.keys()) - set(data.percorsi_assegnati))
 
-    #Ritorna l'intersezione tra i percorsi assegnati, in modo da
+    #Ritorna l'intersezione tra i percorsi assegnati, in modo da trovare i punti in cui si incrociano i percorsi
     def trova_criticita(self):
         return set(data.LRoutes[data.percorsi_assegnati[0]]) & set(data.RRoutes[data.percorsi_assegnati[-1]])
 
     #Dato un treno sceglie il percorso, inserisce il vettore contenente le criticita nel caso sia il secondo
     def scegli_percorso(self, id): 
+        print("i percorsi assegnati sono: " +str(data.percorsi_assegnati))
         percorsi_liberi = self.show_percorsi_liberi(id)
         percorso_scelto = random.choice(percorsi_liberi)
-        print(percorso_scelto)
+        print("il percorso scelto è: " +str(percorso_scelto))
         data.percorsi_assegnati.append(percorso_scelto)
 
         data.locomotives_data[id]['Percorso'] = percorso_scelto
@@ -193,14 +193,14 @@ class Algorithm:
                 velocita  = 20
                 self.gestione_velocita(circuit_window,i,velocita)
 
-                print(data.criticita)
+                print("le criticità sono: " +str(data.criticita))
             
             #Per ora non funzione
             # for item in data.criticita:
             #     semaphore = traffic_light.Semaphore(circuit_window,item)
             #     self.semaphore.append(semaphore.thread)
         else: 
-            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window,circuit_window,"main")
+            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window.locomotive_window,"main")
 
 #   Questa funzione controlla che i percorsi adiacenti a quelli toccati dal treno, nella direzione in cui sta andando siano liberi
     def control(self,Turnout,direzione,natural_link):
@@ -227,8 +227,9 @@ class Algorithm:
             #Controlla che la finestra della calibrazione sia aperta
             if data.variabili_apertura["locomotive_RFID_var"]:
                #aspetta che venga chiusa e pulisce la queue
-               data.locomotive_RFID_window.wait_window()
+               circuit_window.GUI.locomotive_RFID_window.wait_window()
                self.message_queue.queue.clear()
+
             try:
                 # Attendi con un timeout di 0.1 secondi
                 message = self.message_queue.get(timeout=0.1)

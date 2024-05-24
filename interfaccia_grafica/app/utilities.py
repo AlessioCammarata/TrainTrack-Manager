@@ -4,6 +4,8 @@ from tkinter import messagebox
 import data
 import os
 import serial
+import threading
+import time
 
 '''
 
@@ -34,8 +36,7 @@ indicatoron = [('Menubutton.border',
 #     return ImageTk.PhotoImage(img)
 
 #Funzione che riassume il path relativo
-def asset_path(asset_name: str, extenction: str) -> str:
-        
+def asset_path(asset_name: str, extenction: str) -> str:  
                     # Per sistemi Windows                                                Per sistemi Unix-like (Linux, macOS)
     return data.path + "\\assets\\" + asset_name + "." + extenction if data.SO == 'Windows' else data.path + "/assets/" + asset_name + "." + extenction
 
@@ -53,34 +54,35 @@ def process_image(image_path, operation, *args):
             processed_img = rotated_img.resize((args[1], args[2]), Image.BILINEAR)
             return ImageTk.PhotoImage(processed_img)
         
-    return img
             
 #Funzione per impostare la var di chiusura, quando si chiude la finestra
 def set_variabilechiusura(window_type):
     data.variabili_apertura[f'locomotive_{window_type}_var'] = False
 
 #funzione per gli errori
-def show_error_box(descrizione,finestra,finestra_padre,importance):
+def show_error_box(descrizione,finestra_padre,importance):
 
     #Ci sono degli errori che non devono attivare la var
     if importance != "main":
         data.control_var_errore = True
-    #divisione del messaggio dalla modalita
+
     finestra_padre.grab_set()
-    #matcha il tipo di modalita
-    messagebox.showerror("ERRORE", descrizione)
+    messagebox.showerror("ERRORE", descrizione,  parent = finestra_padre)
     finestra_padre.grab_release()
 
-    finestra.focus_set()
-
-#Funzione per WARNING
-def are_you_sure(descrizione):
-    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[65], icon='warning')
+#Funzione per WARNING - Grab del padre
+def are_you_sure(descrizione,finestra_padre):
+    finestra_padre.grab_set()
+    risposta = messagebox.askyesno("ATTENZIONE", descrizione+"\n"+data.Textlines[65], icon='warning', parent = finestra_padre)
+    finestra_padre.grab_release()
     return risposta
 
-#Funzione per INFO
-def show_info(descrizione):
-    return messagebox.showinfo("AVVISO", descrizione)
+#Funzione per INFO - Grab del padre
+def show_info(descrizione,finestra_padre):
+    finestra_padre.grab_set()
+    messagebox.showinfo("AVVISO", descrizione, parent = finestra_padre)
+    finestra_padre.grab_release()
+    
 
 #Calcola l'ID del treno dalle info - Elemento, stringa che dice che elemento si analizza - info, informazione da cui si vuole partire
 def CalcolaIDtreno(elemento,info):
@@ -105,8 +107,8 @@ def find_port_path(function_port):
 
 #Funzione che controlla se la porta seriale chiamata è collegata o meno e se è stata inizializzata - in caso non sia stata inizializzata, la inizializza
 def is_serial_port_available(function_port):
+    #Se sei amministratore bypassa i controlli, puoi incorrrere in errori
     if data.root:
-        # show_info("ROOT")
         return True
     if data.serial_port_info[function_port][1]:
         # Costruisci il percorso del dispositivo della porta seriale
@@ -129,9 +131,58 @@ def port_exist(function_port):
     # Costruisci il percorso del dispositivo della porta seriale
     port_path = find_port_path(function_port)  
     exist = os.path.exists(port_path)
-    print(f"port exist:{port_path} e {exist}")
+    # print(f"port exist:{port_path} e {exist}")
     # print(data.serial_ports)
     return exist
+
+# #Funzione che legge dalla seriale il nome dell'arduino
+def read_serial(port):
+    #Nel caso in cui sia una string balza
+    if str(port).isdigit():
+        # Nel caso in cui sia sconosciuto controlla
+        if data.serial_port_names[port] == data.Textlines[98] :#Sconosciuto
+            command = 'get_name\n'
+            ser = serial.Serial(find_port_path(port), 115200, timeout=1)
+            #Il timer serve perche senno non parte arduino
+            time.sleep(1.6)
+            try:
+                ser.write(command.encode())
+
+                #Nel caso in cui la porta sia aperta scrive cio che riceve
+                response = ser.readline().decode().strip() if ser.isOpen() else ''
+                if response == '' :
+                    response = data.Textlines[98]#Sconosciuto
+            finally:
+                ser.close()
+
+        else:#in questo caso assegna il valore corrispondente
+            response = data.serial_port_names[port]
+
+        #Assegniamo la risposta alla porta corrente nel dizionario
+        data.serial_port_names[port] = response
+
+
+# #Funzione che serve ad otternere il nome dell'Arduino
+def get_name_arduino(ports):
+    threads = []
+    start_time = time.time()
+    #Assegnazione standard
+    for port in ports:
+        if str(port).isdigit() and port not in data.serial_port_names.keys():
+            data.serial_port_names[port] = data.Textlines[98] #Sconosciuto
+            # print(f"\n\nquesta porta {port} Non è presente in {data.serial_port_names}\n\n")
+    
+    for port in ports:
+        thread = threading.Thread(target=read_serial, args=[port])
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
+    end_time = time.time()
+    duration = end_time - start_time
+    print("Durata dell'esecuzione:", duration, "secondi")
+
 
 #Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
 def set_port_var(*args):
@@ -155,17 +206,23 @@ def set_port_var(*args):
             port2_enable = False
             if flag < 1: 
                 ports_available[0] = data.serial_ports[0]
-                return 0
+                return data.Textlines[32] + "\n" + data.Textlines[33]
+        
+        #Il dizionario temp dei nomi necessità di un solo campo
+        # temp_dict_names = {
+        #     ports_available[0]: data.serial_port_names.pop(data.serial_ports[0]),
+        # }
+
     else:
-        ports_available[0]  = args[0]
-        ports_available[1]  = args[1]
+        for i in range (2):
+            ports_available[i]  = args[i]
 
     #Dizionario temporale che aggiorna le chiavi
     temp_dict = {
                     ports_available[0]: data.serial_port_info.pop(data.serial_ports[0]),
                     ports_available[1]: data.serial_port_info.pop(data.serial_ports[1])
                 }
-    
+
     #assegnazione delle porte nel vettore
     data.serial_ports[0] = ports_available[0]
     data.serial_ports[1] = ports_available[1]
@@ -174,10 +231,16 @@ def set_port_var(*args):
     data.serial_port_info.update(temp_dict)
 
     if not args:
-        #Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        #Si aggiorna il dizionario con le chiavi aggiornate relative alle porte impostate
+        # data.serial_port_names.update(temp_dict_names)
+        #Assegnazione del nome del dispositivo sulla porta
+        get_name_arduino(data.serial_ports)
+        print(data.serial_port_names)
+        """
+        Imposta a True se entrambe sono gia attaccate, in caso contrario lascia le impostazioni base
+        """
         data.serial_port_info[data.serial_ports[0]][1]      = port1_enable
         data.serial_port_info[data.serial_ports[1]][1]      = port2_enable
-
     return data.serial_ports
 
 #Funzione che permette di aggiornare la tabella delle calibrazioni RFID
@@ -206,9 +269,11 @@ def update_circuit_table(columns,tree):
     for col in columns:
         tree.column(col, anchor='center', width=100)  # Imposta l'allineamento al centro per tutte le colonne
 
+#Funzione che aggiorna il textlines con la nuova lingua selezionata
 def translate():
     print(data.languages[0])
     data.Textlines = []
+
     # Apro il file in modalità lettura
     relative_path = "\\languages\\file{}.txt".format(data.languages[0]) if data.SO == 'Windows' else "/languages/file{}.txt".format(data.languages[0])
     with open(data.path + relative_path , 'r',encoding='utf-8') as file:
@@ -216,10 +281,45 @@ def translate():
         for line in file:
             # Aggiungo la riga alla lista
             data.Textlines.append(line.strip())
+    
+    for name in data.namesTC:
+        data.serial_port_names[name] = data.Textlines[98]
+    data.namesTC = []
     color_update()
 
+#Funzione che aggiorna la traduzione dei colori
 def color_update():
     i=0
     for colors in data.colors:
         data.colors[colors] = data.Textlines[140+i]
         i += 1
+
+#Aggiorna il namesTC con in nomi delle porte che sono sconosciute
+def serial_ports_name_update():
+    for name in data.serial_port_names:
+        if data.serial_port_names[name] == data.Textlines[98]:
+            data.namesTC.append(name)
+
+
+#funzione che gestisce il bottone che attiva la webcam
+def change_color_webcam(id_cam,button,camera,window):
+    current_color = button.cget("background")
+    new_color = "#8fbc8f" if current_color == "#f08080" else "#f08080"
+    # new_text = data.Textlines[54] if current_color == "#f08080" else data.Textlines[53]
+    
+    if current_color == "#f08080" :
+        
+        #Controlla che la cam sia aperta ed esista, in caso contrario va a controllare
+        if not camera.cam_exist:
+            camera.esiste(id_cam)
+
+        #Controlla che la cam sia aperta ed esista
+        if camera.cam_exist:
+            button.config(background=new_color)
+            camera.cattura_webcam(id_cam)
+        else:
+            show_error_box(data.Textlines[36],window,"main")
+    else:
+        button.config(background=new_color)
+        camera.chiudi_finestra_webcam()
+

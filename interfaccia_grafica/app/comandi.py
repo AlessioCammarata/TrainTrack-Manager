@@ -1,7 +1,7 @@
-'''
+"""
 The purpose of this file is to comunicate with arduino directly by the serial port.
 With these command you could be able to control both the system and all the locomotives.
-'''
+"""
 
 import data
 import time
@@ -20,8 +20,11 @@ import subprocess
 #Funzione che aggiorna il nome della seriale
 def name_serial_port():
     port = data.serial_ports[0]
-    return f"COM{port}"  
+    print(port)
+            # Per sistemi Windows                       Per sistemi Unix-like (Linux, macOS)
+    return f"COM{port}" if data.SO == 'Windows' else f"/dev/{port}"  
 
+ 
 #funzione che accende o spegne la corrente al sistema
 #<1> o <0>
 
@@ -47,6 +50,7 @@ def throttle(memoria,ID, SPEED, DIR):
 def STOP(memoria,ID):
     comando = ('echo "<t {} {} 0 1>" > {}'.format(memoria,ID,name_serial_port()))
     subprocess.call(comando, shell=True, stdout=subprocess.PIPE, stderr= subprocess.PIPE)
+
 
 #funzione per cambiare indirizzo al controller della locomotiva
 #<w [CAB] 1 5> -->

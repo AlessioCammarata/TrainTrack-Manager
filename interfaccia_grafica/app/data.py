@@ -18,39 +18,48 @@ architecture = ""
 #In questa var viene memorizzata la path assoluta del programma che viene calcolata durante l'avvio
 path = ""
 
-#Tiene a mente tutte le stringhe del programma
+#Tiene a mente tutte le stringhe del programma per effettuare le traduzioni
 Textlines = []
-languages = ['IT','EN','FR','SP']
+languages = ['IT','EN','FR','SP']    #Lista dei linguaggi disponibili
 
-locomotives_data =      []           # Lista per salvare i dati delle locomo
-max_loco_standard =     11           # Numero max di locomotive che il sistema puo gestire --- Solo 11 colori disponibili
-max_loco         =      11           # Numero max di locomotive che il sistema lavora
-max_length_name  =      20           # Numero max di caratteri che il nome puo avere
-max_size_loco_id =   10293           # Numero max dell'indirizzo che si puo dare ad una locomotiva
-K_velocita       = 126/100           # Costante basata sulla velocita massima possibile di una locomotiva (0-126)
-max_velocita     =     100
+color_available = ["Red", "Green", "Lightblue", "Yellow", "Fuchsia", "Orange", "Pink", "Brown", "Gray", "Cyan","Lightgray","Default"]
 
-var_velocita_tastiera = 0           #Var che aiuta l'implementazione della tastioera nella finestra dei comandi
-var_supporto = None                 #Var che aiuta l'apertura della gestione locomotiva da tastiera
+locomotives_data =      []                # Lista per salvare i dati delle locomo
+max_loco_standard= len(color_available)-1 # Numero max di locomotive che il sistema puo gestire --- Solo 11 colori disponibili
+max_loco         =  max_loco_standard     # Numero max di locomotive che il sistema lavora --Puo gestirne di meno di 11 se si vuole si puo impostare
+max_length_name  =      20                # Numero max di caratteri che il nome puo avere
+max_size_loco_id =   10293                # Numero max dell'indirizzo che si puo dare ad una locomotiva
+K_velocita       = 126/100                # Costante basata sulla velocita massima possibile di una locomotiva (0-126)
+max_velocita     =     100                # Velocita massima che si puo dare ad una locomotiva
+max_loco_auto    =       3                # Numero max di locomotive per la modalità automatica
 
-# impostazioni connessione seriale, 
-# serial_port è quella che fa riferimento alla centralina dcc, 
-# serial_port1 è quella che fa riferimento ai sensori RFID
-serial_port     = "–"
-serial_port1    = "-"
+var_velocita_tastiera = 0                 #Var che aiuta l'implementazione della tastioera nella finestra dei comandi
+var_supporto = None                       #Var che aiuta l'apertura della gestione locomotiva da tastiera
 
-serial_ports = [serial_port,serial_port1]
+# Impostazioni connessione seriale:
 
-#Numero di porte che vengono controllate
-port_range = 10
+serial_port     = "–"   # serial_port è quella che fa riferimento alla centralina dcc,
+name            = "Sconosciuto"
+
+serial_port1    = "-"   # serial_port1 è quella che fa riferimento ai sensori RFID
+
+serial_ports    = [serial_port,serial_port1]
+
+port_range = 10         #Numero di porte che vengono controllate
+
 #dizionario che controlla se il collegamento seriale per l'algoritmo è stato inizializzato o no e se la porta è abilitata o disabilitata dall'utente
-# Serial_port_info[serial_ports[0]][0] = Inizialized, Serial_port_info[serial_ports[0]][1] = Enabled
+# Serial_port_info[serial_ports[0]][0] = Inizialized, Serial_port_info[serial_ports[0]][1] = Enabled, Serial_port_info[serial_ports[0]][2] = Cosa c'è collegato, "Arduino Uno"
 serial_port_info = {
     serial_ports[0]: [False,False], 
     serial_ports[1]: [False,False]
 }
-# Variabile che serve a controllare se c'è stato un errore
-control_var_errore = False
+
+#Vengono salvati i nomi delle porte
+serial_port_names = {
+}
+namesTC = []
+
+control_var_errore = False # Variabile che serve a controllare se c'è stato un errore
 
 # Dizionario per tenere in memoria l'apertura delle pagine
 variabili_apertura = {   
@@ -63,11 +72,6 @@ variabili_apertura = {
     "locomotive_info_var":     False,
     "locomotive_control_var":  []
 }
-
-#Salvo la pagina, mi serve per bloccare la pagina circuit
-locomotive_RFID_window = ""
-
-color_available = ["Red", "Green", "Lightblue", "Yellow", "Fuchsia", "Orange", "Pink", "Brown", "Gray", "Cyan","Lightgray","Default"]
 
 # Traduzione dei colori - In questo dizionario vengono inserite le traduzioni per ogni elemento
 # colors = {
@@ -130,17 +134,11 @@ Sensors = {
     "Sensore 7":   ["","","","","black"],
     "Sensore 8":   ["","","","","red"]
 }
-#La label è quella della pagina rfid
-label = ""
 
-#array dei canvas
-canvas_array = [""]
-
-#Variabile per controllare se tutti i treni in tabella sono stati calibrati
-calibred = False
-
-#Qui viene inserita la varibile del sensore per la calibrazione
-sensor_response = ["_/_"]
+label = ""                  #La label è quella della pagina rfid, non riesco ad accederci da fuori poiche si trova all'interno di una funzione
+canvas_array = [""]         #array dei canvas
+calibred = False            #Variabile per controllare se tutti i treni in tabella sono stati calibrati
+sensor_response = ["_/_"]   #Qui viene inserita la varibile del sensore per la calibrazione
 
 '''
 Se partono da 7 viaggiano verso sinistra e cominciano alla stazione
