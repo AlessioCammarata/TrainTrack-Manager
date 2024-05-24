@@ -763,7 +763,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     # locomotive_window.info_window = None
     def show_page_info():
 
-        locomotive_window1 = GUI.open_locomotive_window("info", data.Textlines[16], "600x400",locomotive_window)
+        locomotive_window1 = GUI.open_locomotive_window("info", data.Textlines[16], "800x600",locomotive_window)
         if locomotive_window1:
 
             info_text = (
@@ -774,15 +774,25 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
                     " - "+data.Textlines[120]+"\n\n"
                     " - "+data.Textlines[121]
                 )
-                 
+            
             label_title = tk.Label(locomotive_window1, text=data.Textlines[122], font=('Helvetica', 14, 'bold'))
             label_title.pack(pady=10)
             
-            text = tk.Text(locomotive_window1, wrap='word', width=60, height=20)
+            text = tk.Text(locomotive_window1, wrap='word', width=80, height=40)
             text.insert(tk.END, info_text)
             text.config(state='disabled')
             text.pack(padx=10, pady=5)
             
+            #Style per il testo
+            text.tag_configure('Nunito', font=('Nunito', 16))
+            text.tag_configure('Raleway', font=('Raleway', 14))
+            text.tag_configure('Roboto', font=('Roboto', 11),lmargin1=20, lmargin2=40, spacing1=5)
+
+            text.tag_add('Raleway', '1.0', '1.end')
+            text.tag_add('Roboto', '2.0', '5.end')
+            text.tag_add('Raleway', '8.0', '8.end')
+            text.tag_add('Roboto', '10.0', 'end')
+
             locomotive_window1.transient(locomotive_window)
 
             locomotive_window1.protocol("WM_DELETE_WINDOW", lambda: locomotive_window1.destroy())

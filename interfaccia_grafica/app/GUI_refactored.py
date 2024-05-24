@@ -362,7 +362,7 @@ class GUI(tk.Frame):
     def open_info_window(self):
 
         #Creazione della finestra per le informazioni
-        locomotive_window = self.open_locomotive_window("info", data.Textlines[16], "600x400",self.container)
+        locomotive_window = self.open_locomotive_window("info", data.Textlines[16], "800x600",self.container)
         if locomotive_window:
 
             #Serie di informazioni sull'applicazione
@@ -371,26 +371,39 @@ class GUI(tk.Frame):
                     "1. "+data.Textlines[101]+"\n\n"
                     " - "+data.Textlines[102]+"\n\n"
                     " - "+data.Textlines[103]+"\n\n\n"
-                    "2. "+data.Textlines[104]+"\n\n"
-                    " - "+data.Textlines[105]+"\n\n"
-                    " - "+data.Textlines[106]+"\n\n"
-                    " - "+data.Textlines[107]+"\n\n"
-                    " - "+data.Textlines[108]+"\n\n"
-                    " - "+data.Textlines[109]+"\n\n"
-                    " - "+data.Textlines[110]+"\n\n"
-                    " - "+data.Textlines[111]+"\n\n"
-                    " - "+data.Textlines[112]+"\n\n"
-                    " - "+data.Textlines[113]
+                    "2. "+data.Textlines[104]+"\n\n"    
+                    " - "+data.Textlines[105]+"\n\n"    
+                    " - "+data.Textlines[106]+"\n\n"    
+                    " - "+data.Textlines[107]+"\n\n"    
+                    " - "+data.Textlines[108]+"\n\n"    
+                    " - "+data.Textlines[109]+"\n\n"    
+                    " - "+data.Textlines[110]+"\n\n"    
+                    " - "+data.Textlines[111]+"\n\n"    
+                    " - "+data.Textlines[112]+"\n\n"    
+                    " - "+data.Textlines[113]           
                 )
             
+
             label_title = tk.Label(locomotive_window, text=data.Textlines[114], font=('Helvetica', 14, 'bold'))
             label_title.pack(pady=10)
             
-            text = tk.Text(locomotive_window, wrap='word', width=60, height=20)
+            text = tk.Text(locomotive_window, wrap='word', width=80, height=40)
             text.insert(tk.END, info_text)
             text.config(state='disabled')
             text.pack(padx=10, pady=5)
             
+            #Style per il testo
+            text.tag_configure('Nunito', font=('Nunito', 16))
+            text.tag_configure('Raleway', font=('Raleway', 14))
+            text.tag_configure('Roboto', font=('Roboto', 11),lmargin1=20, lmargin2=40, spacing1=5)
+
+            text.tag_add('Nunito', '1.0', '1.end')
+            text.tag_add('Raleway', '4.0', '4.end')
+            text.tag_add('Roboto', '6.0', '8.end')
+            text.tag_add('Raleway', '11.0', '11.end')
+            text.tag_add('Roboto', '13.0', 'end')
+
+
             locomotive_window.transient(self.container)
 
             #Comandi da tastiera e x rossa
