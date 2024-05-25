@@ -1042,6 +1042,7 @@ class circuit_window:
         #GUI = self.GUI
         locomotive_window = self.GUI.open_locomotive_window("RFID", data.Textlines[17], "312x360",self.locomotive_window)
         if locomotive_window:
+            locomotive_window.iconbitmap(utilities.asset_path("controllo", "ico"))
             RFID_window(locomotive_window,self.algo,self.locomotive_window,self.GUI)    
 
     def open_info_window(self):

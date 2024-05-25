@@ -227,11 +227,7 @@ class GUI(tk.Frame):
             window_var = tk.Toplevel(root)
             #Nasconde la finestra
             window_var.withdraw()
-            if window_type == 'info':
-                window_var.iconbitmap(utilities.asset_path("info", "ico"))
-            elif window_type in ['settings', 'RFID']:
-                window_var.iconbitmap(utilities.asset_path("controllo", "ico"))
-            else: window_var.iconbitmap(utilities.asset_path("icon_control", "ico"))
+            window_var.iconbitmap(utilities.asset_path("icon_control", "ico"))
 
             data.variabili_apertura[f'locomotive_{window_type}_var'] = True
 
@@ -267,6 +263,7 @@ class GUI(tk.Frame):
     def open_settings_window(self):
         locomotive_window = self.open_locomotive_window("settings", data.Textlines[11], "410x280",self.container)
         if locomotive_window:
+            locomotive_window.iconbitmap(utilities.asset_path("controllo", "ico"))
             windows.settings_window(locomotive_window,self)
 
     #Apre la pagina della creazione locomotive
@@ -364,6 +361,8 @@ class GUI(tk.Frame):
         #Creazione della finestra per le informazioni
         locomotive_window = self.open_locomotive_window("info", data.Textlines[16], "800x600",self.container)
         if locomotive_window:
+
+            locomotive_window.iconbitmap(utilities.asset_path("info", "ico"))
 
             #Serie di informazioni sull'applicazione
             info_text = (
