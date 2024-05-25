@@ -48,28 +48,28 @@ class GUI(tk.Frame):
         Control-9 -> loco ID 19\n\n
 \n
     - c -> Opens the **circuit window**\n
-    comando: self.container.bind("<c>", lambda event: self.open_control())\n
+    command: self.container.bind("<c>", lambda event: self.open_control())\n
 \n
     - s -> Opens the **system settings**\n
-    self.container.bind("<s>", lambda event: self.open_settings_window())\n
+    command: self.container.bind("<s>", lambda event: self.open_settings_window())\n
 \n
     - o -> Permit to **open** or **cut off** the current for the rails\n
-    self.container.bind("<o>", lambda event: self.on_off())\n
+    command: self.container.bind("<o>", lambda event: self.on_off())\n
 \n
     - i -> Opens the general **information**\n
-    self.container.bind("<i>", lambda event: self.open_info_window())\n
+    command: self.container.bind("<i>", lambda event: self.open_info_window())\n
 \n
     - + -> Press the button **add locomotive**\n
-    self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())\n
+    command: self.container.bind("<plus>", lambda event: self.open_locomotive_creation_window())\n
 \n
     - - -> Press the **remove button**\n
-    self.container.bind("<minus>", lambda event: self.open_locomotive_remove_window())\n
+    command: self.container.bind("<minus>", lambda event: self.open_locomotive_remove_window())\n
 \n
     - m -> Press the **modify button**\n
-    self.container.bind("<m>", lambda event: self.open_locomotive_modify_window())\n
+    command: self.container.bind("<m>", lambda event: self.open_locomotive_modify_window())\n
 \n
     - Enter -> **Start** oor **Stop** the system without cutting of the current\n
-    self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())\n
+    command: self.container.bind("<Return>", lambda event: self.GENERAL_STOP_START())\n
         
     """
     def __init__(self, container):
@@ -216,6 +216,11 @@ class GUI(tk.Frame):
 
    #Funzione che gestisce e semplifica la creazione dei TopLevel dell'applicazione.
     def open_locomotive_window(self, window_type : str, window_title: str, window_size: str, root):
+        """
+        -This function **manage and simplify the creation of almost every TopLevel in the Application**, mainly related to the root. These windows share similar characteristics.\n
+        It also **controls if the same page is already open**, in this case give you an error messagebox, contrarly it create and open the window.\n
+        For some windows, which take longer to create, the window is hidden, through the withdraw() function, until it is ready to be displayed through the deiconify() function.\n\n 
+        """
         att = f'locomotive_{window_type}_window'
         window_var = getattr(self, att)
         data.variabili_apertura[f'locomotive_{window_type}_var'] = False # utilities.set_variabilechiusura(window_type)
