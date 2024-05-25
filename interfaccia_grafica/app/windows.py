@@ -1260,9 +1260,9 @@ class circuit_window:
 
         image_info_path = utilities.asset_path('info','png')
         image_info = utilities.process_image(image_info_path, 'resize', 45, 35)
-        self.webcam = tk.Button(frame, image= image_info, borderwidth=0, bg="#c0c0c0",
+        self.info = tk.Button(frame, image= image_info, borderwidth=0, bg="#c0c0c0",
                             command=lambda: self.open_info_window())
-        self.webcam.pack(padx=(400,0),side=tk.LEFT)
+        self.info.pack(padx=(400,0),side=tk.LEFT)
         root.bind("<i>", lambda event: self.open_info_window())
         self.locomotive_info_window = None
        
