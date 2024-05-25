@@ -544,8 +544,14 @@ def settings_window(locomotive_window,GUI):
         if max_loco == '' : max_loco = str(data.max_loco)
         
         #Amministratore
-        data.root = True if int(max_loco) == 2005 and not data.root else False
-        
+        # data.root = True if int(max_loco) == 2005 and not data.root else False
+        if int(max_loco) == 2005 and not data.root: 
+            data.root = True 
+        else:
+            if GUI.on_button.cget("background") == "#00ff00":
+                GUI.on_off()
+            data.root = False
+
         #controlli sugli input, non so bene che sistemare
         if rfid == centralina or int(max_loco) == 0:
             utilities.show_error_box(data.Textlines[24],locomotive_window,"")
@@ -1110,10 +1116,11 @@ class circuit_window:
     # #funzione che gestisce il bottone che attiva la webcam
         def change_color_webcam():
             current_color = self.webcam.cget("background")
-            new_color = "#8fbc8f" if current_color == "#f08080" else "#f08080"
+            print(current_color)
+            new_color = "#8fbc8f" if current_color == "SystemButtonFace" else "SystemButtonFace"
             # new_text = data.Textlines[54] if current_color == "#f08080" else data.Textlines[53]
             
-            if current_color == "#f08080" :
+            if current_color == "SystemButtonFace" :
                 
                 #Controlla che la cam sia aperta ed esista, in caso contrario va a controllare
                 if not self.camera.cam_exist:
@@ -1200,7 +1207,7 @@ class circuit_window:
             else:
                 self.locomotive_label.configure(text=data.Textlines[94])
                 self.tag_label.configure(text="")
-                self.tag_color.configure(background="SystemButtonFace")
+                self.tag_color.configure(background="#c0c0c0")
                 self.locomotive_window.grab_release()
 
         #---------CREAZIONE DELLA PAGINA---------
@@ -1226,14 +1233,14 @@ class circuit_window:
         image_RFID = utilities.process_image(image_RFID_path, 'resize', 40, 40)
         self.RFID_button = tk.Button(frame, image= image_RFID, borderwidth=0, bg="#c0c0c0",
                                         command=lambda:self.open_RFID_window())
-        self.RFID_button.pack(side="left", padx=(10,5),pady=(5,0))
+        self.RFID_button.pack(side="left", padx=(10,5),pady=(2,2))
         self.RFID_button.config(state='disabled')
 
         image_power_path = utilities.asset_path('power_icon','png')
         image_power = utilities.process_image(image_power_path,'resize',35,35)
         start_button = tk.Button(frame, image=image_power,bg="red", 
                                     command=START)
-        start_button.pack(padx=(10,5),side=tk.LEFT)
+        start_button.pack(padx=(10,5),pady=(2,2),side=tk.LEFT)
         root.bind("<o>", lambda event: START())
 
         # tabella che fa vedere cio che vedono i sensori
@@ -1248,13 +1255,13 @@ class circuit_window:
 
         image_webcam_path = utilities.asset_path('security-camera','png')
         image_webcam = utilities.process_image(image_webcam_path,'resize',35,35)
-        self.webcam = tk.Button(frame, image= image_webcam, bg="#f08080",
+        self.webcam = tk.Button(frame, image= image_webcam, 
                             command=lambda: change_color_webcam())
         self.webcam.pack(padx=5,side=tk.LEFT)
         root.bind("<v>", lambda event: change_color_webcam())
 
-        self.locomotive_label = tk.Label(frame, text=data.Textlines[93],bg="#c0c0c0")
-        self.locomotive_label.pack(padx=(280,0),pady=10,side=tk.LEFT)
+        self.locomotive_label = tk.Label(frame, text=data.Textlines[93],bg="#c0c0c0", width=30)
+        self.locomotive_label.pack(padx=(260,0),pady=10,side=tk.LEFT)
 
          #informazioni
 

@@ -110,20 +110,21 @@ def is_serial_port_available(function_port):
     #Se sei amministratore bypassa i controlli, puoi incorrrere in errori
     if data.root:
         return True
-    if data.serial_port_info[function_port][1]:
-        # Costruisci il percorso del dispositivo della porta seriale
-        port_path = find_port_path(function_port)  
-        exist = os.path.exists(port_path)
-
-        #Nel caso in cui la porta non sia stata inizializzzìata, la inizializza.
-        if exist and not data.serial_port_info[function_port][0]:
-            data.serial_port_info[function_port][0] = True
-            serial.Serial(port_path,baudrate=115200,timeout=1)
-        # Verifica l'esistenza del percorso della porta seriale
-
-        exist_inizialized = exist and data.serial_port_info[function_port][0]
-        return exist_inizialized
-    # else: 
+    if function_port not in ["–","-"]:
+        if data.serial_port_info[function_port][1]:
+            # Costruisci il percorso del dispositivo della porta seriale
+            port_path = find_port_path(function_port)  
+            exist = os.path.exists(port_path)
+    
+            #Nel caso in cui la porta non sia stata inizializzzìata, la inizializza.
+            if exist and not data.serial_port_info[function_port][0]:
+                data.serial_port_info[function_port][0] = True
+                serial.Serial(port_path,baudrate=115200,timeout=1)
+            # Verifica l'esistenza del percorso della porta seriale
+    
+            exist_inizialized = exist and data.serial_port_info[function_port][0]
+            return exist_inizialized
+        # else: 
     return False
     
 #Funzione che controlla solo che sia collegata una porta al pc

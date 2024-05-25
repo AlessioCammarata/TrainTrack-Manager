@@ -40,7 +40,7 @@ class Camera:
     def chiudi_finestra_webcam(self):
         self.cap.release()
         self.video_window.destroy()
-        self.circuit_window.webcam.config(background="#f08080")
+        self.circuit_window.webcam.config(background="SystemButtonFace")
         # print(self.cap)
         print("VIDEO destroyed")
 

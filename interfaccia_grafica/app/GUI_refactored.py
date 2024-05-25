@@ -417,7 +417,7 @@ class GUI(tk.Frame):
     #funzione che serve per la gestione del bottone ON/OFF della corrente
     def on_off(self):
         current_color = self.on_button.cget("background")
-
+        print(self.serial_port)
         #controlla se la seriale è collegata correttamente
         if utilities.is_serial_port_available(self.serial_port):
             on_offButton = buttons.Buttons(current_color)
