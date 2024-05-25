@@ -1223,7 +1223,7 @@ class circuit_window:
 
         image_webcam_path = utilities.asset_path('security-camera','png')
         image_webcam = utilities.process_image(image_webcam_path,'resize',35,35)
-        self.webcam = tk.Button(frame, image= image_webcam, bg="#f08080",
+        self.webcam = tk.Button(frame, image= image_webcam, borderwidth=0.5, 
                             command=lambda: utilities.change_color_webcam(0,self.webcam,self.camera,self.locomotive_window))
         self.webcam.pack(padx=5,side=tk.LEFT)
         root.bind("<v>", lambda event: utilities.change_color_webcam(0,self.webcam,self.camera,self.locomotive_window))
