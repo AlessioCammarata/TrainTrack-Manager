@@ -227,7 +227,6 @@ class GUI(tk.Frame):
             window_var = tk.Toplevel(root)
             #Nasconde la finestra
             window_var.withdraw()
-            window_var.iconbitmap(utilities.asset_path("icon_control", "ico"))
 
             data.variabili_apertura[f'locomotive_{window_type}_var'] = True
 
@@ -270,18 +269,21 @@ class GUI(tk.Frame):
     def open_locomotive_creation_window(self):
         locomotive_window = self.open_locomotive_window("creation", data.Textlines[12], "250x170",self.container)
         if locomotive_window:
+            locomotive_window.iconbitmap(utilities.asset_path("icon_control", "ico"))
             windows.creation_window(locomotive_window,self)
 
     #Apre la pagina della rimozione locomotive      
     def open_locomotive_remove_window(self):
         locomotive_window = self.open_locomotive_window("remove", data.Textlines[13], "250x150",self.container)
         if locomotive_window:
+            locomotive_window.iconbitmap(utilities.asset_path("icon_control", "ico"))
             windows.remove_window(locomotive_window,self)
 
     #Apre la pagina della modifica locomotive
     def open_locomotive_modify_window(self):
         locomotive_window = self.open_locomotive_window("modify", data.Textlines[14], "300x210",self.container)
         if locomotive_window:
+            locomotive_window.iconbitmap(utilities.asset_path("icon_control", "ico"))
             windows.modify_window(locomotive_window,self)
 
     #Apre la pagina per controllare il circuito
@@ -299,7 +301,7 @@ class GUI(tk.Frame):
             locomotive_window = self.open_locomotive_window("circuit",data.Textlines[15], "1200x758",self.container)
             
             if locomotive_window:
-
+                locomotive_window.iconbitmap(utilities.asset_path("controller", "ico"))
                 #Impostazioni di pagina, al premere del tasto ESC e al premere della x rossa, chiude la finestra, ferma l'algoritmo, toglie l'opacita e rilascia la pagina padre
 
                 locomotive_window.bind("<Escape>", lambda event: (utilities.on_close(locomotive_window,"circuit"),
@@ -342,7 +344,7 @@ class GUI(tk.Frame):
                 self.locomotive_control_window[id_controllo].withdraw()
 
                 self.locomotive_control_window[id_controllo].transient(self.container)
-                self.locomotive_control_window[id_controllo].iconbitmap(utilities.asset_path('icon_control','ico'))
+                self.locomotive_control_window[id_controllo].iconbitmap(utilities.asset_path('train','ico'))
                 self.locomotive_control_window[id_controllo].protocol("WM_DELETE_WINDOW", lambda:utilities.on_close(self.locomotive_control_window[id_controllo],f"{id_controllo}"))
 
                 #Seleziona la pagina appena creata
