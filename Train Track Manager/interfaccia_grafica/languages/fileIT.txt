@@ -65,11 +65,11 @@ Passa la locomotiva corrispondente all'ID inserito, sotto al sensore corrisponde
 Premi CONFERMA e rifai il procedimento
 Sei sicuro di voler continuare?
 Procedendo tutte le finestre in piu ripsetto alla principale verranno chiuse.
-Per avviare il circuito automatico bisogna inserire almeno 2 locomotive
+Per avviare il circuito automatico bisogna inserire almeno 2 locomotive e massimo 3
 Per cambiare le impostazioni relative alle locomotive massime, il numero di locomotive in tabella DEVE essere minore di quelle gia presenti.
 Se si continua verrà svuotata la tabella.
-
-
+Porta
+Dispositivo
 
 
 
@@ -96,7 +96,7 @@ CONTROLLO MANUALE CIRCUITO
 tag RFID
 ID Locale
 Cambio
-
+Sconosciuto
 -Informazioni | 100 - 122
 Cosa puoi fare con Train Track:
 Gestione delle locomotive
@@ -107,7 +107,7 @@ Tramite il tasto rosso o con il tasto 'o' (da tastiera) puoi avviare la corrente
 Dopo aver aggiunto locomotive alla tabella e aver avviato la corrente sara possibile comandare le locomotive, potrai farlo attraverso il tasto con l'immagine di un treno o digitando il numero relativo all'id locale della locomotiva, nel caso in cui si ha piu di 9 locomotive bisognerà premere 'Control-numero', quindi per la locomotiva 15 'Control-5'.
 Con il tasto stop generale o con il tasto 'spacebar' (da tastiera) è possibile bloccare il sistema senza togliere la corrente.
 Tramite il bottone del gamepad o con il tasto 'c' (da tastiera) è possibile vedere il disegno del circuito e scambiare i deviatoi in tempo reale essi possono essere cliccati o si puo cliccare il tasto relativo al numero dello scambio (da tastiera), questo nella modalita MANUALE.
-È infatti disponibile la versione automatica, premendo di nuovo il tasto 'c', che tramite i sensori gestisce il sistema da solo, sono necessarie pero almeno 2 locomotive e massimo 3. 
+È infatti disponibile la versione automatica, premendo il tasto 'o' o il tasto avvio verra avviata, tramite i sensori gestisce il sistema da solo, sono necessarie pero almeno 2 locomotive e massimo 3. 
 Dalle impostazioni o con il tasto 's' (da tastiera) è possibile impostare le porte che comunicheranno con i sistemi Arduino.
 Questa pagina è reperibile anche premendo il tasto 'i' (da tastiera).
 Sono disponibili fino a 4 Linguaggi, tutti con le relative traduzioni certificate.
@@ -125,3 +125,28 @@ Informazioni sul circuito automatico
 
 
 IT
+
+
+
+
+
+
+
+
+
+
+
+
+-Colori | 140 - 151
+Rosso
+Verde
+Azzurro chiaro
+Giallo
+Fucsia
+Arancione
+Rosa
+Marrone
+Grigio
+Ciano
+Grigio chiaro
+Default

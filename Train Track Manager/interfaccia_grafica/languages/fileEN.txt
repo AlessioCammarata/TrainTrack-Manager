@@ -65,11 +65,11 @@ Pass the locomotive corresponding to the entered ID under the sensor correspondi
 Press CONFIRM and repeat the procedure.
 Are you sure you want to continue?
 By proceeding, all additional windows compared to the main one will be closed.
-To start the automatic circuit, you need to insert at least 2 locomotives.
+To start the automatic circuit, you need to insert a minimum of 2 locomotives and a maximum of 3.
 To change the settings related to maximum locomotives, the number of locomotives in the table MUST be less than those already present.
 If you continue, the table will be emptied.
-
-
+Port
+Device
 
 
 
@@ -96,7 +96,7 @@ CIRCUIT MANUAL CONTROL
 RFID tag
 Local ID
 Turnout
-
+Unknown
 Information | 100 - 122
 What you can do with Train Track:
 Locomotive Management
@@ -107,7 +107,7 @@ With the red button or with the 'o' key (on the keyboard) you can turn on the po
 After adding locomotives to the table and turning on the power, you will be able to control the locomotives, either by pressing the button with the picture of a train, or by typing the number corresponding to the local ID of the locomotive. In case you have more than 9 locomotives, you will need to press 'Control-number', so for locomotive 15 'Control-5'.
 With the general stop button or with the 'spacebar' key (on the keyboard) you can stop the system without cutting off the power.
 With the gamepad button or with the 'c' key (on the keyboard) you can view the circuit drawing and switch the points in real time, they can be clicked on or you can click on the key corresponding to the point number (on the keyboard), this in MANUAL mode.
-There is also the automatic version, by pressing the 'c' key again, which manages the system alone through the sensors, but at least 2 locomotives and up to 3 are needed.
+The automatic version is also available; by pressing the 'o' button or the start button, it will be activated. Through sensors, it manages the system on its own. However, a minimum of 2 locomotives and a maximum of 3 are required.
 From the settings or with the 's' key (on the keyboard) you can set the ports that will communicate with the Arduino systems.
 This page can also be accessed by pressing the 'i' key (on the keyboard).
 Up to 4 languages are available, all with their certified translations.
@@ -125,3 +125,28 @@ Information about the automatic circuit
 
 
 EN
+
+
+
+
+
+
+
+
+
+
+
+
+-Colors  | 140 - 151
+Red
+Green
+Lightblue
+Yellow
+Fuchsia
+Orange
+Pink
+Brown
+Gray
+Cyan
+Lightgray
+Default
