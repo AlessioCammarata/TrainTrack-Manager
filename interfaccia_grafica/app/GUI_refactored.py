@@ -14,6 +14,7 @@ class GUI(tk.Frame):
         self.container = container
         self.serial_port = data.serial_ports[0]
         self.locomotive_names = []
+        self.container.protocol("WM_DELETE_WINDOW", lambda: (self.on_off() if self.on_button.cget("background") != "red" else None,self.container.on_close_root()))
         #self.container.bind("<FocusIn>", lambda event: self.container.focus_set())
 
         '''

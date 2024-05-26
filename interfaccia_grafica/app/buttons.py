@@ -24,7 +24,7 @@ class Buttons:
             on=1
         else:
             on=0
-            
+
         comandi.open_current(on)
 
         #cambia il colore al bottone

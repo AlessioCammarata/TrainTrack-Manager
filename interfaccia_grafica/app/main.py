@@ -14,7 +14,6 @@ class App(tk.Tk):
         #Specifiche del root - style e icon
         self.title("Gestione Locomotive")
         self.resizable(False, False)
-        self.protocol("WM_DELETE_WINDOW", self.on_close_root)
         self.geometry("900x335")
 
         self.iconbitmap(utilities.asset_path("window_logo", "ico"))
