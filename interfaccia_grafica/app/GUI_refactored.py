@@ -306,19 +306,17 @@ class GUI(tk.Frame):
 
                 locomotive_window.bind("<Escape>", lambda event: (utilities.on_close(locomotive_window,"circuit"),
                                                                                 self.container.algo.stop_algo(),
-                                                                                # self.container.attributes("-alpha", 1),
-                                                                                locomotive_window.grab_release(),
+                                                                                locomotive_window.grab_release()
                                                                                 ))
                 #locomotive_circuit_window.transient(self.root)
                 locomotive_window.protocol("WM_DELETE_WINDOW", lambda:(utilities.on_close(locomotive_window,"circuit"),
                                                                                     self.container.algo.stop_algo(),
-                                                                                    # self.container.attributes("-alpha", 1),
-                                                                                    locomotive_window.grab_release(),
+                                                                                    locomotive_window.grab_release()
                                                                                     ))
     
-                locomotive_circuit_window1 = windows.circuit_window(locomotive_window,len(data.Turnouts),self.container,self)
+                circuit_window = windows.circuit_window(locomotive_window,len(data.Turnouts),self.container,self)
                 #Il parametro indica se è automatico o no
-                locomotive_circuit_window1.open_circuit_window(False)
+                circuit_window.open_circuit_window(False)
 
     #Apre la pagina per controllare locomotive    
     def open_locomotive_control(self):
@@ -394,15 +392,15 @@ class GUI(tk.Frame):
             text.pack(padx=10, pady=5)
             
             #Style per il testo
-            text.tag_configure('Nunito', font=('Nunito', 16))
+            text.tag_configure('Nunito',  font=('Nunito', 16))
             text.tag_configure('Raleway', font=('Raleway', 14))
-            text.tag_configure('Roboto', font=('Roboto', 11),lmargin1=20, lmargin2=40, spacing1=5)
+            text.tag_configure('Roboto',  font=('Roboto', 11),lmargin1=20, lmargin2=40, spacing1=5)
 
-            text.tag_add('Nunito', '1.0', '1.end')
-            text.tag_add('Raleway', '4.0', '4.end')
-            text.tag_add('Roboto', '6.0', '8.end')
+            text.tag_add('Nunito' , '1.0' , '1.end')
+            text.tag_add('Raleway', '4.0' , '4.end')
+            text.tag_add('Roboto' , '6.0' , '8.end')
             text.tag_add('Raleway', '11.0', '11.end')
-            text.tag_add('Roboto', '13.0', 'end')
+            text.tag_add('Roboto' , '13.0', 'end')
 
 
             locomotive_window.transient(self.container)
@@ -473,7 +471,6 @@ class GUI(tk.Frame):
             item = self.tree.item(item_iid)
             self.set_var_keypress_locomotive_control(item['values'][0])
             self.open_locomotive_control()
-            # print(f"CLICK di porta {item['values'][0]} con id: {item_iid}")
 
     #funzione per aggioranre la tabella - all'interno c'è anche la funzione che gestisce il menu a tendina del controllo
     def update_table(self):

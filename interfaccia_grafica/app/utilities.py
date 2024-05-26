@@ -44,17 +44,23 @@ def asset_path(asset_name: str, extenction: str) -> str:
 def process_image(image_path, operation, *args):
     img = Image.open(image_path)
 
-    match operation:
-        case 'resize':
-            processed_img = img.resize((args[0], args[1]), Image.BILINEAR)
-            return ImageTk.PhotoImage(processed_img)
+    if operation == 'rotate':
+        img = img.rotate(args[2], expand=True)
 
-        case 'rotate':
-            rotated_img = img.rotate(args[0], expand=True)
-            processed_img = rotated_img.resize((args[1], args[2]), Image.BILINEAR)
-            return ImageTk.PhotoImage(processed_img)
+    processed_img = img.resize((args[0], args[1]), Image.BILINEAR)
+    return ImageTk.PhotoImage(processed_img)
+    
+    # match operation:
+    #     case 'resize':
+    #         processed_img = img.resize((args[0], args[1]), Image.BILINEAR)
+    #         return ImageTk.PhotoImage(processed_img)
+
+    #     case 'rotate':
+    #         rotated_img = img.rotate(args[0], expand=True)
+    #         processed_img = rotated_img.resize((args[1], args[2]), Image.BILINEAR)
+    #         return ImageTk.PhotoImage(processed_img)
         
-            
+
 #Funzione per impostare la var di chiusura, quando si chiude la finestra
 def set_variabilechiusura(window_type):
     data.variabili_apertura[f'locomotive_{window_type}_var'] = False
@@ -82,7 +88,6 @@ def show_info(descrizione,finestra_padre):
     finestra_padre.grab_set()
     messagebox.showinfo("AVVISO", descrizione, parent = finestra_padre)
     finestra_padre.grab_release()
-    
 
 #Calcola l'ID del treno dalle info - Elemento, stringa che dice che elemento si analizza - info, informazione da cui si vuole partire
 def CalcolaIDtreno(elemento,info):
@@ -98,13 +103,14 @@ def on_close(finestra,window_type):
     finestra.destroy()
     finestra = None
 
+
+
 #Controlla il SO, e scrive il path a seconda del SO
 def find_port_path(function_port):
 
             # Per sistemi Windows                       Per sistemi Unix-like (Linux, macOS)
     return f"COM{function_port}" if data.SO == 'Windows' else f"/dev/{function_port}"  
     
-
 #Funzione che controlla se la porta seriale chiamata è collegata o meno e se è stata inizializzata - in caso non sia stata inizializzata, la inizializza
 def is_serial_port_available(function_port):
     #Se sei amministratore bypassa i controlli, puoi incorrrere in errori
@@ -124,7 +130,7 @@ def is_serial_port_available(function_port):
     
             exist_inizialized = exist and data.serial_port_info[function_port][0]
             return exist_inizialized
-        # else: 
+
     return False
     
 #Funzione che controlla solo che sia collegata una porta al pc
@@ -135,6 +141,8 @@ def port_exist(function_port):
     # print(f"port exist:{port_path} e {exist}")
     # print(data.serial_ports)
     return exist
+
+
 
 # #Funzione che legge dalla seriale il nome dell'arduino
 def read_serial(port):
@@ -162,7 +170,6 @@ def read_serial(port):
         #Assegniamo la risposta alla porta corrente nel dizionario
         data.serial_port_names[port] = response
 
-
 # #Funzione che serve ad otternere il nome dell'Arduino
 def get_name_arduino(ports):
     threads = []
@@ -183,7 +190,6 @@ def get_name_arduino(ports):
     end_time = time.time()
     duration = end_time - start_time
     print("Durata dell'esecuzione:", duration, "secondi")
-
 
 #Funzione utilizzata allo start per impostare le porte gia collegate, nel caso, in memoria
 def set_port_var(*args):
@@ -208,11 +214,6 @@ def set_port_var(*args):
             if flag < 1: 
                 ports_available[0] = data.serial_ports[0]
                 return data.Textlines[32] + "\n" + data.Textlines[33]
-        
-        #Il dizionario temp dei nomi necessità di un solo campo
-        # temp_dict_names = {
-        #     ports_available[0]: data.serial_port_names.pop(data.serial_ports[0]),
-        # }
 
     else:
         for i in range (2):
@@ -244,6 +245,8 @@ def set_port_var(*args):
         data.serial_port_info[data.serial_ports[1]][1]      = port2_enable
     return data.serial_ports
 
+
+
 #Funzione che permette di aggiornare la tabella delle calibrazioni RFID
 def update_circuit_table(columns,tree):
         
@@ -270,6 +273,8 @@ def update_circuit_table(columns,tree):
     for col in columns:
         tree.column(col, anchor='center', width=100)  # Imposta l'allineamento al centro per tutte le colonne
 
+
+
 #Funzione che aggiorna il textlines con la nuova lingua selezionata
 def translate():
     print(data.languages[0])
@@ -295,7 +300,7 @@ def color_update():
         data.colors[colors] = data.Textlines[140+i]
         i += 1
 
-#Aggiorna il namesTC con in nomi delle porte che sono sconosciute
+#Aggiorna il namesToChange con in nomi delle porte che sono sconosciute
 def serial_ports_name_update():
     for name in data.serial_port_names:
         if data.serial_port_names[name] == data.Textlines[98]:

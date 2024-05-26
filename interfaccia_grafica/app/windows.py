@@ -36,8 +36,8 @@ import utilities
 def creation_window(locomotive_window,GUI):
 
     def save_locomotive():
-
-        name            = name_entry.get()
+        #Strip elimina gli spazi prima e dopo la stringa
+        name            = name_entry.get().strip()
         loco_id         = loco_id_entry.get()
         color           = var_color.get()
 
@@ -56,35 +56,20 @@ def creation_window(locomotive_window,GUI):
             if len(data.locomotives_data) == 0:
                 id = 1
             else: 
-                id = data.locomotives_data[-1]['ID'] +1
+                id = data.locomotives_data[-1]['ID'] + 1
             
+            #cast della variabile loco_id
+            loco_id = int(loco_id)
+
             #controlli per vedere se il nome e il locoid sono gia stati usati all'interno del vettore
-            nome_unico = True
-            Locoid_unico = True
-        
-            j=0
-            if data.locomotives_data:
-                while nome_unico:
-                    nome_unico = name != data.locomotives_data[j]['Nome']
-                    unicita_nome = nome_unico
+            unicita_nome = True if utilities.CalcolaIDtreno('Nome',name) is None else False
+            # print(f"nome unico: {unicita_nome}")
 
-                    j = j+1
-                    if j == len(data.locomotives_data):  
-                        nome_unico = False
-                j=0
-                #controllo per vedere se il nome è gia stato usato all'interno del vettore
-                while Locoid_unico:
-                    Locoid_unico = loco_id != data.locomotives_data[j]['LocoID']
-                    unicita_id = Locoid_unico
-                    j = j+1
-                    if j == len(data.locomotives_data):  
-                        Locoid_unico = False
-
-            else: 
-                unicita_nome    = True
-                unicita_id      = True
-
+            unicita_id = True if utilities.CalcolaIDtreno('LocoID',loco_id) is None else False
+            # print(f"id unico: {unicita_id}")
+                
             unicita = unicita_nome and unicita_id
+
             #Controllo sulla dimensione del circuito
             if unicita and controllo_loco:
 
@@ -97,7 +82,7 @@ def creation_window(locomotive_window,GUI):
                 locomotive = {
                     'ID': id,
                     'Nome': name,
-                    'LocoID': int(loco_id),
+                    'LocoID': loco_id,
                     'Colore': color,
                     'Velocita':0,
                     'VelocitaM':0,
@@ -178,7 +163,8 @@ def creation_window(locomotive_window,GUI):
 def remove_window(locomotive_window,GUI):
 
     def remove_locomotive():
-        name    = name_entry.get()
+        #Strip elimina gli spazi prima e dopo la stringa
+        name    = name_entry.get().strip()
         id      = ID_entry.get()
 
         #controllo sugli input
@@ -197,20 +183,18 @@ def remove_window(locomotive_window,GUI):
                     
                     #Sett a True la variabile della calibrazione, il calcolo viene poi effettuato nell'update table
                     data.calibred = True
+
+                    #fa l'unbind del tasto - senza sort, funziona utilizzando index + 1 nel primo if e semplicemente index - 10 nel secondo 
+                    if data.locomotives_data[-1]['ID'] < 10:
+                        GUI.container.unbind("<KeyPress-{}>".format(data.locomotives_data[-1]['ID']))
+                    else:
+                        GUI.container.unbind("<Control-KeyPress-{}>".format(data.locomotives_data[-1]['ID'] - 10))
+
                     #prima di rimuovere la locomotiva, aggiungo il colore che le apparteneva al vettore dei colori disponibili
                     data.color_available.insert(0,data.locomotives_data[index]['Colore'])
                     data.locomotives_data.remove(data.locomotives_data[index])
-                    
-                    if data.locomotives_data:
-                        #fa l'unbind del tasto - senza sort, funziona utilizzando index + 1 nel primo if e semplicemente index - 10 nel secondo 
-                        if data.locomotives_data[-1]['ID'] < 10:
-                            GUI.container.unbind("<KeyPress-{}>".format(data.locomotives_data[-1]['ID']))
-                        else:
-                            GUI.container.unbind("<Control-KeyPress-{}>".format(data.locomotives_data[-1]['ID'] - 10))
-                    else:
-                        GUI.container.unbind("<KeyPress-1>")
 
-                    #Riordina il vettore dopo che si elimina un tizio - Non so se va benissimo, comunque oltre al pezzo sopra funziona tutto lo stesso
+                    #Riordina il vettore dopo che si elimina un tizio
                     sequenza = list(range(1, len(data.locomotives_data )+1))
                     j=0
                     for item in data.locomotives_data:
@@ -262,7 +246,8 @@ def remove_window(locomotive_window,GUI):
 def modify_window(locomotive_window,GUI):
 
     def modify_locomotive(): 
-        name        = name_entry.get()
+        #Strip elimina gli spazi prima e dopo la stringa
+        name        = name_entry.get().strip()
         id          = ID_entry.get()
         loco_id     = loco_id_entry.get()
         color       = var_color.get()
@@ -279,46 +264,31 @@ def modify_window(locomotive_window,GUI):
 
         else:
             id          = int(id)
-            nome_unico  = True
-            Locoid_unico = True
+            loco_id     = int(loco_id)
 
-            j=0
             #prende l'indice dell'elememento in cui trova l'ID
             index_to_replace = utilities.CalcolaIDtreno('ID',id)
             if index_to_replace is not None:
-                #se gli do una stringa vuota mi mette in automatico il noemche corrisponde all'ID
-                if name != '':
-                    #controllo per vedere se il nome è gia stato usato all'interno del vettore
-                    while nome_unico:
-                        nome_unico = name != data.locomotives_data[j]['Nome']
-                        unicita_nome = nome_unico
-                        j = j+1
-                        if j == len(data.locomotives_data):  
-                            nome_unico = False
+                #se gli do una stringa vuota mi mette in automatico il noemche corrisponde all'ID, anche se è gia uguale
+                if name != '' and data.locomotives_data[index_to_replace]['Nome'] != name:
 
-                    if data.locomotives_data[index_to_replace]['Nome'] == name:
-                        unicita_nome = True
+                    # #controllo per vedere se il nome è gia stato usato all'interno del vettore
+                    unicita_nome = True if utilities.CalcolaIDtreno('Nome',name) is None else False
                 else:
                     name = data.locomotives_data[index_to_replace]['Nome']
                     unicita_nome = True
-                j=0
-                if loco_id != "404":
-                    #controllo per vedere se il nome è gia stato usato all'interno del vettore
-                    while Locoid_unico:
-                        Locoid_unico = loco_id != data.locomotives_data[j]['LocoID']
-                        unicita_id = Locoid_unico
-                        j = j+1
-                        if j == len(data.locomotives_data):  
-                            Locoid_unico = False
 
-                    if data.locomotives_data[index_to_replace]['LocoID'] == loco_id:
-                        unicita_id = True
+
+                if loco_id != 404 and data.locomotives_data[index_to_replace]['LocoID'] != loco_id:
+
+                    #controllo per vedere se il nome è gia stato usato all'interno del vettore
+                    unicita_id = True if utilities.CalcolaIDtreno('LocoID',loco_id) is None else False
                 else:
                     loco_id = data.locomotives_data[index_to_replace]['LocoID']
                     unicita_id = True
 
-                
                 unicita = unicita_nome and unicita_id
+                
                 #controlla che ci sia stata corrispondenza per l'indice e che il nome non sia gia stato utilizzato
                 if unicita:
                     #Mantengo il tag assegnato prima, nel cso in cui sia stato assegnato
@@ -335,9 +305,9 @@ def modify_window(locomotive_window,GUI):
                                 #assegno il colore che gia ha
                                 color = data.locomotives_data[index_to_replace]['Colore']
 
-                            new_dict = {'ID':id,
+                            new_dict = {'ID':           id,
                                         'Nome':         name,
-                                        'LocoID':       int(loco_id), 
+                                        'LocoID':       loco_id, 
                                         'Colore':       color, 
                                         'Velocita':     0, 
                                         'VelocitaM':    0, 
@@ -358,7 +328,7 @@ def modify_window(locomotive_window,GUI):
                             color = data.locomotives_data[index_to_replace]['Colore']
                         new_dict = {'ID':           id,
                                     'Nome':         name,
-                                    'LocoID':       int(loco_id),
+                                    'LocoID':       loco_id,
                                     'Colore':       color, 
                                     'Velocita':     0, 
                                     'VelocitaM':    0, 
@@ -1306,8 +1276,8 @@ class circuit_window:
         # binario = process_image(binario_path,'resize', 100, 100)
         sensore = utilities.process_image(sensore_path,'resize', 40, 40)
         # sensore_rotated1 = utilities.process_image(sensore_path,'rotate', -90, 40, 40)  # Ruota a sinistra
-        sensore_rotated2 = utilities.process_image(sensore_path,'rotate', -180, 40, 40)  # Ruota di 180
-        sensore_rotated3 = utilities.process_image(sensore_path,'rotate', 90, 40, 40)  # Ruota a destra
+        sensore_rotated2 = utilities.process_image(sensore_path,'rotate', 40, 40, -180)  # Ruota di 180
+        sensore_rotated3 = utilities.process_image(sensore_path,'rotate', 40, 40, 90)  # Ruota a destra
 
         canvas.create_image(
             (30, canvas_height-150),

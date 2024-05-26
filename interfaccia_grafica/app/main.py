@@ -51,7 +51,7 @@ def setup():
     #Aggiorno la lingua, con quella standard+.
     utilities.translate()
     
-    #Assegnazione diretta standard
+    #Assegnazione diretta standard del nome della prima porta
     data.name = data.Textlines[98] #Sconosciuto
 
     #Aggiorno le porte collegate nel caso in cui ci siano

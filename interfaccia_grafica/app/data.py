@@ -54,7 +54,7 @@ serial_port_info = {
     serial_ports[1]: [False,False]
 }
 
-#Vengono salvati i nomi delle porte
+#Vengono salvati i nomi delle porte, nel namesTC vengono salvate le porte sconosciute cosid a permettere la traduzione
 serial_port_names = {
 }
 namesTC = []
