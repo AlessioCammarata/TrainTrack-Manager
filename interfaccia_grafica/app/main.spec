@@ -28,7 +28,7 @@ exe = EXE(
     [],
     name='TrainTrack Manager',
     shortcut=("Desktop", "TrainTrack Manager"),
-    icon='..\\assets\\window_loco.ico',
+    icon='..\\assets\\window_logo.ico',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
