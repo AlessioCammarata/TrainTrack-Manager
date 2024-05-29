@@ -106,6 +106,24 @@ div.sphinxsidebar #searchbox input[type="submit"] {
     box-sizing: border-box;
 }
 
+/*Scarica l'applicazione*/
+.download-button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.download-button:hover {
+    background-color: #45a049;
+}
 
 img {
     border: 0;
