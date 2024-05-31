@@ -868,7 +868,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     RFID_label.grid(row=2, column=0, sticky=tk.W,padx=5)  # Posiziona a sinistra
     #controllo sugli input,
     RFID_entry = tk.Entry(locomotive_window, width=5, validate="key", validatecommand=(validate_input, '%P'))
-    RFID_entry.grid(row=2, column=0, pady=5, sticky=tk.E)  # Posiziona a destra
+    RFID_entry.grid(row=2, column=0, pady=5,padx=5, sticky=tk.E)  # Posiziona a destra
 
 
     columns = (data.Textlines[96], data.Textlines[95], data.Textlines[80])
