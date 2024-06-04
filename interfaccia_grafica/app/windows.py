@@ -851,7 +851,9 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
                             command=show_page_info)
     info_button.grid(row=0, column=0, pady=(10, 0), padx=(7,0),sticky=tk.W)
 
-    tag_label = tk.Label(locomotive_window, text="", relief = tk.SUNKEN, width=10)
+    sensor = data.sensor_response[0].split("/")
+    sensor[1] = "" if sensor[1] == "_" else sensor[1]
+    tag_label = tk.Label(locomotive_window, text=sensor[1], relief = tk.SUNKEN, width=10)
     tag_label.grid(row=0, column=0, pady=(10, 0), padx=(60,0),sticky=tk.W)
     tag_label.config(state="disabled")
     data.label = tag_label
@@ -1016,7 +1018,7 @@ class circuit_window:
             RFID_window(locomotive_window,self.algo,self.locomotive_window,self.GUI)    
 
     def open_info_window(self):
-        print("INFORMAZI")
+        # print("INFORMAZI")
         #Creazione della finestra per le informazioni
         locomotive_window = self.GUI.open_locomotive_window("info", data.Textlines[16], "800x600",self.locomotive_window)
         if locomotive_window:

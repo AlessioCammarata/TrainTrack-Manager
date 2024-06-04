@@ -65,7 +65,10 @@ class Algorithm:
                         # circuit_window.tag_label.after(1000, lambda: circuit_window.tag_label.configure(text=message[1]))
                         circuit_window.tag_color.configure(background=data.Sensors["Sensore {}".format(message[0])][4])
                         # circuit_window.tag_color.after(1000, lambda: circuit_window.tag_label.configure(text=message[1],background="SystemButtonFace"))
-                    
+                        #Modifica il colore del sensore
+                        if utilities.CalcolaIDtreno("RFIDtag",message[1]) != None:
+                            data.canvas_array[0].after(0, circuit_window.change_Sensors, "Sensore {}".format(message[0]), message[1])
+
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
                     if data.calibred and self.flag and len(data.locomotives_data) in [2,3]:
                         # self.GUI.on_off()
@@ -247,7 +250,7 @@ class Algorithm:
 
                 #Metto in memoria del sensore che ha ricevuto, l'ultimo uid letto
                 data.Sensors[sensor][0] = message[1]
-                canvas.after(0, circuit_window.change_Sensors, sensor, message[1])
+                # canvas.after(0, circuit_window.change_Sensors, sensor, message[1])
 
                 if data.locomotives_data[id]["Direzione"] == 0: # va verso sinistra <--
                     #Percorsi possibili partendo da G, stazione:

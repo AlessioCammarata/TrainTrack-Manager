@@ -106,8 +106,9 @@ class Camera:
         self.tk_img = None
 
         self.cap = cv2.VideoCapture(id_cam)
-  
+        
         self.video_window = tk.Toplevel(self.root)
+        self.video_window.title("Videocamera generale")
         # Fissa la finestra in primo piano
         self.video_window.attributes("-topmost", True)
         self.video_window.geometry(f"{self.width}x{self.height}")
