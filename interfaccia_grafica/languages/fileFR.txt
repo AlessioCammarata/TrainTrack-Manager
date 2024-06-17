@@ -12,7 +12,7 @@ ARRÊT GÉNÉRAL
 Paramètres
 Création de locomotive
 Suppression de locomotive
-Suppression de locomotive
+Modifier la locomotive
 Gestion du circuit de contrôle/auto
 Informations
 Paramètres RFID

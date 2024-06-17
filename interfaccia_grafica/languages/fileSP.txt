@@ -12,7 +12,7 @@ DETENER GENERAL
 Configuraciones
 Creación de Locomotora
 Eliminación de Locomotora
-Eliminación de Locomotora
+Editar locomotora
 Gestión de circuito/control automático
 Información
 Configuraciones RFID

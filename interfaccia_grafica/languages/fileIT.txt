@@ -12,7 +12,7 @@ STOP GENERALE
 Impostazioni
 Creazione Locomotiva
 Rimozione Locomotiva
-Rimozione Locomotiva
+Modifica Locomotiva
 Gestione controlcircuituale/auto
 Informazioni
 Impostazioni RFID

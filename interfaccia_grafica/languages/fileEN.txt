@@ -12,7 +12,7 @@ GENERAL STOP
 Settings
 Locomotive Creation
 Locomotive Removal
-Locomotive Deletion
+Edit Locomotive
 Control Circuit/Auto Management
 Information
 RFID Settings
