@@ -123,7 +123,8 @@ Adjacent_Turnouts = {
 #creazione in memoria dei sensori
 # terminate = [Bool di boot per algo]
 # Sensors[Sensore 1] = [Ultimo messaggio ricevuto,Memoria dell'ultimo treno passato verso sinistra, indietro,Memoria dell'ultimo treno passato verso destra, avanti][color_img] [standard_color_img] |fase di test|
-terminate = False
+terminate_sensor = False
+terminate_algo = False
 Sensors = {
     "Sensore 1":   ["","","","","purple"],
     "Sensore 2":   ["","","","","orange"],

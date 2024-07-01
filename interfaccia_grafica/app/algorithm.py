@@ -46,11 +46,13 @@ class Algorithm:
 
         try:
             ser = serial.Serial(port_path, baudrate=115200, timeout=0)
-
-            while not data.terminate:
+            
+            while not data.terminate_sensor:
+                
                 try:
                     response = ser.readline().decode('utf-8').strip()
                     if response:
+                        
                         print(f"Ricevuto dalla porta seriale: {response}")
                         self.message_queue.put(response)  # Aggiungi il messaggio alla coda
 
@@ -70,21 +72,22 @@ class Algorithm:
                             data.canvas_array[0].after(0, circuit_window.change_Sensors, "Sensore {}".format(message[0]), message[1])
 
                     #Controllo che tutte le locomotive siano calibrate e inoltre eseguo questa operazione una sola volta (se chiudo la pagina posso rifarla)
-                    if data.calibred and self.flag and len(data.locomotives_data) in [2,3]:
+                    # if data.calibred and self.flag and len(data.locomotives_data) in [2,3]:
                         # self.GUI.on_off()
-                        parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
+                        # parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
 
-                        utilities.show_info(data.Textlines[60],parent)
+                        # utilities.show_info(data.Textlines[60],parent)
                         
-                        #creo il thread e lo metto in memoria
-                        process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
-                        self.threads[1] = process_messages_thread
-                        #pulisco la queue - avvio il thread - setto la flag
-                        self.message_queue.queue.clear()
-                        process_messages_thread.start()
-                        self.flag = False
-                        self.start_throttle(circuit_window)
-                        print("PARTITO")
+                        # #creo il thread e lo metto in memoria
+                        # process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
+                        # self.threads[1] = process_messages_thread
+                        # #pulisco la queue - avvio il thread - setto la flag
+                        # self.message_queue.queue.clear()
+                        # process_messages_thread.start()
+                        # self.flag = False
+                        # # self.start_throttle(circuit_window)
+                        # print("PARTITO") 
+                        # self.start_algo(circuit_window)
                         #self.flag = False
                 except UnicodeDecodeError:
                     print(data.Textlines[40])
@@ -104,12 +107,13 @@ class Algorithm:
     def calibred_RFID(self,ID_treno : int,RFIDtag : str):
         data.locomotives_data[ID_treno]["RFIDtag"] = RFIDtag
 
-    def start_algo(self,circuit_window):
+    def start_sensors(self,circuit_window):
 
         print("Algoritmo online")
 
         self.called = True
-        data.terminate = False
+        data.terminate_sensor = False
+        data.terminate_algo = False
         # Crea un thread per la funzione start_sensor
         sensor_thread = threading.Thread(target=lambda:self.start_sensor(circuit_window))
         self.threads[0] = sensor_thread 
@@ -117,24 +121,51 @@ class Algorithm:
         self.flag = True
         #avvio i thread
         sensor_thread.start()
-        
+    
+    def start_algo(self,circuit_window):
+        # if data.calibred and  len(data.locomotives_data) in [2,3]:
+        data.terminate_algo = False
+        parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
+
+        utilities.show_info(data.Textlines[60],parent)
+
+        #creo il thread e lo metto in memoria
+        process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
+        self.threads[1] = process_messages_thread
+        #pulisco la queue - avvio il thread - setto la flag
+        self.message_queue.queue.clear()
+        process_messages_thread.start()
+        self.flag = False
+        # self.start_throttle(circuit_window)
+        print("PARTITO")
+
              
-    def stop_algo(self):
+
+    def stop_algo(self,sensor):
+
         #Controlla che la funzione sia stata chiamata e che non sia amministratore
         if self.called and not data.root:
-            data.terminate = True
+            data.terminate_algo = True
             # Attendi che i thread terminino
             if self.threads[0].is_alive() or self.threads[1].is_alive():
-                self.threads[0].join(timeout=5)
+                if sensor:
+                    data.terminate_sensor = True
+                    print("CHIUDO RUTTO")
+                    self.threads[0].join(timeout=5)
+    
                 if not self.flag:
                     self.threads[1].join(timeout=5)
                 print("Threads terminati correttamente.")
             self.called = False
 
+            if self.threads[1].is_alive():
+                print("SONO VICOVOVO")
+
             #Set dei percorsi a []
             data.percorsi_assegnati = []
         else:
             print("l'ho fermato io ;)")
+
 
     def gestione_velocita(self,circuit_window,id,velocita):
 
@@ -226,7 +257,7 @@ class Algorithm:
     def process_messages(self,circuit_window):
         # print(f"Variabile di terminazione: {GUI.Sensors['Terminate'][0]}")
 
-        while not data.terminate:
+        while not data.terminate_algo:
             #Controlla che la finestra della calibrazione sia aperta
             if data.variabili_apertura["locomotive_RFID_var"]:
                #aspetta che venga chiusa e pulisce la queue

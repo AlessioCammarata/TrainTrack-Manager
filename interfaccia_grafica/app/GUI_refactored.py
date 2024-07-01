@@ -306,12 +306,12 @@ class GUI(tk.Frame):
                 #Impostazioni di pagina, al premere del tasto ESC e al premere della x rossa, chiude la finestra, ferma l'algoritmo, toglie l'opacita e rilascia la pagina padre
 
                 locomotive_window.bind("<Escape>", lambda event: (utilities.on_close(locomotive_window,"circuit"),
-                                                                                self.container.algo.stop_algo(),
+                                                                                self.container.algo.stop_algo(True),
                                                                                 locomotive_window.grab_release()
                                                                                 ))
                 #locomotive_circuit_window.transient(self.root)
                 locomotive_window.protocol("WM_DELETE_WINDOW", lambda:(utilities.on_close(locomotive_window,"circuit"),
-                                                                                    self.container.algo.stop_algo(),
+                                                                                    self.container.algo.stop_algo(True),
                                                                                     locomotive_window.grab_release()
                                                                                     ))
     

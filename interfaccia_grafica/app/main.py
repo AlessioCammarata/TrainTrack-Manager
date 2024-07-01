@@ -24,7 +24,7 @@ class App(tk.Tk):
 
     def on_close_root(self):
         self.destroy()
-        self.algo.stop_algo()
+        self.algo.stop_algo(True)
 
     def refresh(self):
         self.title(data.Textlines[1])

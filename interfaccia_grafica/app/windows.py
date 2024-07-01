@@ -788,6 +788,7 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
         #Variabile che permette di eseguire una singola volta il refresh
         if not creation or not locomotive_window2.winfo_exists():
             utilities.update_circuit_table(columns,tree)
+            
     
     def enable_circuitWindow():
         # circuit_window.attributes("-alpha", 1)
@@ -802,7 +803,12 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
             creation_window(locomotive_window2,GUI)
             locomotive_window2.bind("<Destroy>", lambda event: refresh(True))
             
-        
+    def active_start():
+        if data.calibred and len(data.locomotives_data) in [2,3]:
+            circuit_window.start_button.config(state='normal')
+        else:
+            circuit_window.start_button.config(state='disabled')
+
     def active_settings():
 
         id      = RFID_entry.get()
@@ -885,14 +891,14 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
     #GUI.open_locomotive_creation_window()
     locomotive_window.bind('<+>', lambda event: open_locomotive_creation_window())
     locomotive_window.bind('<i>', lambda event: show_page_info())
-    locomotive_window.bind("<Escape>", lambda event: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
+    locomotive_window.bind("<Escape>", lambda event: (enable_circuitWindow(),active_start(),utilities.on_close(locomotive_window,"RFID")))
     locomotive_window.bind("<FocusIn>",   lambda event: RFID_entry.focus_set())
 
     #Salvo la pagina, mi serve per bloccare la pagina circuit
     GUI.locomotive_RFID_window = locomotive_window
 
     #Non permette altre azioni finche non chiudi la finestra, quando chiudi riabilita la circuit_window
-    locomotive_window.protocol("WM_DELETE_WINDOW", lambda: (enable_circuitWindow(),utilities.on_close(locomotive_window,"RFID")))
+    locomotive_window.protocol("WM_DELETE_WINDOW", lambda: (enable_circuitWindow(),active_start(),utilities.on_close(locomotive_window,"RFID")))
     locomotive_window.grab_set()
 '''
                 ___      _                               _      _            __      __  _                _                    
@@ -1126,11 +1132,42 @@ class circuit_window:
             canvas.create_window(x + 55, y + 0, window=button, anchor=tk.W)  # Crea il bottone vicino al testo sul canvas
             return label, button
 
+        def start_sensors():
+            #gestione grafica degllo start dell'Auto version
+            current_color = start_sensor_button.cget("background")            
 
+            #Controllo sulla porta dei sensori
+            if utilities.is_serial_port_available(data.serial_ports[1]):
+
+                if current_color == "red":
+                    
+                    new_color = "#00ff00"
+                    self.algo.start_sensors(self)
+                    self.RFID_button.config(state='normal')
+                    #Assegnazione del tasto
+                    root.bind("<s>", lambda event: self.open_RFID_window())
+                    # check_control_button_state(True)
+                
+                else: #Caso in cui deve spegnersi
+                    new_color = "red"
+                    self.algo.stop_algo(True)
+                    # self.algo.stop_sensor()
+                    self.RFID_button.config(state='disabled')
+                    #Disfuznione del tasto
+                    root.unbind("<s>")
+                    # check_control_button_state(False)
+
+                start_sensor_button.config(background=new_color)
+
+            else:
+                utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[1]} "+data.Textlines[22] + ".\n"+ data.Textlines[37],self.locomotive_window,"main")
+                data.serial_port_info[data.serial_ports[1]][0] = False
+
+            
     #Funzione che da inizio se possibile all'algoritmo, essa avvia i sensori
         def START():
             #gestione grafica degllo start dell'Auto version
-            current_color = start_button.cget("background")            
+            current_color = self.locomotive_window.start_button.cget("background")            
 
             #Controllo sulla porta dei sensori
             if utilities.is_serial_port_available(data.serial_ports[1]):
@@ -1150,20 +1187,16 @@ class circuit_window:
                             self.GUI.on_off()
                         new_color = "#00ff00"
                         self.algo.start_algo(self)
-                        self.RFID_button.config(state='normal')
-                        #Assegnazione del tasto
-                        root.bind("<s>", lambda event: self.open_RFID_window())
+                        start_sensor_button.config(state='disabled')
                         check_control_button_state(True)
                     
                     else: #Caso in cui deve spegnersi
                         new_color = "red"
-                        self.algo.stop_algo()
-                        self.RFID_button.config(state='disabled')
-                        #Disfuznione del tasto
-                        root.unbind("<s>")
+                        self.algo.stop_algo(False)
+                        start_sensor_button.config(state='normal')
                         check_control_button_state(False)
     
-                    start_button.config(background=new_color)
+                    self.locomotive_window.start_button.config(background=new_color)
                 else:
                     utilities.show_error_box(data.Textlines[67],self.locomotive_window,"main")
             else:
@@ -1198,7 +1231,6 @@ class circuit_window:
         canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, bg="white")
         canvas.pack(side=tk.LEFT, expand=True)
 
-        
         #tengo in memoria il canvas
         data.canvas_array[0] = canvas
 
@@ -1211,10 +1243,20 @@ class circuit_window:
 
         image_power_path = utilities.asset_path('power_icon','png')
         image_power = utilities.process_image(image_power_path,'resize',35,35)
-        start_button = tk.Button(frame, image=image_power,bg="red", 
+        self.locomotive_window.start_button = tk.Button(frame, image=image_power,bg="red", 
                                     command=START)
-        start_button.pack(padx=(10,5),pady=(2,2),side=tk.LEFT)
-        root.bind("<o>", lambda event: START())
+        self.locomotive_window.start_button.pack(padx=(10,5),pady=(2,2),side=tk.LEFT)
+        # root.bind("<o>", lambda event: START())
+        self.locomotive_window.start_button.config(state='disabled')
+        
+        #sensore
+        image_sensor_path = utilities.asset_path('sensore_rfid','png')
+        image_sensor = utilities.process_image(image_sensor_path,'resize',35,35)
+        start_sensor_button = tk.Button(frame, image=image_sensor,bg="red", 
+                                    command=start_sensors)
+        start_sensor_button.pack(padx=(10,5),pady=(2,2),side=tk.LEFT)
+        root.bind("<Control-s>", lambda event: start_sensors())
+        # start_sensor_button.config(state='disabled')
 
         # tabella che fa vedere cio che vedono i sensori
         self.tag_label = tk.Label(frame, text="", relief = tk.SUNKEN, width=10, height=2,bg="#c0c0c0")
