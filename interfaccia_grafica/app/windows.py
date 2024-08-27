@@ -5,7 +5,7 @@ import comandi
 import cam
 import data
 import utilities
-
+import pyautogui
 '''
 
              __      __  _                _                           
@@ -804,10 +804,12 @@ def RFID_window(locomotive_window,algo,circuit_window,GUI):
             locomotive_window2.bind("<Destroy>", lambda event: refresh(True))
             
     def active_start():
+
         if data.calibred and len(data.locomotives_data) in [2,3]:
             circuit_window.start_button.config(state='normal')
         else:
             circuit_window.start_button.config(state='disabled')
+            circuit_window.unbind("<o>")
 
     def active_settings():
 
@@ -1015,13 +1017,27 @@ class circuit_window:
                 data.canvas_array[0].itemconfig(data.Turnouts[text][3], outline="red")
                 data.canvas_array[0].itemconfig(data.Turnouts[text][2], fill="black")
 
+    #Risolve il problema ma molto brutto
+    # def active_start(self):
+    #     if data.calibred and len(data.locomotives_data) in [2,3]:
+    #         self.locomotive_window.start_button.config(state='normal')
+    #         pyautogui.hotkey('ctrl', 's')
+    #         pyautogui.hotkey('ctrl', 's')
+    #     else:
+    #         self.locomotive_window.start_button.config(state='disabled')
+    #         self.locomotive_window.unbind("<o>")
+    #
+    # def enable_circuitWindow(self):
+    #     self.locomotive_window.grab_set()
+
     #Funzione che apre la finestra delle impostazioni RFID
     def open_RFID_window(self):
         #GUI = self.GUI
         locomotive_window = self.GUI.open_locomotive_window("RFID", data.Textlines[17], "312x360",self.locomotive_window)
         if locomotive_window:
             locomotive_window.iconbitmap(utilities.asset_path("controllo", "ico"))
-            RFID_window(locomotive_window,self.algo,self.locomotive_window,self.GUI)    
+            RFID_window(locomotive_window,self.algo,self.locomotive_window,self.GUI) 
+       
 
     def open_info_window(self):
         # print("INFORMAZI")
@@ -1067,7 +1083,7 @@ class circuit_window:
             text.tag_add('Raleway', '11.0', '11.end')
             text.tag_add('Roboto', '13.0', 'end')
 
-
+            
             locomotive_window.transient(self.container)
 
             #Comandi da tastiera e x rossa
@@ -1132,6 +1148,15 @@ class circuit_window:
             canvas.create_window(x + 55, y + 0, window=button, anchor=tk.W)  # Crea il bottone vicino al testo sul canvas
             return label, button
 
+        def active_start():
+            if data.calibred and len(data.locomotives_data) in [2,3]:
+                self.locomotive_window.start_button.config(state='normal')
+                self.locomotive_window.bind("<o>", lambda event: START())
+            else:
+                self.locomotive_window.start_button.config(state='disabled')
+                self.locomotive_window.unbind("<o>")
+
+    #Funzione che da inizio se possibile ai sensori
         def start_sensors():
             #gestione grafica degllo start dell'Auto version
             current_color = start_sensor_button.cget("background")            
@@ -1142,6 +1167,7 @@ class circuit_window:
                 if current_color == "red":
                     
                     new_color = "#00ff00"
+                    active_start()
                     self.algo.start_sensors(self)
                     self.RFID_button.config(state='normal')
                     #Assegnazione del tasto
@@ -1152,6 +1178,7 @@ class circuit_window:
                     new_color = "red"
                     self.algo.stop_algo(True)
                     # self.algo.stop_sensor()
+                    self.locomotive_window.start_button.config(state='disabled')
                     self.RFID_button.config(state='disabled')
                     #Disfuznione del tasto
                     root.unbind("<s>")
@@ -1164,7 +1191,7 @@ class circuit_window:
                 data.serial_port_info[data.serial_ports[1]][0] = False
 
             
-    #Funzione che da inizio se possibile all'algoritmo, essa avvia i sensori
+    #Funzione che da inizio se possibile all'algoritmo
         def START():
             #gestione grafica degllo start dell'Auto version
             current_color = self.locomotive_window.start_button.cget("background")            
@@ -1176,9 +1203,9 @@ class circuit_window:
                     #Caso in cui deve accendersi
                     if current_color == "red":
                         #Se ci sono meno di due locomotive, manda un messaggio e avvisa che il processo non parte
-                        if lenght not in [2,3]:
-                            utilities.show_info(data.Textlines[67],self.locomotive_window)
-                            root.focus_set()
+                        # if lenght not in [2,3]:
+                        #     utilities.show_info(data.Textlines[67],self.locomotive_window)
+                        #     root.focus_set()
                             # self.RFID_button.config(state='normal')
                             #Abilita il tasto
                         # elif not data.calibred: self.RFID_button.config(state='normal')

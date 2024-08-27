@@ -125,13 +125,15 @@ class Algorithm:
     def start_algo(self,circuit_window):
         # if data.calibred and  len(data.locomotives_data) in [2,3]:
         data.terminate_algo = False
-        parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
-
-        utilities.show_info(data.Textlines[60],parent)
+        
+        # Avviso che sta cominciando l'algoritmo
+        # parent = circuit_window.GUI.locomotive_RFID_window if data.variabili_apertura["locomotive_RFID_var"] else circuit_window.locomotive_window
+        # utilities.show_info(data.Textlines[60],parent)
 
         #creo il thread e lo metto in memoria
         process_messages_thread = threading.Thread(target=lambda:self.process_messages(circuit_window))
         self.threads[1] = process_messages_thread
+
         #pulisco la queue - avvio il thread - setto la flag
         self.message_queue.queue.clear()
         process_messages_thread.start()
@@ -150,16 +152,16 @@ class Algorithm:
             if self.threads[0].is_alive() or self.threads[1].is_alive():
                 if sensor:
                     data.terminate_sensor = True
-                    print("CHIUDO RUTTO")
+                    print("Sensor thread terminato correttamente.")
                     self.threads[0].join(timeout=5)
     
                 if not self.flag:
                     self.threads[1].join(timeout=5)
-                print("Threads terminati correttamente.")
-            self.called = False
-
-            if self.threads[1].is_alive():
-                print("SONO VICOVOVO")
+                    print("Process thread terminato correttamente.")
+                    
+            #Controllo per vedere se è morto o no il thread
+            # if self.threads[1].is_alive(): 
+            #     print("SONO VICOVOVO")
 
             #Set dei percorsi a []
             data.percorsi_assegnati = []
