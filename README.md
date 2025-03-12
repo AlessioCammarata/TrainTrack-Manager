@@ -1,4 +1,6 @@
-# TrainTrack Manager
+<p align="center">
+  <img src="Train Track Manager/interfaccia_grafica/assets/Preview.png" width="50%">
+</p>
 
 ## Descrizione
 TrainTrack Manager è un'applicazione che permette di controllare un plastico ferroviario utilizzando Arduino e un'interfaccia grafica sviluppata in Python. Il progetto consente la gestione delle locomotive, il controllo dei deviatoi e l'automazione del sistema tramite sensori RFID.
