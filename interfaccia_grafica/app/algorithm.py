@@ -7,6 +7,8 @@ import data
 import utilities
 import comandi
 import random
+from collections import deque
+
 
 '''
                 ___      _      __ _                     _      _      _              
@@ -29,6 +31,16 @@ class Algorithm:
         self.threads = ["","",""]
         #flag che serve per la chiamata del thread di process_messages
         self.flag = True
+        
+        # Aggiungi queste variabili per la gestione degli scambi
+        self.segment_occupancy = {}  # Traccia l'occupazione dei segmenti
+        self.train_positions = {}    # Traccia la posizione corrente di ogni treno
+        self.switch_reservations = {} # Prenotazione degli scambi
+        self.collision_passed = True   # Flag per gestire le collisioni
+
+        self.previous_velocity = 0
+        self.previous_direction = 0
+        self.initialize_segments()
 
 
     '''
@@ -136,6 +148,209 @@ class Algorithm:
         else:
             print("l'ho fermato io ;)")
 
+        # Modifica la funzione start_throttle per includere la prenotazione del percorso
+    def start_throttle(self, circuit_window):
+        if utilities.is_serial_port_available(data.serial_ports[0]):
+            comandi.open_current(1)
+            for i in range(2):
+                # Impostiamo un percorso e la direzione da prendere
+                data.locomotives_data[i]['Direzione'] = i
+                self.scegli_percorso(i)
+                
+                # Prenota il percorso
+                path = data.locomotives_data[i]['Percorso']
+                self.reserve_path(i, path)
+                # if not self.reserve_path(i, path):
+                #     print(f"Impossibile prenotare il percorso per il treno {i}")
+                #     continue
+                
+                # Impostiamo la velocità
+                velocita = 20
+                self.gestione_velocita(circuit_window, i, velocita)
+                
+                print(f"Percorso prenotato per il treno {i}: {path}")
+                print("Le criticità sono: " + str(data.criticita))
+        else: 
+            utilities.show_error_box(data.Textlines[21] + f"{data.serial_ports[0]} " + data.Textlines[22], circuit_window.locomotive_window, "main")
+
+    def process_messages(self, circuit_window):
+        while not data.terminate:
+            try:
+                message = self.message_queue.get(timeout=0.1)
+                message = message.split("/")
+                sensor_id = int(message[0])
+                rfid_tag = message[1]
+                
+                self.test_print()
+                # Trova il treno corrispondente al RFID tag
+                train_id = utilities.CalcolaIDtreno('RFIDtag', rfid_tag)
+                if train_id is None:
+                    continue
+                
+                # Aggiorna la posizione del treno
+                self.train_positions[train_id] = sensor_id
+                data.locomotives_data[train_id]['Ultimo_sensore'] = sensor_id
+
+    
+                # Determina il prossimo scambio in base al percorso
+                data.locomotives_data[train_id]['Percorso'].pop(0)  # Rimuovi il primo nodo del percorso
+                if not data.locomotives_data[train_id]['Percorso']:  # Se il percorso è vuoto fermiamo il treno
+                    self.emergency_stop(train_id)
+
+                next_node = data.locomotives_data[train_id]['Percorso'][0]  # Prendi il primo nodo del percorso
+                
+                #Controllo collisioni
+                if self.collision_passed:
+                    if data.locomotives_data[0]['Percorso'][0] == data.locomotives_data[1]['Percorso'][0]:
+                        # Gestisci la collisione
+                        self.emergency_stop(train_id)
+                        self.previous_velocity = data.locomotives_data[ID]['Velocita']
+                        self.previous_direction = data.locomotives_data[ID]['Direzione']
+                        self.collision_passed = False
+                else:
+                    self.collision_passed = True
+                    ID = 0 if train_id == 1 else 1
+                    self.gestione_velocita(ID,circuit_window,self.previous_velocity,self.previous_direction)
+
+
+                # Gestisci lo scambio in base al sensore e alla direzione
+                if data.locomotives_data[train_id]["Direzione"] == 0:  # Verso sinistra
+                    self.handle_left_direction(sensor_id, next_node, train_id, circuit_window)
+                else:  # Verso destra
+                    self.handle_right_direction(sensor_id, next_node, train_id, circuit_window)
+                    
+            except queue.Empty:
+                pass
+
+    def handle_left_direction(self, sensor_id, next_node, train_id, circuit_window):
+        """Gestisce gli scambi per treni in direzione sinistra"""
+        canvas = data.canvas_array[0]
+        
+        if sensor_id == 1:
+            # Gestione scambio 1
+            if next_node == 2:
+                self.set_switch_position("Cambio 1", False, train_id)
+            elif next_node == 5:
+                self.set_switch_position("Cambio 1", True, train_id)
+            
+        elif sensor_id == 2:
+            # Gestione scambio 2
+            if next_node == 3:
+                self.set_switch_position("Cambio 2", False, train_id)
+            elif next_node == 5:
+                self.set_switch_position("Cambio 2", True, train_id)
+            
+        elif sensor_id == 3:
+            # Gestione scambio 3
+            if next_node == 4:
+                self.set_switch_position("Cambio 3", False, train_id)
+            elif next_node == 7:
+                self.set_switch_position("Cambio 3", True, train_id)
+            
+        elif sensor_id == 4:
+            # Gestione scambio 4
+            if next_node == 5:
+                self.set_switch_position("Cambio 4", False, train_id)
+            elif next_node == 8:
+                self.set_switch_position("Cambio 4", True, train_id)
+            
+        elif sensor_id == 5:
+            # Gestione scambio 5
+            if next_node == 6:
+                self.set_switch_position("Cambio 5", False, train_id)
+            elif next_node == 2:
+                self.set_switch_position("Cambio 5", True, train_id)
+            
+        elif sensor_id == 6:
+            # Gestione scambio 6
+            if next_node == 7:
+                self.set_switch_position("Cambio 6", False, train_id)
+            elif next_node == 8:
+                self.set_switch_position("Cambio 6", True, train_id)
+            
+        elif sensor_id == 7:
+            # Gestione scambio 7
+            if next_node == 3:
+                self.set_switch_position("Cambio 7", False, train_id)
+            elif next_node == 8:
+                self.set_switch_position("Cambio 7", True, train_id)
+            
+        elif sensor_id == 8:
+            # Gestione scambio 8
+            if next_node == 4:
+                self.set_switch_position("Cambio 8", False, train_id)
+            elif next_node == 7:
+                self.set_switch_position("Cambio 8", True, train_id)
+
+    def handle_right_direction(self, sensor_id, next_node, train_id, circuit_window):
+        """Gestisce gli scambi per treni in direzione destra"""
+        canvas = data.canvas_array[0]
+        
+        if sensor_id == 1:
+            # Gestione scambio 1
+            if next_node == 2:
+                self.set_switch_position("Cambio 1", False, train_id)
+            elif next_node == 5:
+                self.set_switch_position("Cambio 1", True, train_id)
+            
+        elif sensor_id == 2:
+            # Gestione scambio 2
+            if next_node == 1:
+                self.set_switch_position("Cambio 2", False, train_id)
+            elif next_node == 3:
+                self.set_switch_position("Cambio 2", True, train_id)
+            
+        elif sensor_id == 3:
+            # Gestione scambio 3
+            if next_node == 2:
+                self.set_switch_position("Cambio 3", False, train_id)
+            elif next_node == 4:
+                self.set_switch_position("Cambio 3", True, train_id)
+            
+        elif sensor_id == 4:
+            # Gestione scambio 4
+            if next_node == 3:
+                self.set_switch_position("Cambio 4", False, train_id)
+            elif next_node == 5:
+                self.set_switch_position("Cambio 4", True, train_id)
+            
+        elif sensor_id == 5:
+            # Gestione scambio 5
+            if next_node == 4:
+                self.set_switch_position("Cambio 5", False, train_id)
+            elif next_node == 6:
+                self.set_switch_position("Cambio 5", True, train_id)
+            
+        elif sensor_id == 6:
+            # Gestione scambio 6
+            if next_node == 5:
+                self.set_switch_position("Cambio 6", False, train_id)
+            elif next_node == 7:
+                self.set_switch_position("Cambio 6", True, train_id)
+            
+        elif sensor_id == 7:
+            # Gestione scambio 7
+            if next_node == 6:
+                self.set_switch_position("Cambio 7", False, train_id)
+            elif next_node == 8:
+                self.set_switch_position("Cambio 7", True, train_id)
+            
+        elif sensor_id == 8:
+            # Gestione scambio 8
+            if next_node == 7:
+                self.set_switch_position("Cambio 8", False, train_id)
+            elif next_node == 4:
+                self.set_switch_position("Cambio 8", True, train_id)
+
+    def emergency_stop(self, train_id):
+        """Ferma un treno in caso di emergenza"""
+        memoria = data.locomotives_data[train_id]['ID']
+        ID = data.locomotives_data[train_id]['LocoID']
+
+        #mando il comando di throttle
+        comandi.STOP(memoria,ID)
+        print(f"EMERGENCY STOP for train {train_id}")
+
     def gestione_velocita(self,circuit_window,id,velocita):
 
         memoria         = data.locomotives_data[id]['ID']
@@ -177,325 +392,343 @@ class Algorithm:
         print("il percorso scelto è: " +str(percorso_scelto))
         data.percorsi_assegnati.append(percorso_scelto)
 
-        data.locomotives_data[id]['Percorso'] = percorso_scelto
+        data.locomotives_data[id]['Percorso'] = data.LRoutes[percorso_scelto] if data.locomotives_data[id]['Direzione'] == 0 else data.RRoutes[percorso_scelto]
         if id != 0:
             data.criticita = self.trova_criticita()
-        
-    #Funzione che fa partire i treni, e sceglie il percorso iniziale, in automatico scarta la terza locomotiva
-    #Devo stabilire la partenza per decidere la direzione, 
-    #in questo momento la locomotivaq 1 e la 2 partono a velocita stabilita
-    def start_throttle(self,circuit_window):
-        if utilities.is_serial_port_available(data.serial_ports[0]):
-            comandi.open_current(1)
-            for i in range(2):
-                #Impostiamo un percorso e la direzione da prendere
-                data.locomotives_data[i]['Direzione'] = i
-                self.scegli_percorso(i)
 
-                #Impostiamo la velocita che vogliamo da 0 a 100
-                velocita  = 20
-                self.gestione_velocita(circuit_window,i,velocita)
+    def test_print(self):
+        for item in data.locomotives_data:
+            print(item)
+        print("\nsegments\n\n")
+        for item in self.segments:
+            print(item)
+        print("\nSwitch resertvations\n")
+        for item in self.switch_reservations:
+            print(f"{item}: {self.switch_reservations[item]}\n")
+        print("\nTRAIN POSITIONS\n\n")
+        for item in self.train_positions:
+            print(f"Train {item}: {self.train_positions[item]}\n") 
+        print("\nTURNOUTS\n\n")
+        for item in data.Turnouts:
+            print(f"{item}: {data.Turnouts[item]}\n")
+        print("\nSENSORS\n\n")
+        for item in data.Sensors:
+            print(f"{item}: {data.Sensors[item]}\n")
+#     #Funzione che fa partire i treni, e sceglie il percorso iniziale, in automatico scarta la terza locomotiva
+#     #Devo stabilire la partenza per decidere la direzione, 
+#     #in questo momento la locomotivaq 1 e la 2 partono a velocita stabilita
+#     def start_throttle(self,circuit_window):
+#         if utilities.is_serial_port_available(data.serial_ports[0]):
+#             comandi.open_current(1)
+#             for i in range(2):
+#                 #Impostiamo un percorso e la direzione da prendere
+#                 data.locomotives_data[i]['Direzione'] = i
+#                 self.scegli_percorso(i)
 
-                print("le criticità sono: " +str(data.criticita))
+#                 #Impostiamo la velocita che vogliamo da 0 a 100
+#                 velocita  = 20
+#                 self.gestione_velocita(circuit_window,i,velocita)
+
+#                 print("le criticità sono: " +str(data.criticita))
             
-            #Per ora non funzione
-            # for item in data.criticita:
-            #     semaphore = traffic_light.Semaphore(circuit_window,item)
-            #     self.semaphore.append(semaphore.thread)
-        else: 
-            utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window.locomotive_window,"main")
+#             #Per ora non funzione
+#             # for item in data.criticita:
+#             #     semaphore = traffic_light.Semaphore(circuit_window,item)
+#             #     self.semaphore.append(semaphore.thread)
+#         else: 
+#             utilities.show_error_box(data.Textlines[21]+f"{data.serial_ports[0]} "+data.Textlines[22],circuit_window.locomotive_window,"main")
 
-#   Questa funzione controlla che i percorsi adiacenti a quelli toccati dal treno, nella direzione in cui sta andando siano liberi
-    def control(self,Turnout,direzione,natural_link):
+# #   Questa funzione controlla che i percorsi adiacenti a quelli toccati dal treno, nella direzione in cui sta andando siano liberi
+#     def control(self,Turnout,direzione,natural_link):
 
-        for item in data.Adjacent_Turnouts[Turnout][direzione]:
-            #Se nel sensore c'è qualcosa, attiva lo scambio, almeno che non sia passivo, 
-            #in quel caso deve fermare il treno e poi farlo ripartire quando passa    --------------------------------------------
-            if data.Sensors["Sensore {}".format(item)][direzione+1] != "" :
-                #-1 vuoldire cambio passivo
-                if natural_link == -1:
-                    print("STOP")
+#         for item in data.Adjacent_Turnouts[Turnout][direzione]:
+#             #Se nel sensore c'è qualcosa, attiva lo scambio, almeno che non sia passivo, 
+#             #in quel caso deve fermare il treno e poi farlo ripartire quando passa    --------------------------------------------
+#             if data.Sensors["Sensore {}".format(item)][direzione+1] != "" :
+#                 #-1 vuoldire cambio passivo
+#                 if natural_link == -1:
+#                     print("STOP")
 
-                #Assegno il percorso che è occupato.
+#                 #Assegno il percorso che è occupato.
 
-                data.root_occupied = item
-                return natural_link==data.root_occupied
+#                 data.root_occupied = item
+#                 return natural_link==data.root_occupied
             
-        return False
+#         return False
 
-    def process_messages(self,circuit_window):
-        # print(f"Variabile di terminazione: {GUI.Sensors['Terminate'][0]}")
+#     def process_messages(self,circuit_window):
+#         # print(f"Variabile di terminazione: {GUI.Sensors['Terminate'][0]}")
 
-        while not data.terminate:
-            #Controlla che la finestra della calibrazione sia aperta
-            if data.variabili_apertura["locomotive_RFID_var"]:
-               #aspetta che venga chiusa e pulisce la queue
-               circuit_window.GUI.locomotive_RFID_window.wait_window()
-               self.message_queue.queue.clear()
+#         while not data.terminate:
+#             #Controlla che la finestra della calibrazione sia aperta
+#             if data.variabili_apertura["locomotive_RFID_var"]:
+#                #aspetta che venga chiusa e pulisce la queue
+#                circuit_window.GUI.locomotive_RFID_window.wait_window()
+#                self.message_queue.queue.clear()
 
-            try:
-                # Attendi con un timeout di 0.1 secondi
-                message = self.message_queue.get(timeout=0.1)
+#             try:
+#                 # Attendi con un timeout di 0.1 secondi
+#                 message = self.message_queue.get(timeout=0.1)
 
-                message = message.split("/")#-------> per separare la parte del messaggio che riguarda l'ID del sensore da quella che riguarda l'ID del treno, che corrisponde al LocoID
-                canvas = data.canvas_array[0]
+#                 message = message.split("/")#-------> per separare la parte del messaggio che riguarda l'ID del sensore da quella che riguarda l'ID del treno, che corrisponde al LocoID
+#                 canvas = data.canvas_array[0]
 
-                #gestione dei cambi tramite l'outupt dei sensori
-
-
-                #Cerco l'id corrispondente alla locomotiva che è passata.
-                id = utilities.CalcolaIDtreno('RFIDtag',message[1])
-                text = "Cambio {}".format(message[0])
-                sensor = "Sensore {}".format(message[0])
-
-                #Metto in memoria del sensore che ha ricevuto, l'ultimo uid letto
-                data.Sensors[sensor][0] = message[1]
-                # canvas.after(0, circuit_window.change_Sensors, sensor, message[1])
-
-                if data.locomotives_data[id]["Direzione"] == 0: # va verso sinistra <--
-                    #Percorsi possibili partendo da G, stazione:
-                    '''
-                        ABCDEFGH -> 12345678
-                        1-GCDEFHG    -> Schiva A e B    -> Ricomincia da G, GCDEFHG
-                        2-GCDEFG     -> Schiva A,B,H    -> Ricomincia da G, GCDEFG
-                        3-GCDEFHD    -> Schiva A e B    -> Ricomincia da D, DEFHD
-                        4-GCDEBA     -> Schiva F e H    -> Finisce in deposito, A
-                        5-GCDEBC     -> Schiva A,F,H    -> Ricomincia Da C, CDEB
-                        Lettere che cambiano stato sono: -> A cambia ma si gestisce da solo
-                        A,H,E,F,
-                        Lettere passive sono: 
-                        C,D,G
-
-                        Albero logico:
-                        if E == aperto:
-                            if F == aperto:
-                                if H == aperto:
-                                    1
-                                else:
-                                    3
-                            else:
-                                2
-                        else:
-                            if B == aperto:
-                                5
-                            else:
-                                4
-
-                        Tutti i percorsi dipendono da E
-                        Le altre dipendenze sono:
-                        1 e 3 dipendono da H e F; hanno F uguale, se cambia diventa 2
-                        2 Dipende da F
-                        4 va in deposito, dopo di esso sicuramente si cambia direzione. Dipende da E e B
-                        5 dipende da 
-                        I percorsi percio sono intercambiabili, a seconda delle loro dipendenze, in ogni caso seguono questi schemi. Da 1 pero si puo andare a 4, 
-                        basta modificare le dipendenze di 4 che sono E e B. Infatti tutti i percorsi dipendono da E.
-
-                        10 = B and E -> Il percorso dieci sara la distanza tra b ed e, il suo passaggio da destra è inevitabile se si arriva da B
-                        11 = E and D
-                        12 = C and D
-                        13 = C and B
-                        14 = C and G
-                        15 = G and F
-                        16 = F and E
-                        17 = H and G
-                        18 = H and D
-
-                        Vige la precedenza a destra
-                        Partenza da A: In ogni caso bisogna controllare sinistra e destra, prima sinistra
-                        10 - Arriva il segnale in A, e si decide che fare
-                            if C == False,
-                                if sensore C == '' or sensore C == sensore B vai pure, 
-                                else aspetta che C sia == a B di DESTRA  
-                            if E == False, bisogna controllare se ci sono dei treni, 
-                                if sensore E != '' or sensore E == sensore B vai pure, 
-                                else aspetta che E sia = a B di SINISTRA
-
-                        11 - Arriva il segnale in B, e si decide che fare
-ì
-                            if sensore F == '' or sensore G == sensore F 
-                                ifsensore F == sensore H vai pure, 
-                                else aspetta che F sia uguale a H
-                            else aspetta che F sia == a G di DESTRA  
-
-                            if sensore D == '' or sensore D == sensore E vai pure, 
-                            else aspetta che D sia = a E di SINISTRA
-
-                         12 - Arriva il segnale in B, e si decide che fare   
-
-                            if sensore G == '' or sensore G != sensore C 
-                                   if sensore B == '' or sensore B != sensore C vai pure, 
-                                   else scambia D prima che arriva l'altro treno, scambio deve essere True
-                            else scambia D prima che arriva l'altro treno da 14, scambio deve essere False  DESTRA
-
-                            2 casi:
-                            Arriva da G, 
-                            if B == '' or B == C, vai
-                            else aspetta che B sia uguale a C
-
-                            Arriva da G, 
-                            if B == '' or B == C, vai
-                            else aspetta che B sia uguale a C
-
-                    '''
-                    #A questo punto arriva il sensore che ha letto il messaggio della locomotiva che va all'indietro e ha l'id registrato dal sensore che trasmette
-                    print(data.locomotives_data[id]["Nome"])
-                    print("del sensore: {}".format(message[0]))
-
-                    match text:
-                        case "Cambio 1":
-
-                            #Azzero il cambio precedente
-                            data.Sensors["Sensore 2"][1] = ""
-
-                            # database.Sensors[text][0] = message[1]
-                            # canvas.after(0, GUI.change_Sensors, text, message[1])
-                            data.Sensors["Sensore 5"][1] = "ABA"
+#                 #gestione dei cambi tramite l'outupt dei sensori
 
 
-                            # Avvia la funzione dopo un certo tempo, a seconda di quanto serva 
-                            time = 5
-                            #Impostiamo la velocita che vogliamo da 0 a 100
-                            velocita  = 0
-                            self.threads[2] = threading.Timer(time, lambda: self.gestione_velocita(circuit_window,id,velocita))
-                            self.threads[2].start()
+#                 #Cerco l'id corrispondente alla locomotiva che è passata.
+#                 id = utilities.CalcolaIDtreno('RFIDtag',message[1])
+#                 text = "Cambio {}".format(message[0])
+#                 sensor = "Sensore {}".format(message[0])
 
-                            #questa if controlla che l'ultimo treno passato non sia lo stesso che è passato ora
-                            if data.Sensors["Sensore 1"][1] != data.locomotives_data[id]["RFIDtag"]:
-                                #comando per scambiare
-                                canvas.after(0, circuit_window.change_Turnouts, text, "")
-                            #Imposta la var del treno in memoria
-                            data.Sensors["Sensore 1"][1] = data.locomotives_data[id]["RFIDtag"]
-                            print(text,data.Sensors["Sensore 1"][1])
+#                 #Metto in memoria del sensore che ha ricevuto, l'ultimo uid letto
+#                 data.Sensors[sensor][0] = message[1]
+#                 # canvas.after(0, circuit_window.change_Sensors, sensor, message[1])
 
+#                 if data.locomotives_data[id]["Direzione"] == 0: # va verso sinistra <--
+#                     #Percorsi possibili partendo da G, stazione:
+#                     '''
+#                         ABCDEFGH -> 12345678
+#                         1-GCDEFHG    -> Schiva A e B    -> Ricomincia da G, GCDEFHG
+#                         2-GCDEFG     -> Schiva A,B,H    -> Ricomincia da G, GCDEFG
+#                         3-GCDEFHD    -> Schiva A e B    -> Ricomincia da D, DEFHD
+#                         4-GCDEBA     -> Schiva F e H    -> Finisce in deposito, A
+#                         5-GCDEBC     -> Schiva A,F,H    -> Ricomincia Da C, CDEB
+#                         Lettere che cambiano stato sono: -> A cambia ma si gestisce da solo
+#                         A,H,E,F,
+#                         Lettere passive sono: 
+#                         C,D,G
 
-                        case "Cambio 2":
-                            #questa if controlla che l'ultimo treno passato non sia lo stesso che è passato ora
-                            # if database.Sensors["Sensore 2"][1] != database.locomotives_data[id]["RFIDtag"] and database.Sensors["Sensore 1"][2] == "":
-                            #     canvas.after(0, circuit_window.change_Turnouts, text, "")
-                            #     database.Sensors["Sensore 2"][1] = database.locomotives_data[id]["RFIDtag"]
+#                         Albero logico:
+#                         if E == aperto:
+#                             if F == aperto:
+#                                 if H == aperto:
+#                                     1
+#                                 else:
+#                                     3
+#                             else:
+#                                 2
+#                         else:
+#                             if B == aperto:
+#                                 5
+#                             else:
+#                                 4
 
-                            #Azzero il cambio precedente da sinistra
-                            data.Sensors["Sensore 5"][1] = ""
+#                         Tutti i percorsi dipendono da E
+#                         Le altre dipendenze sono:
+#                         1 e 3 dipendono da H e F; hanno F uguale, se cambia diventa 2
+#                         2 Dipende da F
+#                         4 va in deposito, dopo di esso sicuramente si cambia direzione. Dipende da E e B
+#                         5 dipende da 
+#                         I percorsi percio sono intercambiabili, a seconda delle loro dipendenze, in ogni caso seguono questi schemi. Da 1 pero si puo andare a 4, 
+#                         basta modificare le dipendenze di 4 che sono E e B. Infatti tutti i percorsi dipendono da E.
 
-                            #è il collegamento che ha di natura il cambio, all'inizio di tutto.
-                            natural_link = 3 if data.Turnouts[text][0] else 1
-                            #Gli si puo mettere anche 0 fisso
-                            #Fa il controllo, and se il link di base è uguale a quello occupato avvia lo scambio
-                            if self.control(text,data.locomotives_data[id]["Direzione"],natural_link):
-                                canvas.after(0, circuit_window.change_Turnouts, text, "")
+#                         10 = B and E -> Il percorso dieci sara la distanza tra b ed e, il suo passaggio da destra è inevitabile se si arriva da B
+#                         11 = E and D
+#                         12 = C and D
+#                         13 = C and B
+#                         14 = C and G
+#                         15 = G and F
+#                         16 = F and E
+#                         17 = H and G
+#                         18 = H and D
 
-                        case "Cambio 3":
-                            #Azzero il cambio precedente da sinistra
-                            data.Sensors["Sensore 2"][1] = ""
-                            data.Sensors["Sensore 7"][1] = ""
+#                         Vige la precedenza a destra
+#                         Partenza da A: In ogni caso bisogna controllare sinistra e destra, prima sinistra
+#                         10 - Arriva il segnale in A, e si decide che fare
+#                             if C == False,
+#                                 if sensore C == '' or sensore C == sensore B vai pure, 
+#                                 else aspetta che C sia == a B di DESTRA  
+#                             if E == False, bisogna controllare se ci sono dei treni, 
+#                                 if sensore E != '' or sensore E == sensore B vai pure, 
+#                                 else aspetta che E sia = a B di SINISTRA
 
-                        case "Cambio 4":
-                            #Azzero il cambio precedente da sinistra
-                            data.Sensors["Sensore 3"][1] = ""
-                            data.Sensors["Sensore 8"][1] = ""
+#                         11 - Arriva il segnale in B, e si decide che fare
+# ì
+#                             if sensore F == '' or sensore G == sensore F 
+#                                 ifsensore F == sensore H vai pure, 
+#                                 else aspetta che F sia uguale a H
+#                             else aspetta che F sia == a G di DESTRA  
 
-                        case "Cambio 5":
-                            #Azzero il cambio precedente da sinistra
-                            data.Sensors["Sensore 4"][1] = ""
+#                             if sensore D == '' or sensore D == sensore E vai pure, 
+#                             else aspetta che D sia = a E di SINISTRA
 
-                        case "Cambio 6":
-                            #Azzero il cambio precedente da sinistra
-                            data.Sensors["Sensore 5"][1] = ""
+#                          12 - Arriva il segnale in B, e si decide che fare   
 
-                        case "Cambio 7":
-                            #Azzero il cambio precedente da sinistra
-                            data.Sensors["Sensore 6"][1] = ""
-                            data.Sensors["Sensore 8"][1] = ""
+#                             if sensore G == '' or sensore G != sensore C 
+#                                    if sensore B == '' or sensore B != sensore C vai pure, 
+#                                    else scambia D prima che arriva l'altro treno, scambio deve essere True
+#                             else scambia D prima che arriva l'altro treno da 14, scambio deve essere False  DESTRA
 
-                        case "Cambio 8":
-                            #Azzero il cambio precedente da sinistra
-                            data.Sensors["Sensore 6"][1] = ""
+#                             2 casi:
+#                             Arriva da G, 
+#                             if B == '' or B == C, vai
+#                             else aspetta che B sia uguale a C
 
-                        case _:
-                            print("Cambio insesistente")
+#                             Arriva da G, 
+#                             if B == '' or B == C, vai
+#                             else aspetta che B sia uguale a C
 
-                else:  # va verso destra -->
-                    #Percorsi possibili partendo da A, deposito treni:
-                    '''
-                        ABCDEFGH -> 12345678
-                        1-ABEDCGFE   -> Schiva H             -> Ricomincia da E, EDCGFE
-                        2-ABEDHFE   -> Schiva C e G          -> Ricomincia da E, EDHFE
-                        3-ABEDCB     -> Schiva F,G,H         -> Ricomincia da B, BEDCB
-                        4-ABEDCGHFE  -> Non schiva niente    -> Ricomincia Da E, EDCGHF
-                        Lettere che cambiano stato sono:
-                        C,D,
-                        Lettere passive sono:
-                        A,B,E,F,H
+#                     '''
+#                     #A questo punto arriva il sensore che ha letto il messaggio della locomotiva che va all'indietro e ha l'id registrato dal sensore che trasmette
+#                     print(data.locomotives_data[id]["Nome"])
+#                     print("del sensore: {}".format(message[0]))
 
-                        Albero logico:
-                        if D == aperto:
-                                2
-                        else:
-                            if C == aperto:
-                                if G == aperto:
-                                    4
-                                else:
-                                    1   
-                            else:
-                                3
+#                     match text:
+#                         case "Cambio 1":
 
-                        Tutti i percorsi dipendono da D
-                        Le altre dipendenze sono:
-                        2 dipende solo da D
-                        1 e 4 dipendono da C e G; hanno C uguale, se cambia diventa 3
-                        3 Dipende da C
+#                             #Azzero il cambio precedente
+#                             data.Sensors["Sensore 2"][1] = ""
 
-                        I percorsi percio sono intercambiabili, a seconda delle loro dipendenze, in ogni caso seguono questi schemi. Da 4 pero si puo andare a 3, 
-                        basta modificare le dipendenze di 3 che sono D e C. Infatti tutti i percorsi dipendono da D.
-                        In questo caso non sara neanche necessario cambiare D  dato che si trova nella stessa condizione di 4.
-
-                        Negli scambi passivi vige la precedenza a destra, percio se si proviene da destra si potra andare, se si proviene da sinistra bisognera attendere lo scambio di destra e frontale
-                        Gli scambi attivi dovranno invece controllare che ci sia un treno in ognuno dei suoi percorsi adiacenti.
-                    '''
-
-
-                    match text:
-                        case "Cambio 1":
-                            data.Sensors["Sensore 1"][2] = data.locomotives_data[id]["RFIDtag"]
-                            #Deve avvisare il 2 che sta arrivando un treno e che quindi non puo aprirsi,
-                        case "Cambio 2":
-                            #Azzero il cambio precedente da destra
-                            data.Sensors["Sensore 1"][2] = ""
-                            data.Sensors["Sensore 3"][2] = ""
+#                             # database.Sensors[text][0] = message[1]
+#                             # canvas.after(0, GUI.change_Sensors, text, message[1])
+#                             data.Sensors["Sensore 5"][1] = "ABA"
 
 
-                            if data.Sensors["Sensore 1"][2] == data.Sensors["Sensore 2"][2]:
-                                data.Sensors["Sensore 1"][2] = ""
-                        case "Cambio 3":
-                            #Azzero il cambio precedente da destra
-                            data.Sensors["Sensore 4"][2] = ""
+#                             # Avvia la funzione dopo un certo tempo, a seconda di quanto serva 
+#                             time = 5
+#                             #Impostiamo la velocita che vogliamo da 0 a 100
+#                             velocita  = 0
+#                             self.threads[2] = threading.Timer(time, lambda: self.gestione_velocita(circuit_window,id,velocita))
+#                             self.threads[2].start()
 
-                        case "Cambio 4":
-                            #Azzero il cambio precedente da destra
-                            data.Sensors["Sensore 5"][2] = ""
+#                             #questa if controlla che l'ultimo treno passato non sia lo stesso che è passato ora
+#                             if data.Sensors["Sensore 1"][1] != data.locomotives_data[id]["RFIDtag"]:
+#                                 #comando per scambiare
+#                                 canvas.after(0, circuit_window.change_Turnouts, text, "")
+#                             #Imposta la var del treno in memoria
+#                             data.Sensors["Sensore 1"][1] = data.locomotives_data[id]["RFIDtag"]
+#                             print(text,data.Sensors["Sensore 1"][1])
 
-                        case "Cambio 5":
-                            #Azzero il cambio precedente da destra
-                            data.Sensors["Sensore 2"][2] = ""
-                            data.Sensors["Sensore 6"][2] = ""
 
-                        case "Cambio 6":
-                            #Azzero il cambio precedente da destra
-                            data.Sensors["Sensore 8"][2] = ""
-                            data.Sensors["Sensore 7"][2] = ""
+#                         case "Cambio 2":
+#                             #questa if controlla che l'ultimo treno passato non sia lo stesso che è passato ora
+#                             # if database.Sensors["Sensore 2"][1] != database.locomotives_data[id]["RFIDtag"] and database.Sensors["Sensore 1"][2] == "":
+#                             #     canvas.after(0, circuit_window.change_Turnouts, text, "")
+#                             #     database.Sensors["Sensore 2"][1] = database.locomotives_data[id]["RFIDtag"]
 
-                        case "Cambio 7":
-                            #Azzero il cambio precedente da destra
-                            data.Sensors["Sensore 3"][2] = ""
+#                             #Azzero il cambio precedente da sinistra
+#                             data.Sensors["Sensore 5"][1] = ""
 
-                        case "Cambio 8":
-                            #Azzero il cambio precedente da destra
-                            data.Sensors["Sensore 8"][2] = ""
-                            data.Sensors["Sensore 4"][2] = ""
+#                             #è il collegamento che ha di natura il cambio, all'inizio di tutto.
+#                             natural_link = 3 if data.Turnouts[text][0] else 1
+#                             #Gli si puo mettere anche 0 fisso
+#                             #Fa il controllo, and se il link di base è uguale a quello occupato avvia lo scambio
+#                             if self.control(text,data.locomotives_data[id]["Direzione"],natural_link):
+#                                 canvas.after(0, circuit_window.change_Turnouts, text, "")
 
-                        case _:
-                            print("Cambio insesistente")
+#                         case "Cambio 3":
+#                             #Azzero il cambio precedente da sinistra
+#                             data.Sensors["Sensore 2"][1] = ""
+#                             data.Sensors["Sensore 7"][1] = ""
 
-            except queue.Empty:
-                # Timeout scaduto, controlla nuovamente la variabile di terminazione
-                pass
+#                         case "Cambio 4":
+#                             #Azzero il cambio precedente da sinistra
+#                             data.Sensors["Sensore 3"][1] = ""
+#                             data.Sensors["Sensore 8"][1] = ""
+
+#                         case "Cambio 5":
+#                             #Azzero il cambio precedente da sinistra
+#                             data.Sensors["Sensore 4"][1] = ""
+
+#                         case "Cambio 6":
+#                             #Azzero il cambio precedente da sinistra
+#                             data.Sensors["Sensore 5"][1] = ""
+
+#                         case "Cambio 7":
+#                             #Azzero il cambio precedente da sinistra
+#                             data.Sensors["Sensore 6"][1] = ""
+#                             data.Sensors["Sensore 8"][1] = ""
+
+#                         case "Cambio 8":
+#                             #Azzero il cambio precedente da sinistra
+#                             data.Sensors["Sensore 6"][1] = ""
+
+#                         case _:
+#                             print("Cambio insesistente")
+
+#                 else:  # va verso destra -->
+#                     #Percorsi possibili partendo da A, deposito treni:
+#                     '''
+#                         ABCDEFGH -> 12345678
+#                         1-ABEDCGFE   -> Schiva H             -> Ricomincia da E, EDCGFE
+#                         2-ABEDHFE   -> Schiva C e G          -> Ricomincia da E, EDHFE
+#                         3-ABEDCB     -> Schiva F,G,H         -> Ricomincia da B, BEDCB
+#                         4-ABEDCGHFE  -> Non schiva niente    -> Ricomincia Da E, EDCGHF
+#                         Lettere che cambiano stato sono:
+#                         C,D,
+#                         Lettere passive sono:
+#                         A,B,E,F,H
+
+#                         Albero logico:
+#                         if D == aperto:
+#                                 2
+#                         else:
+#                             if C == aperto:
+#                                 if G == aperto:
+#                                     4
+#                                 else:
+#                                     1   
+#                             else:
+#                                 3
+
+#                         Tutti i percorsi dipendono da D
+#                         Le altre dipendenze sono:
+#                         2 dipende solo da D
+#                         1 e 4 dipendono da C e G; hanno C uguale, se cambia diventa 3
+#                         3 Dipende da C
+
+#                         I percorsi percio sono intercambiabili, a seconda delle loro dipendenze, in ogni caso seguono questi schemi. Da 4 pero si puo andare a 3, 
+#                         basta modificare le dipendenze di 3 che sono D e C. Infatti tutti i percorsi dipendono da D.
+#                         In questo caso non sara neanche necessario cambiare D  dato che si trova nella stessa condizione di 4.
+
+#                         Negli scambi passivi vige la precedenza a destra, percio se si proviene da destra si potra andare, se si proviene da sinistra bisognera attendere lo scambio di destra e frontale
+#                         Gli scambi attivi dovranno invece controllare che ci sia un treno in ognuno dei suoi percorsi adiacenti.
+#                     '''
+
+
+#                     match text:
+#                         case "Cambio 1":
+#                             data.Sensors["Sensore 1"][2] = data.locomotives_data[id]["RFIDtag"]
+#                             #Deve avvisare il 2 che sta arrivando un treno e che quindi non puo aprirsi,
+#                         case "Cambio 2":
+#                             #Azzero il cambio precedente da destra
+#                             data.Sensors["Sensore 1"][2] = ""
+#                             data.Sensors["Sensore 3"][2] = ""
+
+
+#                             if data.Sensors["Sensore 1"][2] == data.Sensors["Sensore 2"][2]:
+#                                 data.Sensors["Sensore 1"][2] = ""
+#                         case "Cambio 3":
+#                             #Azzero il cambio precedente da destra
+#                             data.Sensors["Sensore 4"][2] = ""
+
+#                         case "Cambio 4":
+#                             #Azzero il cambio precedente da destra
+#                             data.Sensors["Sensore 5"][2] = ""
+
+#                         case "Cambio 5":
+#                             #Azzero il cambio precedente da destra
+#                             data.Sensors["Sensore 2"][2] = ""
+#                             data.Sensors["Sensore 6"][2] = ""
+
+#                         case "Cambio 6":
+#                             #Azzero il cambio precedente da destra
+#                             data.Sensors["Sensore 8"][2] = ""
+#                             data.Sensors["Sensore 7"][2] = ""
+
+#                         case "Cambio 7":
+#                             #Azzero il cambio precedente da destra
+#                             data.Sensors["Sensore 3"][2] = ""
+
+#                         case "Cambio 8":
+#                             #Azzero il cambio precedente da destra
+#                             data.Sensors["Sensore 8"][2] = ""
+#                             data.Sensors["Sensore 4"][2] = ""
+
+#                         case _:
+#                             print("Cambio insesistente")
+
+#             except queue.Empty:
+#                 # Timeout scaduto, controlla nuovamente la variabile di terminazione
+#                 pass
